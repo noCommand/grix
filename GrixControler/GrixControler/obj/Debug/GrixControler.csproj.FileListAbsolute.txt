@@ -1,0 +1,12 @@
+C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\bin\Debug\GrixControler.exe.config
+C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\bin\Debug\GrixControler.exe
+C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\bin\Debug\GrixControler.pdb
+C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\Debug\GrixControler.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\Debug\GrixControler.MainForm.resources
+C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\Debug\GrixControler.Properties.Resources.resources
+C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\Debug\GrixControler.csproj.GenerateResource.Cache
+C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\Debug\GrixControler.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\Debug\GrixControler.exe
+C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\Debug\GrixControler.pdb
+C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\Debug\GrixControler.CustomButton.resources
+C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\Debug\GrixControler.RoomSetting.resources
