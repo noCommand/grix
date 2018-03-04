@@ -15,6 +15,10 @@ namespace GrixControler
         {
 
             string dbPath = Application.StartupPath + @"\GrixDB";
+            string sql;
+            SQLiteCommand command;
+            int result;
+
 
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(dbPath);
             
@@ -24,24 +28,14 @@ namespace GrixControler
             }
             
             SQLiteConnection.CreateFile(dbPath + @"\grixdb.db");
-            
             SQLiteConnection dbConn = new SQLiteConnection(@"Data Source=" + dbPath + @"\grixdb.db");
             dbConn.Open();
-            
-            
-            string sql = "create table idTable(roomID int, roomNum int)";
-            SQLiteCommand command = new SQLiteCommand(sql, dbConn);
-            int result = command.ExecuteNonQuery();
 
             
-            sql = "create index idx01 on idTable(roomID)";
+            sql = "create table if not exists idTable(roomID int, roomNum int)";
             command = new SQLiteCommand(sql, dbConn);
             result = command.ExecuteNonQuery();
             
-            
-            sql = "insert into idTable(roomID, roomNum) values (1000,2000)";
-            command = new SQLiteCommand(sql, dbConn);
-            result = command.ExecuteNonQuery();
             
         }
         
