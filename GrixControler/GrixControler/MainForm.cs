@@ -58,7 +58,8 @@ namespace GrixControler
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            ProgramSetting pgset = new ProgramSetting();
+            pgset.ShowDialog();
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)

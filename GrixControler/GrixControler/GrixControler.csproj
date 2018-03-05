@@ -83,6 +83,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProgramSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgramSetting.Designer.cs">
+      <DependentUpon>ProgramSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="SerialConnect.cs" />
     <Compile Include="RoomSetting.cs">
       <SubType>Form</SubType>
@@ -108,6 +114,9 @@
     <Compile Include="SqliteConnect.cs" />
     <EmbeddedResource Include="CustomButton.resx">
       <DependentUpon>CustomButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgramSetting.resx">
+      <DependentUpon>ProgramSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RoomSetting.resx">
       <DependentUpon>RoomSetting.cs</DependentUpon>

@@ -14,6 +14,21 @@ namespace GrixControler
 
         public SerialConnect()
         {
+
+        }
+
+        public SerialConnect(ComboBox bx)
+        {
+            string[] portsArray = SerialPort.GetPortNames();
+            foreach(string portNumber in portsArray)
+            {
+                bx.Items.Add(portNumber);
+            }
+        }
+
+
+        public void AutoConnect()
+        {
             foreach(string s in System.IO.Ports.SerialPort.GetPortNames())
             {
                 try
