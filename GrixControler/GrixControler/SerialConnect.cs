@@ -17,44 +17,68 @@ namespace GrixControler
 
         }
 
-        public SerialConnect(ComboBox bx)
+        public SerialConnect(String pttx)
         {
-            string[] portsArray = SerialPort.GetPortNames();
-            foreach(string portNumber in portsArray)
+            
+            sp.PortName = pttx;
+            sp.BaudRate = 38400;
+
+            try
             {
-                bx.Items.Add(portNumber);
+                sp.Open();
+                if (sp.IsOpen)
+                    MessageBox.Show(sp.IsOpen.ToString());
+                else
+                    MessageBox.Show(sp.IsOpen.ToString());
+
             }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.ToString());
+            }
+
         }
 
 
         public void AutoConnect()
         {
+            byte[] ckport = {0xAA,0x00,0x01,0x00,0xBB,0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0x01, 0x55};
+            
+
             foreach(string s in System.IO.Ports.SerialPort.GetPortNames())
             {
+               
                 try
                 {
                     sp.PortName = s;
                     sp.Open();
-                    sp.Write("장비 접속 확인 명령");
+                    sp.Write(ckport,0,ckport.Length);
                     System.Threading.Thread.Sleep(100);
-                    if(sp.BytesToRead != 0)
+                    
+                    if (sp.BytesToRead != 0)
                     {
-                        byte[] data = new byte[sp.BytesToRead];
-                        sp.Read(data, 0, sp.BytesToRead);
-                        if(data.Equals("장비 접속 수신 패킷"))
+                        if (!sp.ReadByte().Equals(0xAA))
                         {
-                            break;
+                            sp.Close();
                         }
                     }
+                    else
+                    {
+                        sp.Close();
+                    }
+
                 } catch(Exception e) { }
             }
+
             if (sp.IsOpen)
             {
-                MessageBox.Show("포트연결실패");
+                MessageBox.Show(sp.PortName + " 포트연결 성공");
+                MessageBox.Show(" 테스트" + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " ");
+
             }
             else
             {
-                MessageBox.Show("포트연결성공");
+                MessageBox.Show(sp.PortName + " 포트연결실패");
             }
         }
 

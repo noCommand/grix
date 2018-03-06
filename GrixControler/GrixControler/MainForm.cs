@@ -19,11 +19,14 @@ namespace GrixControler
     public partial class MainForm : Form
     {
         SqliteConnect sqliteconnect;
+        SerialConnect serialConnect;
 
         public MainForm()
         {
             InitializeComponent();
-            
+
+            serialConnect = new SerialConnect();
+            serialConnect.AutoConnect();
             /* 현재 위치에서 상위폴더로 올라감
             System.IO.DirectoryInfo diPa = System.IO.Directory.GetParent(filePath);
             diPa = System.IO.Directory.GetParent(diPa.ToString());
@@ -88,6 +91,9 @@ namespace GrixControler
             
         }
 
-
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            serialConnect.portClose();
+        }
     }
 }

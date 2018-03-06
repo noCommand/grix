@@ -19,7 +19,6 @@ namespace GrixControler
         {
             InitializeComponent();
             
-            //port 연결 테스트코드 -> serialconnect로 뺄 예정 
             string[] portsArray = SerialPort.GetPortNames();
             foreach (string portNumber in portsArray)
             {
@@ -39,14 +38,25 @@ namespace GrixControler
 
         private void button1_Click(object sender, EventArgs e)
         {
+            SerialConnect sc = new SerialConnect(portCombx.Text);
+            
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
             sp.PortName = portCombx.Text;
             sp.BaudRate = 38400;
 
             try
             {
-                sp.Open();
+                sp.Close();
+                if (sp.IsOpen)
+                    MessageBox.Show(sp.IsOpen.ToString()+"열림");
+                else
+                    MessageBox.Show(sp.IsOpen.ToString());
+
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 MessageBox.Show(exc.ToString());
             }

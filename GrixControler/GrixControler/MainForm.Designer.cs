@@ -31,20 +31,20 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.AdminSet = new System.Windows.Forms.Button();
-            this.Setting = new System.Windows.Forms.Button();
-            this.Help = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.AdminSet = new System.Windows.Forms.Button();
+            this.Help = new System.Windows.Forms.Button();
+            this.Setting = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.customButton3 = new GrixControler.CustomButton();
             this.customButton1 = new GrixControler.CustomButton();
             this.customButton2 = new GrixControler.CustomButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -84,44 +84,15 @@
             this.panel1.TabIndex = 1;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
-            // pictureBox1
+            // panel3
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(3, 1);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(176, 50);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
-            // AdminSet
-            // 
-            this.AdminSet.Location = new System.Drawing.Point(3, 3);
-            this.AdminSet.Name = "AdminSet";
-            this.AdminSet.Size = new System.Drawing.Size(75, 23);
-            this.AdminSet.TabIndex = 1;
-            this.AdminSet.Text = "관리자설정";
-            this.AdminSet.UseVisualStyleBackColor = true;
-            this.AdminSet.Click += new System.EventHandler(this.AdminSet_Click);
-            // 
-            // Setting
-            // 
-            this.Setting.Location = new System.Drawing.Point(84, 3);
-            this.Setting.Name = "Setting";
-            this.Setting.Size = new System.Drawing.Size(75, 23);
-            this.Setting.TabIndex = 2;
-            this.Setting.Text = "환경설정";
-            this.Setting.UseVisualStyleBackColor = true;
-            this.Setting.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // Help
-            // 
-            this.Help.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Help.Location = new System.Drawing.Point(165, 3);
-            this.Help.Name = "Help";
-            this.Help.Size = new System.Drawing.Size(75, 23);
-            this.Help.TabIndex = 3;
-            this.Help.Text = "도움말";
-            this.Help.UseVisualStyleBackColor = true;
-            this.Help.Click += new System.EventHandler(this.button3_Click);
+            this.panel3.Controls.Add(this.customButton3);
+            this.panel3.Controls.Add(this.customButton1);
+            this.panel3.Controls.Add(this.customButton2);
+            this.panel3.Location = new System.Drawing.Point(243, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(283, 54);
+            this.panel3.TabIndex = 5;
             // 
             // panel2
             // 
@@ -134,15 +105,44 @@
             this.panel2.Size = new System.Drawing.Size(243, 28);
             this.panel2.TabIndex = 4;
             // 
-            // panel3
+            // AdminSet
             // 
-            this.panel3.Controls.Add(this.customButton3);
-            this.panel3.Controls.Add(this.customButton1);
-            this.panel3.Controls.Add(this.customButton2);
-            this.panel3.Location = new System.Drawing.Point(243, 0);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(283, 54);
-            this.panel3.TabIndex = 5;
+            this.AdminSet.Location = new System.Drawing.Point(3, 3);
+            this.AdminSet.Name = "AdminSet";
+            this.AdminSet.Size = new System.Drawing.Size(75, 23);
+            this.AdminSet.TabIndex = 1;
+            this.AdminSet.Text = "관리자설정";
+            this.AdminSet.UseVisualStyleBackColor = true;
+            this.AdminSet.Click += new System.EventHandler(this.AdminSet_Click);
+            // 
+            // Help
+            // 
+            this.Help.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Help.Location = new System.Drawing.Point(165, 3);
+            this.Help.Name = "Help";
+            this.Help.Size = new System.Drawing.Size(75, 23);
+            this.Help.TabIndex = 3;
+            this.Help.Text = "도움말";
+            this.Help.UseVisualStyleBackColor = true;
+            this.Help.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // Setting
+            // 
+            this.Setting.Location = new System.Drawing.Point(84, 3);
+            this.Setting.Name = "Setting";
+            this.Setting.Size = new System.Drawing.Size(75, 23);
+            this.Setting.TabIndex = 2;
+            this.Setting.Text = "환경설정";
+            this.Setting.UseVisualStyleBackColor = true;
+            this.Setting.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(3, 1);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(176, 50);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // customButton3
             // 
@@ -177,12 +177,13 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
