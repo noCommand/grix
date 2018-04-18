@@ -133,6 +133,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -147,6 +148,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Logo.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Heat.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Event.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Time-Background.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
