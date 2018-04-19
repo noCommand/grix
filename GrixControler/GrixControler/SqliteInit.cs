@@ -11,32 +11,32 @@ namespace GrixControler
 {
     class SqliteInit
     {
-     
+
         public SqliteInit()
         {
             string dbPath = Application.StartupPath + @"\GrixDB"; //현재 경로 기반
             string sql;
             SQLiteCommand command;
             int result;
-            
+
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(dbPath);
-            
+
             if (di.Exists == false)
             {
                 di.Create();
             }
             
-                SQLiteConnection dbConn = new SQLiteConnection(@"Data Source=" + dbPath + @"\grixdb.db");
-                dbConn.Open();
-                SQLiteConnection.CreateFile(dbPath + @"\grixdb.db");
+
+            SQLiteConnection dbConn = new SQLiteConnection(@"Data Source=" + dbPath + @"\grixdb.db");
+            dbConn.Open();
 
 
-                sql = "create table if not exists idTable(groupNum int auto_increment, roomID string, roomNum string)";
-                command = new SQLiteCommand(sql, dbConn);
-                result = command.ExecuteNonQuery();
-            
-           
-            
+            sql = "create table if not exists idTable(groupNum int auto_increment, roomID string, roomNum string)";
+            command = new SQLiteCommand(sql, dbConn);
+            result = command.ExecuteNonQuery();
+
+
+
             /**
              * 18.04.19  16:03 
              * programSetting sql 데이터 삽입 코딩중
@@ -47,12 +47,17 @@ namespace GrixControler
              * 파일을 삭제하고 디버깅해도 똑같음
              * 
              * ???? mainform에서 catch문의 exception이 실행됬는데, try문에 있는 sqliteinit이 실행, 결국 db폴더, 파일이 생성됨 -> ?? 
-             *
+             * 
+             * SQLiteConnection.CreateFile(dbPath + @"\grixdb.db");   ->> 이부분이 sqliteinit으로 수정될때 아래로 내려가서 문제발생했던 것임
+             * + 없어도 아래 코드에서 grixdb를 생성해줌
+             * SQLiteConnection dbConn = new SQLiteConnection(@"Data Source=" + dbPath + @"\grixdb.db");
+             * dbConn.Open();
+             * 
              * */
 
         }
-        
-        
+
+
 
     }
 }
