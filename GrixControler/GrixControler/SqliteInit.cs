@@ -25,9 +25,7 @@ namespace GrixControler
             {
                 di.Create();
             }
-
-            try
-            {
+            
                 SQLiteConnection dbConn = new SQLiteConnection(@"Data Source=" + dbPath + @"\grixdb.db");
                 dbConn.Open();
                 SQLiteConnection.CreateFile(dbPath + @"\grixdb.db");
@@ -36,13 +34,7 @@ namespace GrixControler
                 sql = "create table if not exists idTable(groupNum int auto_increment, roomID string, roomNum string)";
                 command = new SQLiteCommand(sql, dbConn);
                 result = command.ExecuteNonQuery();
-
-                dbConn.Close();
-            }
-            catch(Exception e)
-            {
-                MessageBox.Show("SQLite3 Database Connection Error -> " + e.Message);
-            }
+            
            
             
             /**
@@ -51,6 +43,11 @@ namespace GrixControler
              * 현재 cs에서
              * 해당 db 파일 다른 프로세스 사용중 엑세스 불가 에러 발생
              * 
+             * process explorer에서는 발견하지 못함
+             * 파일을 삭제하고 디버깅해도 똑같음
+             * 
+             * ???? mainform에서 catch문의 exception이 실행됬는데, try문에 있는 sqliteinit이 실행, 결국 db폴더, 파일이 생성됨 -> ?? 
+             *
              * */
 
         }

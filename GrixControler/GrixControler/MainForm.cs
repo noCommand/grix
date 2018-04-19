@@ -25,8 +25,11 @@ namespace GrixControler
         {
             InitializeComponent();
 
+            
             serialConnect = new SerialConnect();
             serialConnect.AutoConnect();
+            
+            
             /* 현재 위치에서 상위폴더로 올라감
             System.IO.DirectoryInfo diPa = System.IO.Directory.GetParent(filePath);
             diPa = System.IO.Directory.GetParent(diPa.ToString());
@@ -45,7 +48,7 @@ namespace GrixControler
             {
                 sqliteconnect = new SqliteInit();
             }
-            catch (UnauthorizedAccessException e)
+            catch (Exception e)
             {
                 MessageBox.Show(e.ToString());
             }
