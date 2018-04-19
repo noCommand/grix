@@ -18,7 +18,7 @@ namespace GrixControler
 {
     public partial class MainForm : Form
     {
-        SqliteConnect sqliteconnect;
+        SqliteInit sqliteconnect;
         SerialConnect serialConnect;
 
         public MainForm()
@@ -43,7 +43,7 @@ namespace GrixControler
 
             try
             {
-                sqliteconnect = new SqliteConnect();
+                sqliteconnect = new SqliteInit();
             }
             catch (UnauthorizedAccessException e)
             {

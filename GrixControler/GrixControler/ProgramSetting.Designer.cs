@@ -30,18 +30,18 @@
         {
             this.portCombx = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.confirmButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.portGroupBox = new System.Windows.Forms.GroupBox();
-            this.ResetButton = new System.Windows.Forms.Button();
+            this.resetButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.No = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.roomGridView = new System.Windows.Forms.DataGridView();
+            this.setNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.setID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.setRoomName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.portGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.roomGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // portCombx
@@ -51,7 +51,6 @@
             this.portCombx.Name = "portCombx";
             this.portCombx.Size = new System.Drawing.Size(85, 19);
             this.portCombx.TabIndex = 0;
-            this.portCombx.SelectedIndexChanged += new System.EventHandler(this.portCombx_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -62,25 +61,25 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Port :";
             // 
-            // button1
+            // confirmButton
             // 
-            this.button1.Location = new System.Drawing.Point(114, 303);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "확인";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.confirmButton.Location = new System.Drawing.Point(114, 303);
+            this.confirmButton.Name = "confirmButton";
+            this.confirmButton.Size = new System.Drawing.Size(75, 23);
+            this.confirmButton.TabIndex = 2;
+            this.confirmButton.Text = "확인";
+            this.confirmButton.UseVisualStyleBackColor = true;
+            this.confirmButton.Click += new System.EventHandler(this.confirmButton_click);
             // 
-            // button2
+            // cancelButton
             // 
-            this.button2.Location = new System.Drawing.Point(200, 303);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "취소";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.cancelButton.Location = new System.Drawing.Point(200, 303);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 3;
+            this.cancelButton.Text = "취소";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_click);
             // 
             // portGroupBox
             // 
@@ -94,18 +93,18 @@
             this.portGroupBox.TabStop = false;
             this.portGroupBox.Text = "Com Setting";
             // 
-            // ResetButton
+            // resetButton
             // 
-            this.ResetButton.Location = new System.Drawing.Point(217, 27);
-            this.ResetButton.Name = "ResetButton";
-            this.ResetButton.Size = new System.Drawing.Size(75, 23);
-            this.ResetButton.TabIndex = 5;
-            this.ResetButton.Text = "초기화";
-            this.ResetButton.UseVisualStyleBackColor = true;
+            this.resetButton.Location = new System.Drawing.Point(217, 27);
+            this.resetButton.Name = "resetButton";
+            this.resetButton.Size = new System.Drawing.Size(75, 23);
+            this.resetButton.TabIndex = 5;
+            this.resetButton.Text = "초기화";
+            this.resetButton.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.dataGridView1);
+            this.groupBox1.Controls.Add(this.roomGridView);
             this.groupBox1.Location = new System.Drawing.Point(12, 76);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(280, 209);
@@ -113,40 +112,41 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Room Setting";
             // 
-            // dataGridView1
+            // roomGridView
             // 
-            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.No,
-            this.ID,
-            this.Column2});
-            this.dataGridView1.Location = new System.Drawing.Point(19, 20);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(244, 183);
-            this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.roomGridView.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.roomGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.roomGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.setNo,
+            this.setID,
+            this.setRoomName});
+            this.roomGridView.Location = new System.Drawing.Point(19, 18);
+            this.roomGridView.Name = "roomGridView";
+            this.roomGridView.RowTemplate.Height = 23;
+            this.roomGridView.Size = new System.Drawing.Size(244, 183);
+            this.roomGridView.TabIndex = 0;
             // 
-            // No
+            // setNo
             // 
-            this.No.HeaderText = "No.";
-            this.No.Name = "No";
-            this.No.ReadOnly = true;
-            this.No.Width = 70;
+            this.setNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.setNo.HeaderText = "No.";
+            this.setNo.Name = "setNo";
+            this.setNo.ReadOnly = true;
+            this.setNo.Width = 63;
             // 
-            // ID
+            // setID
             // 
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.Width = 70;
+            this.setID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.setID.HeaderText = "ID";
+            this.setID.Name = "setID";
+            this.setID.Width = 63;
             // 
-            // Column2
+            // setRoomName
             // 
-            this.Column2.HeaderText = "방이름";
-            this.Column2.Name = "Column2";
-            this.Column2.Width = 80;
+            this.setRoomName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.setRoomName.HeaderText = "방이름";
+            this.setRoomName.Name = "setRoomName";
+            this.setRoomName.Width = 84;
             // 
             // ProgramSetting
             // 
@@ -154,17 +154,17 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(313, 338);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.ResetButton);
+            this.Controls.Add(this.resetButton);
             this.Controls.Add(this.portGroupBox);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.cancelButton);
+            this.Controls.Add(this.confirmButton);
             this.Name = "ProgramSetting";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.ProgramSetting_Load);
             this.portGroupBox.ResumeLayout(false);
             this.portGroupBox.PerformLayout();
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.roomGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -173,14 +173,14 @@
 
         private System.Windows.Forms.ComboBox portCombx;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button confirmButton;
+        private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.GroupBox portGroupBox;
-        private System.Windows.Forms.Button ResetButton;
+        private System.Windows.Forms.Button resetButton;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn No;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridView roomGridView;
+        private System.Windows.Forms.DataGridViewTextBoxColumn setNo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn setID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn setRoomName;
     }
 }
