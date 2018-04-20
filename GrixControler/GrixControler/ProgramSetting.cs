@@ -27,7 +27,7 @@ namespace GrixControler
         int result;
 
         int row;
-
+        
         public ProgramSetting()
         {
             InitializeComponent();
@@ -39,7 +39,8 @@ namespace GrixControler
             {
                 portCombx.Items.Add(portNumber);
             }
-
+            portCombx.Text = portsArray[0];
+            
         }
         
 
@@ -82,35 +83,20 @@ namespace GrixControler
             
             int scalarNum;
 
+            SQLExcute("delete from idTable");
+            SQLExcute("update sqlite_sequence set seq = 0 where name = 'idTable'");
+
+
             try
             {
                 for (int i = 0; i < row-1; i++)
                 {
+                   
+                        sql = "insert into idTable(roomID,roomNum) Values(\'" +
+                            roomGridView.Rows[i].Cells[1].FormattedValue.ToString() + "\',\'" +
+                            roomGridView.Rows[i].Cells[2].FormattedValue.ToString() + "\')";
+                    SQLExcute(sql);
                     
-                    sql = "select exists(select * from idTable where roomID = " +
-                        roomGridView.Rows[i].Cells[1].FormattedValue.ToString() +
-                        " and roomNum = " +
-                        roomGridView.Rows[i].Cells[2].FormattedValue.ToString()
-                        + ")";
-
-                    //MessageBox.Show(roomGridView.Rows[i].Cells[1].FormattedValue.ToString());
-                    //MessageBox.Show(roomGridView.Rows[i].Cells[2].FormattedValue.ToString());
-
-                    command = new SQLiteCommand(sql, dbConn);
-                    scalarNum = Convert.ToInt32(command.ExecuteScalar());
-                    // scalar가 select의 단일값을 가져오고, object는 convert로 변환해야함
-                    
-                    if (scalarNum == 0)
-                    {
-                        sql = "insert into idTable(roomID,roomNum) Values(" +
-                            roomGridView.Rows[i].Cells[1].FormattedValue.ToString() + "," +
-                            roomGridView.Rows[i].Cells[2].FormattedValue.ToString() + ")";
-
-                        command = new SQLiteCommand(sql, dbConn);
-                        result = command.ExecuteNonQuery();
-                        
-                    }
-
                 }
                 
             }
@@ -151,6 +137,51 @@ namespace GrixControler
             //dbConn.Close();
             
         }
-        
+
+        public void SQLExcute(String sql)
+        {
+            command = new SQLiteCommand(sql, dbConn);
+            result = command.ExecuteNonQuery();
+        }
+
+        private void roomGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void roomGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void roomGridView_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            /*
+            Int32 selectedColumnCount = roomGridView.Columns
+        .GetColumnCount(DataGridViewElementStates.Selected);
+            if (selectedColumnCount > 0)
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+                for (int i = 0; i < selectedColumnCount; i++)
+                {
+                    sb.Append("Column: ");
+                    sb.Append(roomGridView.SelectedColumns[i].Index
+                        .ToString());
+                    sb.Append(Environment.NewLine);
+                }
+
+                sb.Append("Total: " + selectedColumnCount.ToString());
+                MessageBox.Show(sb.ToString(), "Selected Columns");
+            }
+        */    
+        }
     }
+
+
+    /**
+     * 남은 기능
+     * 똑같이 옆에 값 입력되게하는것
+     * 행이 늘어날때마다 default값 넣는것
+     * */
 }

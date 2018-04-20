@@ -84,6 +84,9 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomDgv.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ProgramSetting.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -125,6 +125,9 @@
             this.roomGridView.RowTemplate.Height = 23;
             this.roomGridView.Size = new System.Drawing.Size(244, 183);
             this.roomGridView.TabIndex = 0;
+            this.roomGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.roomGridView_CellContentClick);
+            this.roomGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.roomGridView_CellValueChanged);
+            this.roomGridView.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.roomGridView_KeyPress);
             // 
             // setNo
             // 
@@ -132,6 +135,7 @@
             this.setNo.HeaderText = "No.";
             this.setNo.Name = "setNo";
             this.setNo.ReadOnly = true;
+            this.setNo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.setNo.Width = 63;
             // 
             // setID
@@ -139,6 +143,7 @@
             this.setID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.setID.HeaderText = "ID";
             this.setID.Name = "setID";
+            this.setID.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.setID.Width = 63;
             // 
             // setRoomName
@@ -146,6 +151,7 @@
             this.setRoomName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.setRoomName.HeaderText = "방이름";
             this.setRoomName.Name = "setRoomName";
+            this.setRoomName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.setRoomName.Width = 84;
             // 
             // ProgramSetting
