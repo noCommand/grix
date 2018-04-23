@@ -31,7 +31,9 @@ namespace GrixControler
             dbConn.Open();
 
 
-            sql = "create table if not exists idTable(groupNum integer primary key autoincrement, roomID string, roomNum string)";
+            sql = "create table if not exists idTable(groupNum integer primary key autoincrement," +
+                " roomID string, roomNum string, onTime string, offTime string ," +
+                "reservTemp string )";
             command = new SQLiteCommand(sql, dbConn);
             result = command.ExecuteNonQuery();
 

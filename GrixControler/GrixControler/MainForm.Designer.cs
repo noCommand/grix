@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -44,14 +43,14 @@
             this.timeLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.customButton1 = new GrixControler.CustomButton();
+            this.customButton2 = new GrixControler.CustomButton();
             this.panel2 = new System.Windows.Forms.Panel();
             this.AdminSet = new System.Windows.Forms.Button();
             this.Help = new System.Windows.Forms.Button();
             this.Setting = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel4.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -60,24 +59,12 @@
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::GrixControler.Properties.Resources.Logo;
-            this.pictureBox1.InitialImage = null;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(185, 27);
-            this.pictureBox1.TabIndex = 6;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // panel4
             // 
@@ -97,7 +84,7 @@
             this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel7.Location = new System.Drawing.Point(0, 0);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(185, 684);
+            this.panel7.Size = new System.Drawing.Size(185, 687);
             this.panel7.TabIndex = 8;
             this.panel7.Paint += new System.Windows.Forms.PaintEventHandler(this.panel7_Paint);
             // 
@@ -111,7 +98,7 @@
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listView1.Location = new System.Drawing.Point(0, 26);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(185, 658);
+            this.listView1.Size = new System.Drawing.Size(185, 661);
             this.listView1.TabIndex = 3;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -164,10 +151,10 @@
             this.panel5.BackgroundImage = global::GrixControler.Properties.Resources.Time_Background;
             this.panel5.Controls.Add(this.timeLabel);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel5.Location = new System.Drawing.Point(0, 684);
+            this.panel5.Location = new System.Drawing.Point(0, 687);
             this.panel5.Margin = new System.Windows.Forms.Padding(0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(185, 30);
+            this.panel5.Size = new System.Drawing.Size(185, 27);
             this.panel5.TabIndex = 4;
             this.panel5.Paint += new System.Windows.Forms.PaintEventHandler(this.panel5_Paint);
             // 
@@ -199,20 +186,20 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.customButton1);
+            this.panel3.Controls.Add(this.customButton2);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(454, 27);
             this.panel3.TabIndex = 5;
             // 
-            // customButton1
+            // customButton2
             // 
-            this.customButton1.BackColor = System.Drawing.Color.White;
-            this.customButton1.Location = new System.Drawing.Point(3, 0);
-            this.customButton1.Name = "customButton1";
-            this.customButton1.Size = new System.Drawing.Size(67, 28);
-            this.customButton1.TabIndex = 3;
+            this.customButton2.BackColor = System.Drawing.Color.White;
+            this.customButton2.Location = new System.Drawing.Point(3, 2);
+            this.customButton2.Name = "customButton2";
+            this.customButton2.Size = new System.Drawing.Size(61, 22);
+            this.customButton2.TabIndex = 0;
             // 
             // panel2
             // 
@@ -227,7 +214,7 @@
             // 
             // AdminSet
             // 
-            this.AdminSet.Location = new System.Drawing.Point(66, 3);
+            this.AdminSet.Location = new System.Drawing.Point(154, 2);
             this.AdminSet.Name = "AdminSet";
             this.AdminSet.Size = new System.Drawing.Size(75, 23);
             this.AdminSet.TabIndex = 1;
@@ -248,7 +235,7 @@
             // 
             // Setting
             // 
-            this.Setting.Location = new System.Drawing.Point(147, 3);
+            this.Setting.Location = new System.Drawing.Point(235, 2);
             this.Setting.Name = "Setting";
             this.Setting.Size = new System.Drawing.Size(75, 23);
             this.Setting.TabIndex = 2;
@@ -276,6 +263,19 @@
             this.tableLayoutPanel1.TabIndex = 0;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint_1);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Image = global::GrixControler.Properties.Resources.Logo;
+            this.pictureBox1.InitialImage = null;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(185, 27);
+            this.pictureBox1.TabIndex = 6;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.BackColor = System.Drawing.Color.Thistle;
@@ -298,7 +298,6 @@
             this.Text = "온도조절 시스템 PC제어 프로그램";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel4.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
@@ -309,6 +308,7 @@
             this.panel3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -328,13 +328,13 @@
         private System.Windows.Forms.Label timeLabel;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel3;
-        private CustomButton customButton1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button AdminSet;
         private System.Windows.Forms.Button Help;
         private System.Windows.Forms.Button Setting;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private CustomButton customButton2;
     }
 }
 

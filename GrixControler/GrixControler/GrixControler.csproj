@@ -93,6 +93,12 @@
     <Compile Include="ProgramSetting.Designer.cs">
       <DependentUpon>ProgramSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="ReservationSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReservationSetting.Designer.cs">
+      <DependentUpon>ReservationSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="SerialConnect.cs" />
     <Compile Include="RoomSetting.cs">
       <SubType>Form</SubType>
@@ -121,6 +127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProgramSetting.resx">
       <DependentUpon>ProgramSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReservationSetting.resx">
+      <DependentUpon>ReservationSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RoomSetting.resx">
       <DependentUpon>RoomSetting.cs</DependentUpon>

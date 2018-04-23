@@ -15,3 +15,4 @@ C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\bin\x86\Debug\Sy
 C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\bin\x86\Debug\System.Data.SQLite.dll.config
 C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\x86\Debug\GrixControler.exe
 C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\x86\Debug\GrixControler.pdb
+C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\x86\Debug\GrixControler.ReservationSetting.resources

@@ -110,8 +110,8 @@ namespace GrixControler
 
         private void AdminSet_Click(object sender, EventArgs e)
         {
-            RoomSetting rmset = new RoomSetting();
-            rmset.ShowDialog();
+            ReservationSetting reSet = new ReservationSetting();
+            reSet.ShowDialog();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -175,5 +175,6 @@ namespace GrixControler
         {
 
         }
+        
     }
 }
