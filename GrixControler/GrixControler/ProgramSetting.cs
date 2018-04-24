@@ -48,27 +48,8 @@ namespace GrixControler
         {
 
             dbConn.Open();
-            
-            try
-            {
-                    sql = "select * from idTable";
 
-                    command = new SQLiteCommand(sql, dbConn);
-
-                    rdr = command.ExecuteReader();
-
-                    while (rdr.Read())
-                    {
-                        roomGridView.Rows.Add(rdr["groupNum"], rdr["roomID"], rdr["roomNum"]);
-                    }
-                    rdr.Close();
-
-            }
-            catch (Exception er)
-            {
-                MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
-            }
-            
+            show_roomGridView();
         }
         
 
@@ -175,6 +156,79 @@ namespace GrixControler
                 MessageBox.Show(sb.ToString(), "Selected Columns");
             }
         */    
+        }
+
+        public void show_roomGridView()
+        {
+           
+            if (roomGridView.RowCount > 1)
+            {
+                int count = roomGridView.RowCount;
+
+                for (int i = 1; i <= count - 1; i++)
+
+                {
+                    roomGridView.Rows.RemoveAt(0);
+                }
+
+            }
+
+            try
+            {
+                sql = "select * from idTable";
+
+                command = new SQLiteCommand(sql, dbConn);
+
+                rdr = command.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    roomGridView.Rows.Add(rdr["groupNum"], rdr["roomID"], rdr["roomNum"]);
+                }
+                rdr.Close();
+
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+            }
+             MessageBox.Show(roomGridView.RowCount.ToString());
+
+        }
+
+        private void apply_btn_Click(object sender, EventArgs e)
+        {
+            SerialConnect sc = new SerialConnect(portCombx.Text); //연결실패시
+
+
+            //SQL
+            row = roomGridView.RowCount;
+
+            int scalarNum;
+
+            SQLExcute("delete from idTable");
+            SQLExcute("update sqlite_sequence set seq = 0 where name = 'idTable'");
+
+
+            try
+            {
+                for (int i = 0; i < row - 1; i++)
+                {
+
+                    sql = "insert into idTable(roomID,roomNum) Values(\'" +
+                        roomGridView.Rows[i].Cells[1].FormattedValue.ToString() + "\',\'" +
+                        roomGridView.Rows[i].Cells[2].FormattedValue.ToString() + "\')";
+                    SQLExcute(sql);
+
+                }
+
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+            }
+
+            show_roomGridView();
         }
     }
 

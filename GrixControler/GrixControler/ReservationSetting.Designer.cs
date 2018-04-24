@@ -60,6 +60,7 @@
             this.reset_Btn.TabIndex = 13;
             this.reset_Btn.Text = "초기화";
             this.reset_Btn.UseVisualStyleBackColor = true;
+            this.reset_Btn.Click += new System.EventHandler(this.reset_Btn_Click);
             // 
             // comfirm_Btn
             // 
@@ -87,6 +88,7 @@
             this.apply_Btn.TabIndex = 10;
             this.apply_Btn.Text = "적용";
             this.apply_Btn.UseVisualStyleBackColor = true;
+            this.apply_Btn.Click += new System.EventHandler(this.apply_Btn_Click);
             // 
             // groupBox2
             // 
