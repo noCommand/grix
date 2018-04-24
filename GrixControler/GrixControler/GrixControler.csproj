@@ -84,9 +84,6 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomDgv.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="ProgramSetting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +95,12 @@
     </Compile>
     <Compile Include="ReservationSetting.Designer.cs">
       <DependentUpon>ReservationSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RoomView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RoomView.Designer.cs">
+      <DependentUpon>RoomView.cs</DependentUpon>
     </Compile>
     <Compile Include="SerialConnect.cs" />
     <Compile Include="RoomSetting.cs">
@@ -147,6 +150,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RoomView.resx">
+      <DependentUpon>RoomView.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -172,6 +178,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Time-Background.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Main-Window.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Hot.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Lock.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

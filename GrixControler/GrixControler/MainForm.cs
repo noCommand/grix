@@ -29,7 +29,6 @@ namespace GrixControler
             serialConnect = new SerialConnect();
             serialConnect.AutoConnect();
             
-            
             /* 현재 위치에서 상위폴더로 올라감
             System.IO.DirectoryInfo diPa = System.IO.Directory.GetParent(filePath);
             diPa = System.IO.Directory.GetParent(diPa.ToString());
@@ -43,6 +42,7 @@ namespace GrixControler
                 AccessControlType.Allow));
             File.SetAccessControl(di.ToString(), fsSecurity);
             */
+            RoomView roomDataView = new RoomView();
 
             try
             {
@@ -121,6 +121,8 @@ namespace GrixControler
 
             Time.setNow();
             timeLabel.Text = Time.All;
+
+
 
         }
 

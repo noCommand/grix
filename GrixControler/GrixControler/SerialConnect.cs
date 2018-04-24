@@ -73,6 +73,8 @@ namespace GrixControler
             if (sp.IsOpen)
             {
                 MessageBox.Show(sp.PortName + " 포트연결 성공");
+
+                // 지우지말기
                 MessageBox.Show(" 테스트" + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " ");
 
             }
