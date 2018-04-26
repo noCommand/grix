@@ -28,114 +28,109 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.desired_Temp = new System.Windows.Forms.Label();
+            this.current_Temp = new System.Windows.Forms.Label();
+            this.picture_Lock = new System.Windows.Forms.PictureBox();
+            this.picture_Heat = new System.Windows.Forms.PictureBox();
             this.roomName = new System.Windows.Forms.Label();
-            this.roomclickbtn = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.panel1 = new System.Windows.Forms.Panel();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_Lock)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_Heat)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // desired_Temp
             // 
-            this.pictureBox1.Image = global::GrixControler.Properties.Resources.Main_Window;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(70, 93);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.desired_Temp.Font = new System.Drawing.Font("굴림", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.desired_Temp.Location = new System.Drawing.Point(7, 73);
+            this.desired_Temp.Name = "desired_Temp";
+            this.desired_Temp.Size = new System.Drawing.Size(56, 23);
+            this.desired_Temp.TabIndex = 27;
+            this.desired_Temp.Text = "30";
+            this.desired_Temp.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.desired_Temp.Click += new System.EventHandler(this.label3_Click);
             // 
-            // label3
+            // current_Temp
             // 
-            this.label3.Font = new System.Drawing.Font("굴림", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label3.Location = new System.Drawing.Point(7, 73);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(56, 23);
-            this.label3.TabIndex = 21;
-            this.label3.Text = "30";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.current_Temp.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.current_Temp.Location = new System.Drawing.Point(3, 50);
+            this.current_Temp.Name = "current_Temp";
+            this.current_Temp.Size = new System.Drawing.Size(76, 23);
+            this.current_Temp.TabIndex = 26;
+            this.current_Temp.Text = "23";
+            this.current_Temp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.current_Temp.Click += new System.EventHandler(this.label2_Click);
             // 
-            // label2
+            // picture_Lock
             // 
-            this.label2.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label2.Location = new System.Drawing.Point(3, 50);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(70, 23);
-            this.label2.TabIndex = 20;
-            this.label2.Text = "23";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.picture_Lock.Image = global::GrixControler.Properties.Resources.Lock;
+            this.picture_Lock.Location = new System.Drawing.Point(19, 31);
+            this.picture_Lock.Name = "picture_Lock";
+            this.picture_Lock.Size = new System.Drawing.Size(15, 16);
+            this.picture_Lock.TabIndex = 25;
+            this.picture_Lock.TabStop = false;
+            this.picture_Lock.Click += new System.EventHandler(this.pictureBox3_Click);
             // 
-            // pictureBox3
+            // picture_Heat
             // 
-            this.pictureBox3.Image = global::GrixControler.Properties.Resources.Lock;
-            this.pictureBox3.Location = new System.Drawing.Point(19, 31);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(15, 16);
-            this.pictureBox3.TabIndex = 19;
-            this.pictureBox3.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = global::GrixControler.Properties.Resources.Hot;
-            this.pictureBox2.Location = new System.Drawing.Point(7, 31);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(15, 16);
-            this.pictureBox2.TabIndex = 18;
-            this.pictureBox2.TabStop = false;
+            this.picture_Heat.Image = global::GrixControler.Properties.Resources.Hot;
+            this.picture_Heat.Location = new System.Drawing.Point(7, 31);
+            this.picture_Heat.Name = "picture_Heat";
+            this.picture_Heat.Size = new System.Drawing.Size(15, 16);
+            this.picture_Heat.TabIndex = 24;
+            this.picture_Heat.TabStop = false;
+            this.picture_Heat.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // roomName
             // 
-            this.roomName.BackColor = System.Drawing.Color.Transparent;
+            this.roomName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(129)))), ((int)(((byte)(128)))));
+            this.roomName.ForeColor = System.Drawing.Color.White;
             this.roomName.Location = new System.Drawing.Point(0, 0);
             this.roomName.Margin = new System.Windows.Forms.Padding(0);
             this.roomName.Name = "roomName";
-            this.roomName.Size = new System.Drawing.Size(75, 29);
-            this.roomName.TabIndex = 17;
+            this.roomName.Size = new System.Drawing.Size(76, 29);
+            this.roomName.TabIndex = 23;
             this.roomName.Text = "label1";
             this.roomName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.roomName.Click += new System.EventHandler(this.roomName_Click);
             // 
-            // roomclickbtn
+            // panel1
             // 
-            this.roomclickbtn.Location = new System.Drawing.Point(-2, 0);
-            this.roomclickbtn.Margin = new System.Windows.Forms.Padding(0);
-            this.roomclickbtn.Name = "roomclickbtn";
-            this.roomclickbtn.Size = new System.Drawing.Size(77, 102);
-            this.roomclickbtn.TabIndex = 22;
-            this.roomclickbtn.Text = "button1";
-            this.roomclickbtn.UseVisualStyleBackColor = true;
+            this.panel1.Controls.Add(this.roomName);
+            this.panel1.Controls.Add(this.desired_Temp);
+            this.panel1.Controls.Add(this.picture_Heat);
+            this.panel1.Controls.Add(this.current_Temp);
+            this.panel1.Controls.Add(this.picture_Lock);
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.MaximumSize = new System.Drawing.Size(76, 103);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(76, 103);
+            this.panel1.TabIndex = 28;
+            this.panel1.Click += new System.EventHandler(this.panel1_Click);
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // RoomView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.roomclickbtn);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.pictureBox3);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.roomName);
-            this.Controls.Add(this.pictureBox1);
+            this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.panel1);
             this.Name = "RoomView";
-            this.Size = new System.Drawing.Size(75, 99);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.Size = new System.Drawing.Size(76, 103);
+            ((System.ComponentModel.ISupportInitialize)(this.picture_Lock)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_Heat)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Label desired_Temp;
+        private System.Windows.Forms.Label current_Temp;
+        private System.Windows.Forms.PictureBox picture_Lock;
+        private System.Windows.Forms.PictureBox picture_Heat;
         private System.Windows.Forms.Label roomName;
-        private System.Windows.Forms.Button roomclickbtn;
+        private System.Windows.Forms.Panel panel1;
     }
 }

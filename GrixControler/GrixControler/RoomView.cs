@@ -15,12 +15,50 @@ namespace GrixControler
         public RoomView()
         {
             InitializeComponent();
-            roomclickbtn.FlatStyle = FlatStyle.Flat;
-            roomclickbtn.FlatAppearance.BorderColor = BackColor;
-            roomclickbtn.FlatAppearance.MouseOverBackColor = BackColor;
-            roomclickbtn.FlatAppearance.MouseDownBackColor = BackColor;
+            
+        }
+        
+
+        private void roomName_Click(object sender, EventArgs e)
+        {
+            show_RoomSetting();
+        }
+        
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            show_RoomSetting();
         }
 
-      
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            show_RoomSetting();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+            show_RoomSetting();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            show_RoomSetting();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel1_Click(object sender, EventArgs e)
+        {
+            show_RoomSetting();
+        }
+
+        public void show_RoomSetting()
+        {
+            RoomSetting roomSet = new RoomSetting();
+            roomSet.ShowDialog();
+        }
     }
 }

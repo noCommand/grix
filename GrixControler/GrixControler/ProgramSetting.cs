@@ -138,8 +138,8 @@ namespace GrixControler
         private void roomGridView_KeyPress(object sender, KeyPressEventArgs e)
         {
             /*
-            Int32 selectedColumnCount = roomGridView.Columns
-        .GetColumnCount(DataGridViewElementStates.Selected);
+            Int32 selectedColumnCount = roomGridView.Columns.GetColumnCount(DataGridViewElementStates.Selected);
+
             if (selectedColumnCount > 0)
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();

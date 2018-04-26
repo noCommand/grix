@@ -48,7 +48,7 @@ namespace GrixControler
              * 파일을 삭제하고 디버깅해도 똑같음
              * 
              * ???? mainform에서 catch문의 exception이 실행됬는데, try문에 있는 sqliteinit이 실행, 결국 db폴더, 파일이 생성됨 -> ?? 
-             * 
+             * -----------------------------------------------------------
              * SQLiteConnection.CreateFile(dbPath + @"\grixdb.db");   ->> 이부분이 sqliteinit으로 수정될때 아래로 내려가서 문제발생했던 것임
              * + 없어도 아래 코드에서 grixdb를 생성해줌
              * SQLiteConnection dbConn = new SQLiteConnection(@"Data Source=" + dbPath + @"\grixdb.db");

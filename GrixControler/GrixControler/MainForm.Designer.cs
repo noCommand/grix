@@ -43,14 +43,14 @@
             this.timeLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.customButton2 = new GrixControler.CustomButton();
             this.panel2 = new System.Windows.Forms.Panel();
             this.AdminSet = new System.Windows.Forms.Button();
             this.Help = new System.Windows.Forms.Button();
             this.Setting = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.ViewPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.customButton2 = new GrixControler.CustomButton();
             this.panel4.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -193,14 +193,6 @@
             this.panel3.Size = new System.Drawing.Size(454, 27);
             this.panel3.TabIndex = 5;
             // 
-            // customButton2
-            // 
-            this.customButton2.BackColor = System.Drawing.Color.White;
-            this.customButton2.Location = new System.Drawing.Point(3, 2);
-            this.customButton2.Name = "customButton2";
-            this.customButton2.Size = new System.Drawing.Size(61, 22);
-            this.customButton2.TabIndex = 0;
-            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.AdminSet);
@@ -252,7 +244,7 @@
             this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel4, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.pictureBox1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.ViewPanel, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -276,15 +268,23 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // flowLayoutPanel1
+            // ViewPanel
             // 
-            this.flowLayoutPanel1.BackColor = System.Drawing.Color.Thistle;
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(185, 27);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(837, 714);
-            this.flowLayoutPanel1.TabIndex = 7;
+            this.ViewPanel.BackColor = System.Drawing.Color.Thistle;
+            this.ViewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ViewPanel.Location = new System.Drawing.Point(185, 27);
+            this.ViewPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.ViewPanel.Name = "ViewPanel";
+            this.ViewPanel.Size = new System.Drawing.Size(837, 714);
+            this.ViewPanel.TabIndex = 7;
+            // 
+            // customButton2
+            // 
+            this.customButton2.BackColor = System.Drawing.Color.White;
+            this.customButton2.Location = new System.Drawing.Point(3, 2);
+            this.customButton2.Name = "customButton2";
+            this.customButton2.Size = new System.Drawing.Size(61, 22);
+            this.customButton2.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -333,7 +333,7 @@
         private System.Windows.Forms.Button Help;
         private System.Windows.Forms.Button Setting;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel ViewPanel;
         private CustomButton customButton2;
     }
 }
