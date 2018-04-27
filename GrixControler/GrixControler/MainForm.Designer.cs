@@ -43,6 +43,7 @@
             this.timeLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.customButton2 = new GrixControler.CustomButton();
             this.panel2 = new System.Windows.Forms.Panel();
             this.AdminSet = new System.Windows.Forms.Button();
             this.Help = new System.Windows.Forms.Button();
@@ -50,7 +51,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.ViewPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.customButton2 = new GrixControler.CustomButton();
+            this.testButton = new System.Windows.Forms.Button();
             this.panel4.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -186,12 +187,21 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.testButton);
             this.panel3.Controls.Add(this.customButton2);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(454, 27);
             this.panel3.TabIndex = 5;
+            // 
+            // customButton2
+            // 
+            this.customButton2.BackColor = System.Drawing.Color.White;
+            this.customButton2.Location = new System.Drawing.Point(3, 2);
+            this.customButton2.Name = "customButton2";
+            this.customButton2.Size = new System.Drawing.Size(61, 22);
+            this.customButton2.TabIndex = 0;
             // 
             // panel2
             // 
@@ -278,13 +288,15 @@
             this.ViewPanel.Size = new System.Drawing.Size(837, 714);
             this.ViewPanel.TabIndex = 7;
             // 
-            // customButton2
+            // testButton
             // 
-            this.customButton2.BackColor = System.Drawing.Color.White;
-            this.customButton2.Location = new System.Drawing.Point(3, 2);
-            this.customButton2.Name = "customButton2";
-            this.customButton2.Size = new System.Drawing.Size(61, 22);
-            this.customButton2.TabIndex = 0;
+            this.testButton.Location = new System.Drawing.Point(185, 1);
+            this.testButton.Name = "testButton";
+            this.testButton.Size = new System.Drawing.Size(75, 23);
+            this.testButton.TabIndex = 1;
+            this.testButton.Text = "button1";
+            this.testButton.UseVisualStyleBackColor = true;
+            this.testButton.Click += new System.EventHandler(this.testButton_Click);
             // 
             // MainForm
             // 
@@ -335,6 +347,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel ViewPanel;
         private CustomButton customButton2;
+        private System.Windows.Forms.Button testButton;
     }
 }
 

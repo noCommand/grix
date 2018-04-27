@@ -19,7 +19,7 @@ namespace GrixControler
 
         public SerialConnect(String pttx)
         {
-            
+
             sp.PortName = pttx;
             sp.BaudRate = 38400;
 
@@ -42,19 +42,17 @@ namespace GrixControler
 
         public void AutoConnect()
         {
-            byte[] ckport = {0xAA,0x00,0x01,0x00,0xBB,0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0x01, 0x55};
-            
+            byte[] ckport = { 0xAA, 0x00, 0x01, 0x00, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0x01, 0x55 };
 
-            foreach(string s in System.IO.Ports.SerialPort.GetPortNames())
+            foreach (string s in System.IO.Ports.SerialPort.GetPortNames())
             {
-               
                 try
                 {
                     sp.PortName = s;
                     sp.Open();
-                    sp.Write(ckport,0,ckport.Length);
+                    sp.Write(ckport, 0, ckport.Length);
                     System.Threading.Thread.Sleep(100);
-                    
+
                     if (sp.BytesToRead != 0)
                     {
                         if (!sp.ReadByte().Equals(0xAA))
@@ -67,16 +65,19 @@ namespace GrixControler
                         sp.Close();
                     }
 
-                } catch(Exception e) { }
+                }
+                catch (Exception e) { }
             }
 
             if (sp.IsOpen)
             {
                 MessageBox.Show(sp.PortName + " 포트연결 성공");
-
                 // 지우지말기
-                MessageBox.Show(" 테스트" + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " ");
-
+                MessageBox.Show(" 테스트" + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " 
+                    + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " 
+                    + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " "
+                    + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " "
+                    + sp.ReadByte() + " " + sp.ReadByte() + " ");
             }
             else
             {
@@ -88,6 +89,34 @@ namespace GrixControler
         {
             sp.Close();
         }
-    
+        public RoomInfo getSerialPacket()
+        {
+            RoomInfo roominfo = new RoomInfo();
+
+            string test;
+            
+            byte[] ckport = { 0xAA, 0x00, 0x01, 0x00, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0x01, 0x55 };
+
+            sp.Write(ckport, 0, ckport.Length);
+
+            System.Threading.Thread.Sleep(100);
+
+            sp.ReadByte();
+            roominfo.ID = sp.ReadByte() * 100 + sp.ReadByte();
+            sp.ReadByte();
+            sp.ReadByte();
+            roominfo.NowTemp = sp.ReadByte();
+            roominfo.SetTemp = sp.ReadByte();
+
+            test = roominfo.SetTemp.ToString();
+
+            MessageBox.Show(" 테스트" + test
+                + sp.ReadByte() + " " 
+                + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " 
+                + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " 
+                + sp.ReadByte() + " " + sp.ReadByte() + " " );
+
+            return roominfo;
+        }
     }
 }

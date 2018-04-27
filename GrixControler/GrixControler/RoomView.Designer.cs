@@ -64,7 +64,7 @@
             // picture_Lock
             // 
             this.picture_Lock.Image = global::GrixControler.Properties.Resources.Lock;
-            this.picture_Lock.Location = new System.Drawing.Point(19, 31);
+            this.picture_Lock.Location = new System.Drawing.Point(23, 31);
             this.picture_Lock.Name = "picture_Lock";
             this.picture_Lock.Size = new System.Drawing.Size(15, 16);
             this.picture_Lock.TabIndex = 25;
@@ -126,11 +126,11 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label desired_Temp;
-        private System.Windows.Forms.Label current_Temp;
-        private System.Windows.Forms.PictureBox picture_Lock;
-        private System.Windows.Forms.PictureBox picture_Heat;
-        private System.Windows.Forms.Label roomName;
         private System.Windows.Forms.Panel panel1;
+        public System.Windows.Forms.Label current_Temp;
+        public System.Windows.Forms.Label desired_Temp;
+        public System.Windows.Forms.PictureBox picture_Lock;
+        public System.Windows.Forms.PictureBox picture_Heat;
+        public System.Windows.Forms.Label roomName;
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GrixControler
 {
-    class RoomInfo : INotifyPropertyChanged
+    public class RoomInfo : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
