@@ -118,6 +118,8 @@
             this.Controls.Add(this.panel1);
             this.Name = "RoomView";
             this.Size = new System.Drawing.Size(76, 103);
+            this.Load += new System.EventHandler(this.RoomView_Load);
+            this.Click += new System.EventHandler(this.RoomView_Click);
             ((System.ComponentModel.ISupportInitialize)(this.picture_Lock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture_Heat)).EndInit();
             this.panel1.ResumeLayout(false);

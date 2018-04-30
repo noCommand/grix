@@ -14,8 +14,8 @@ namespace GrixControler
 {
     public partial class ProgramSetting : Form
     {
-        SerialPort sp = new SerialPort();
-    
+        MainForm main;
+
         SQLiteConnection dbConn = new SQLiteConnection(@"Data Source=" + Application.StartupPath + @"\GrixDB" + @"\grixdb.db");
 
         SQLiteCommand command;
@@ -28,19 +28,21 @@ namespace GrixControler
 
         int row;
         
-        public ProgramSetting()
+        public ProgramSetting(MainForm main)
         {
             InitializeComponent();
 
             roomGridView.RowHeadersWidth = 20;
 
             string[] portsArray = SerialPort.GetPortNames();
+
             foreach (string portNumber in portsArray)
             {
                 portCombx.Items.Add(portNumber);
             }
             portCombx.Text = portsArray[0];
-            
+
+            this.main = main;
         }
         
 
@@ -56,9 +58,11 @@ namespace GrixControler
 
         private void confirmButton_click(object sender, EventArgs e)
         {
-            SerialConnect sc = new SerialConnect(portCombx.Text); //연결실패시
-
-
+            if (main.serialConnect.CheckPortOpen())
+            {
+                main.serialConnect = new SerialConnect(portCombx.Text);
+            }
+            
             //SQL
             row = roomGridView.RowCount;
             
@@ -198,8 +202,10 @@ namespace GrixControler
 
         private void apply_btn_Click(object sender, EventArgs e)
         {
-            SerialConnect sc = new SerialConnect(portCombx.Text); //연결실패시
-
+            if (main.serialConnect.CheckPortOpen())
+            {
+                main.serialConnect = new SerialConnect(portCombx.Text);
+            }
 
             //SQL
             row = roomGridView.RowCount;

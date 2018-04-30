@@ -10,6 +10,10 @@ namespace GrixControler
 {
     public class RoomInfo : INotifyPropertyChanged
     {
+        /**
+         * INotifyPropertyChanged 필요할까 하고 썼는데, 어차피 
+         * read보내면 받아서 다시 기입하는구조라 필요없을 듯
+         * */
         public event PropertyChangedEventHandler PropertyChanged;
 
         int _Index;

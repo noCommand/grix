@@ -12,8 +12,12 @@ namespace GrixControler
 {
     public partial class RoomView : UserControl
     {
-        public RoomView()
+
+        MainForm main = null;
+
+        public RoomView(MainForm main)
         {
+            this.main = main;
             InitializeComponent();
             
         }
@@ -57,8 +61,18 @@ namespace GrixControler
 
         public void show_RoomSetting()
         {
-            RoomSetting roomSet = new RoomSetting();
+            RoomSetting roomSet = new RoomSetting(main);
             roomSet.ShowDialog();
+        }
+
+        private void RoomView_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void RoomView_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

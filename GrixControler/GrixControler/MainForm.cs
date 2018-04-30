@@ -23,9 +23,11 @@ namespace GrixControler
     {
         SqliteInit sqliteconnect;
 
-        SerialConnect serialConnect;
+        public SerialConnect serialConnect;
 
         SQLiteConnection dbConn = new SQLiteConnection(@"Data Source=" + Application.StartupPath + @"\GrixDB" + @"\grixdb.db");
+
+        private ManualResetEvent _pauseEvent = new ManualResetEvent(true);
 
         SQLiteCommand command;
 
@@ -37,46 +39,39 @@ namespace GrixControler
 
         int check_UI = 1;
 
-        Thread thread_UI;
+        public Thread thread_UI;
 
         RoomView[] roomView;
 
         RoomInfo ri;
 
-        int count;
-
-        Button[] btn;
+        int currentCount, defaultCount, compareCount;
 
         public MainForm()
         {
             InitializeComponent();
 
-          
-
             serialConnect = new SerialConnect();
             serialConnect.AutoConnect();
-            
+
             /* 현재 위치에서 상위폴더로 올라감
             System.IO.DirectoryInfo diPa = System.IO.Directory.GetParent(filePath);
             diPa = System.IO.Directory.GetParent(diPa.ToString());
             diPa = System.IO.Directory.GetParent(diPa.ToString());
             */
 
-
             /*  폴더 권한설정
             FileSecurity fsSecurity = File.GetAccessControl(di.ToString());
             fsSecurity.AddAccessRule(new FileSystemAccessRule("NETWORK SERVICE", FileSystemRights.FullControl,
                 AccessControlType.Allow));
             File.SetAccessControl(di.ToString(), fsSecurity);
-
-
+            
             /**
              * 폴더 접근불가때문에 권한설정문제인가했는데, 그냥 경로설정을 잘못한거였음. 
              * */
-            
 
 
-            RoomView roomDataView = new RoomView();
+            RoomView roomDataView = new RoomView(this);
 
             try
             {
@@ -89,42 +84,58 @@ namespace GrixControler
 
 
             dbConn.Open();
-
-            btn = new Button[1];
-            btn[0] = testButton;
-
             ri = new RoomInfo();
-            ri = serialConnect.getSerialPacket();
-
-            count = tupleCount();
-            setRoomView(count, ri);
+            ri = serialConnect.GetSerialPacket(serialConnect.readCmd);
+            defaultCount = tupleCount();
+            setRoomView(defaultCount, ri);
             // -> 화면이 뜨기전에 while문이 계속 돌으므로 절대 뜨지않는다
-            
 
             thread_UI = new Thread(testThread);
+            thread_UI.IsBackground = true;
             thread_UI.Start();
-            
+
+
 
         }
-        
+
+        public void ThreadPause()
+        {
+            _pauseEvent.Reset();
+        }
+
+        public void ThreadResume()
+        {
+            _pauseEvent.Set();
+        }
+
         private void testThread()
         {
-            
-                
-            while (true)
+
+            while (_pauseEvent.WaitOne())
             {
+                compareCount = tupleCount();
+                if (defaultCount == compareCount)
+                {
+                    currentCount = defaultCount;
+                }
+                else
+                {
+                    currentCount = compareCount;
+                    removeRoomView(defaultCount, currentCount, ri);
+                }
+
                 try
                 {
-                    ri = serialConnect.getSerialPacket();
-                    updateRoomView(count, ri);
-                    /*
+                    ri = serialConnect.GetSerialPacket(serialConnect.readCmd);
+                    updateRoomView(currentCount, ri);
+                    /* 비동기시 사용한다고 하는데,, 딱히
                     BeginInvoke((MethodInvoker)(() => {
                         updateRoomView(count, ri);
                         
                     }));
                     */
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
 
                 }
@@ -142,11 +153,12 @@ namespace GrixControler
             for (int i = 0; i < count; i++)
             {
 
-                roomView[i] = new RoomView();
+                roomView[i] = new RoomView(this);
                 roomView[i].roomName.Text = roomInfo.ID.ToString();
                 roomView[i].current_Temp.Text = roomInfo.NowTemp.ToString();
                 roomView[i].desired_Temp.Text = roomInfo.SetTemp.ToString();
-
+                roomView[i].picture_Lock.Visible = roomInfo.LockOn;
+                roomView[i].picture_Heat.Visible = roomInfo.HeaterOn;
 
                 ViewPanel.Controls.Add(roomView[i]);
             }
@@ -154,74 +166,55 @@ namespace GrixControler
             /** 18.4.26 
              * UI를 지웠다가 다시만들 생각을 하지 말고
              * 만들어진 UI에서 텍스트만 변경시키자
-             * 
+             *  -> 적용
              * */
 
+        }
 
-            /*
-            RoomView[] roomView = new RoomView[count];
-            RoomView[] resetRoomView = new RoomView[count];
+        public void removeRoomView(int defaultCount, int newCount, RoomInfo roomInfo)
+        {
 
-            while (true)
+            for (int i = 0; i < defaultCount; i++)
             {
-                if (check_UI == 1)
+                ViewPanel.Controls.Remove(roomView[i]);
+            }
+
+            for (int i = 0; i < newCount; i++)
+            {
+                if (defaultCount < newCount)
                 {
-
-                    for (int i = 0; i < 5; i++)
-                    {
-
-                        roomView[i] = new RoomView();
-                        roomView[i].roomName.Text = roomInfo.ID.ToString();
-                        roomView[i].current_Temp.Text = roomInfo.NowTemp.ToString();
-                        roomView[i].desired_Temp.Text = roomInfo.SetTemp.ToString();
-
-                        ViewPanel.Controls.Add(roomView[i]);
-                    }
-                    check_UI *= -1;
+                    roomView[i] = new RoomView(this);
                 }
-                else
-                {
 
-                    for (int i = 0; i < 5; i++)
-                    {
-                        ViewPanel.Controls.Remove(roomView[i]);
+                roomView[i].roomName.Text = roomInfo.ID.ToString();
+                roomView[i].current_Temp.Text = roomInfo.NowTemp.ToString();
+                roomView[i].desired_Temp.Text = roomInfo.SetTemp.ToString();
+                roomView[i].picture_Lock.Visible = roomInfo.LockOn;
+                roomView[i].picture_Heat.Visible = roomInfo.HeaterOn;
 
-                        resetRoomView[i] = new RoomView();
-                        resetRoomView[i].roomName.Text = roomInfo.ID.ToString();
-                        resetRoomView[i].current_Temp.Text = roomInfo.NowTemp.ToString();
-                        resetRoomView[i].desired_Temp.Text = roomInfo.SetTemp.ToString();
-
-                        ViewPanel.Controls.Add(resetRoomView[i]);
-                    }
-                    check_UI *= -1;
-                }
-                Thread.Sleep(3000);
-                 //터지는 코드
-                */
-
-
+                ViewPanel.Controls.Add(roomView[i]);
+            }
         }
 
         public void updateRoomView(int count, RoomInfo roomInfo)
         {
-                for (int i = 0; i < count; i++)
-                {
+            for (int i = 0; i < count; i++)
+            {
                 //roomView[i] = new RoomView(); 바보 다시 할당하니까 안되지
-                //roomView[i].roomName.Text = roomInfo.ID.ToString();
-                roomView[i].roomName.Text = "수정";
-
+                roomView[i].roomName.Text = roomInfo.ID.ToString();
                 roomView[i].current_Temp.Text = roomInfo.NowTemp.ToString();
-                    roomView[i].desired_Temp.Text = roomInfo.SetTemp.ToString();
-
-                    roomView[i].desired_Temp.Update();
-                }
+                roomView[i].desired_Temp.Text = roomInfo.SetTemp.ToString();
+                roomView[i].picture_Lock.Visible = roomInfo.LockOn;
+                roomView[i].picture_Heat.Visible = roomInfo.HeaterOn;
+            }
+            //MessageBox.Show(roomInfo.LockOn.ToString());
         }
-            
-            /** roomview 단일 객체로 올리면 화면에 올라가는데
-             *  배열을사용해 올리면 올라가지 않음 -> 
-             *  -----------------------------------------------
-             *  당연히 안되지 -> 인스턴스를 생성하고 추가해줘야지 저건 껍데기만있는거임!
-             * */
+
+        /** roomview 단일 객체로 올리면 화면에 올라가는데
+         *  배열을사용해 올리면 올라가지 않음 -> 
+         *  -----------------------------------------------
+         *  당연히 안되지 -> 인스턴스를 생성하고 추가해줘야지 저건 껍데기만있는거임!
+         * */
 
         class Time
         {
@@ -243,10 +236,10 @@ namespace GrixControler
                 int Sec = now.Second;
                 All = Year + "-" + Month + "-" + Day + "    " + Hour + ":" + Min + ":" + Sec;
             }
-            
+
         }
-  
-     
+
+
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
@@ -255,7 +248,7 @@ namespace GrixControler
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ProgramSetting pgset = new ProgramSetting();
+            ProgramSetting pgset = new ProgramSetting(this);
             pgset.ShowDialog();
         }
 
@@ -276,7 +269,7 @@ namespace GrixControler
 
         private void AdminSet_Click(object sender, EventArgs e)
         {
-           
+
             ReservationSetting reSet = new ReservationSetting();
             reSet.ShowDialog();
         }
@@ -286,22 +279,22 @@ namespace GrixControler
 
             /** 18.4.26
              *  main에서 db를 열어놓고 다시 닫지 않아도, 다른 폼에서 db를 사용하려면 db를 다시 열어야한다.
-             *  이유 - ? 포커스가 바뀔때 db가 닫   혀서?
+             *  이유 - ? 포커스가 바뀔때 db가 닫혀서?
              * */
 
-             /*
-            timer1.Start();
-            timer1.Interval = 1000;
+            /*
+           timer1.Start();
+           timer1.Interval = 1000;
 
-            Time.setNow();
-            timeLabel.Text = Time.All;
-            */
-            
+           Time.setNow();
+           timeLabel.Text = Time.All;
+           */
+
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            serialConnect.portClose();
+            serialConnect.PortClose();
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -350,38 +343,38 @@ namespace GrixControler
         {
 
         }
-        
-     
+
+
 
         public int tupleCount()
         {
             int count;
             try
-           {
-               sql = "select count(*) from idTable";
+            {
+                sql = "select count(*) from idTable";
 
-               command = new SQLiteCommand(sql, dbConn);
+                command = new SQLiteCommand(sql, dbConn);
 
-               object scalarValue = command.ExecuteScalar();
+                object scalarValue = command.ExecuteScalar();
                 count = Convert.ToInt32(scalarValue);
                 /**
                  * object를 강제형변환으로 int로 변환 불가능한 이유?
                  **/
-
+              
+        
                 return count;
-           }
-           catch (Exception er)
-           {
-               MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
                 return 0;
-           }
+            }
         }
 
         private void testButton_Click(object sender, EventArgs e)
         {
-            //serialConnect.getSerialPacket();
-            //updateRoomView(count, ri);
-            btn[0].Text = "수정완료";
+            serialConnect.setSerialPacket(serialConnect.readCmd);
+            updateRoomView(defaultCount, ri);
         }
     }
 }

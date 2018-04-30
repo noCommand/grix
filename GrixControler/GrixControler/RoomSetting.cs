@@ -12,89 +12,58 @@ namespace GrixControler
 {
     public partial class RoomSetting : Form
     {
-        public RoomSetting()
+        Byte[] setCommand;
+
+        MainForm main = null;
+
+        public RoomSetting(MainForm main)
         {
+            this.main = main;
             InitializeComponent();
+            main.ThreadPause();
+            powerOnBtn.Checked = true;
+            lockOffBtn.Checked = true;
+
+            RoomInfo settingValue = new RoomInfo();
+            settingValue = main.serialConnect.GetSerialPacket(main.serialConnect.readCmd);
+            setTempControl.Value = settingValue.SetTemp;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
+        private void ConfirmBtn_Click(object sender, EventArgs e)
         {
 
+            if (powerOnBtn.Checked)
+            {
+                main.serialConnect.setSerialPacket(main.serialConnect.powerOnCmd);
+            }
+            else if (powerOffBtn.Checked)
+            {
+                main.serialConnect.setSerialPacket(main.serialConnect.powerOffCmd);
+            }
+
+            if (LockOnBtn.Checked)
+            {
+                main.serialConnect.setSerialPacket(main.serialConnect.lockOnCmd);
+            }
+            else if (lockOffBtn.Checked)
+            {
+                main.serialConnect.setSerialPacket(main.serialConnect.lockOffCmd);
+            }
+
+            main.serialConnect.setSerialPacket(main.serialConnect.setTempCmd((Byte)setTempControl.Value));
+            //setTempControl.Value
+
+            
+            this.Close();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void RoomSetting_FormClosed(object sender, FormClosedEventArgs e)
         {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox3_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton5_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton8_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton9_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton11_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton7_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton6_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton10_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-
+            main.ThreadResume();
         }
     }
 }
