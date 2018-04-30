@@ -45,6 +45,8 @@ namespace GrixControler
 
         RoomInfo ri;
 
+        String[] roomID;
+
         int currentCount, defaultCount, compareCount;
 
         public MainForm()
@@ -84,10 +86,45 @@ namespace GrixControler
 
 
             dbConn.Open();
+            ////////////////////////////////////////////
             ri = new RoomInfo();
-            ri = serialConnect.GetSerialPacket(serialConnect.readCmd);
+
             defaultCount = tupleCount();
-            setRoomView(defaultCount, ri);
+            
+            roomID = new String[defaultCount];
+            
+            for(int nowCount = 0; nowCount < defaultCount; nowCount++)
+            {
+                String id_H, id_L;
+                if(roomID[i].Length == 4)
+                {
+                    id_H = roomID[i].Substring(0, 2);
+                    id_L = roomID[i].Substring(2, 4);
+                    ri = serialConnect.GetSerialPacket(serialConnect.readCmd,(byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+
+                    setRoomView(defaultCount, ri);
+                } else if(roomID[i].Length == 3)
+                {
+                    id_H = roomID[i].Substring(0, 1);
+                    id_L = roomID[i].Substring(1, 3);
+                    ri = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+
+                    setRoomView(defaultCount, ri);
+                }
+                else
+                {
+                    id_H = "0";
+                    id_L = roomID[i];
+                    ri = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                    setRoomView(defaultCount, ri);
+                }
+                
+            }
+
+
+
+            
+            
             // -> 화면이 뜨기전에 while문이 계속 돌으므로 절대 뜨지않는다
 
             thread_UI = new Thread(testThread);
@@ -97,7 +134,7 @@ namespace GrixControler
 
 
         }
-
+        
         public void ThreadPause()
         {
             _pauseEvent.Reset();
@@ -149,7 +186,7 @@ namespace GrixControler
         public void setRoomView(int count, RoomInfo roomInfo)
         {
             roomView = new RoomView[count];
-
+            
             for (int i = 0; i < count; i++)
             {
 
@@ -360,8 +397,25 @@ namespace GrixControler
                 /**
                  * object를 강제형변환으로 int로 변환 불가능한 이유?
                  **/
-              
-        
+                ////////////////////////////////////////////////////
+                
+
+                sql = "select * from idTable";
+
+                command = new SQLiteCommand(sql, dbConn);
+
+                rdr = command.ExecuteReader();
+
+                int i = 0;
+
+                while (rdr.Read())
+                {
+                    roomID[i] = Convert.ToInt32(rdr["roomID"]).ToString();
+                    i++;
+                }
+                rdr.Close();
+
+                ////////////////////////////////////////////////
                 return count;
             }
             catch (Exception er)
