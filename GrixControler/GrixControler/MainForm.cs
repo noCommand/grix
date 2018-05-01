@@ -1,20 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Security.AccessControl;
-using System.IO;
-using System.Security.Permissions;
-using System.Security;
-using System.Security.Principal;
-using System.Diagnostics;
 using System.Data.SQLite;
 using System.Threading;
+using System.Windows.Forms;
 
 
 namespace GrixControler
@@ -90,23 +77,27 @@ namespace GrixControler
             ri = new RoomInfo();
 
             defaultCount = tupleCount();
-            
-            roomID = new String[defaultCount];
-            
+
+            setRoomIDString(defaultCount);
+
+            setRoomView(defaultCount, ri);
+
+            //roomID = new String[defaultCount];
+            /*
             for(int nowCount = 0; nowCount < defaultCount; nowCount++)
             {
                 String id_H, id_L;
-                if(roomID[i].Length == 4)
+                if(roomID[nowCount].Length == 4)
                 {
-                    id_H = roomID[i].Substring(0, 2);
-                    id_L = roomID[i].Substring(2, 4);
+                    id_H = roomID[nowCount].Substring(0, 2);
+                    id_L = roomID[nowCount].Substring(2, 4);
                     ri = serialConnect.GetSerialPacket(serialConnect.readCmd,(byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
 
                     setRoomView(defaultCount, ri);
-                } else if(roomID[i].Length == 3)
+                } else if(roomID[nowCount].Length == 3)
                 {
-                    id_H = roomID[i].Substring(0, 1);
-                    id_L = roomID[i].Substring(1, 3);
+                    id_H = roomID[nowCount].Substring(0, 1);
+                    id_L = roomID[nowCount].Substring(1, 3);
                     ri = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
 
                     setRoomView(defaultCount, ri);
@@ -114,23 +105,23 @@ namespace GrixControler
                 else
                 {
                     id_H = "0";
-                    id_L = roomID[i];
+                    id_L = roomID[nowCount];
                     ri = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
                     setRoomView(defaultCount, ri);
                 }
                 
             }
+            */
 
 
 
-            
-            
+
             // -> 화면이 뜨기전에 while문이 계속 돌으므로 절대 뜨지않는다
-
+            
             thread_UI = new Thread(testThread);
             thread_UI.IsBackground = true;
             thread_UI.Start();
-
+            
 
 
         }
@@ -147,10 +138,13 @@ namespace GrixControler
 
         private void testThread()
         {
+            String id_H, id_L;
 
             while (_pauseEvent.WaitOne())
             {
+
                 compareCount = tupleCount();
+
                 if (defaultCount == compareCount)
                 {
                     currentCount = defaultCount;
@@ -161,22 +155,48 @@ namespace GrixControler
                     removeRoomView(defaultCount, currentCount, ri);
                 }
 
-                try
-                {
-                    ri = serialConnect.GetSerialPacket(serialConnect.readCmd);
-                    updateRoomView(currentCount, ri);
-                    /* 비동기시 사용한다고 하는데,, 딱히
-                    BeginInvoke((MethodInvoker)(() => {
-                        updateRoomView(count, ri);
-                        
-                    }));
-                    */
-                }
-                catch (Exception e)
-                {
+                //MessageBox.Show("테스트다~~" + currentCount);
 
+                for (int nowCount = 0; nowCount < currentCount; nowCount++)
+                {
+                    //MessageBox.Show("nowcount~~" + nowCount);
+                    if (roomID[nowCount].Length == 4)
+                    {
+                        id_H = roomID[nowCount].Substring(0, 2);
+                        id_L = roomID[nowCount].Substring(2, 4);
+                    }
+                    else if (roomID[nowCount].Length == 3)
+                    {
+                        id_H = roomID[nowCount].Substring(0, 1);
+                        id_L = roomID[nowCount].Substring(1, 3);
+                    }
+                    else
+                    {
+                        id_H = "0";
+                        id_L = roomID[nowCount];
+                    }
+
+                    //MessageBox.Show("테스트다~~"+roomID[nowCount]+ id_H + id_L);
+                    
+                    ri = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                    try
+                    {
+                        //ri = serialConnect.GetSerialPacket(serialConnect.readCmd);
+                        updateRoomView(currentCount, ri, roomID[nowCount]);
+                        /* 비동기시 사용한다고 하는데,, 딱히
+                        BeginInvoke((MethodInvoker)(() => {
+                            updateRoomView(count, ri);
+
+                        }));
+                        */
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.ToString());
+                    }
                 }
-                Thread.Sleep(3000);
+                Thread.Sleep(1000);
+
             }
 
             //while은 그냥 돌아가는데 beginInvoke를 사용하면 터져버림 + thread.sleep을 써도 안터짐
@@ -191,11 +211,11 @@ namespace GrixControler
             {
 
                 roomView[i] = new RoomView(this);
-                roomView[i].roomName.Text = roomInfo.ID.ToString();
-                roomView[i].current_Temp.Text = roomInfo.NowTemp.ToString();
-                roomView[i].desired_Temp.Text = roomInfo.SetTemp.ToString();
-                roomView[i].picture_Lock.Visible = roomInfo.LockOn;
-                roomView[i].picture_Heat.Visible = roomInfo.HeaterOn;
+                roomView[i].roomName.Text = roomID[i];
+                //roomView[i].current_Temp.Text = roomInfo.NowTemp.ToString();
+                //roomView[i].desired_Temp.Text = roomInfo.SetTemp.ToString();
+                //roomView[i].picture_Lock.Visible = roomInfo.LockOn;
+                //roomView[i].picture_Heat.Visible = roomInfo.HeaterOn;
 
                 ViewPanel.Controls.Add(roomView[i]);
             }
@@ -208,42 +228,89 @@ namespace GrixControler
 
         }
 
+        /** 18.5.1 ************************************************************************
+         * Invoke((MethodInvoker)delegate ()
+         * 크로스스레드 작업 에러 - 컨트롤이 자신이 만들어진 스레드가 아닌 스레드에서 엑세스 되었습니다.
+         *  UI Control들은 폼 구동시 실행되는 하나의 쓰레드에서 구동된다.
+         *  따라서 사용자가 실행시킨 쓰레드는 별도로 실행 되기 때문에 이 
+         *  메인 쓰레드에 적절한 마샬링 없이 다른쓰레드에서 직접 접근하면
+         *  다른 쓰레드를 침범하는 것이다. (Cross Thread Problem) 이런 경우에는 
+         *  프로그램이 개발자가 설계한대로 잘 동작하지 않을 수 있다.(Race Condition,DeadLock)  
+         *  따라서, 안전하게 동작하게 하기위하여 .Net 환경에서는 Invoke를 제공하고 있다.
+         * */
+
+
         public void removeRoomView(int defaultCount, int newCount, RoomInfo roomInfo)
         {
 
+            this.defaultCount = newCount;
+
             for (int i = 0; i < defaultCount; i++)
             {
-                ViewPanel.Controls.Remove(roomView[i]);
+                roomView[i].Invoke((MethodInvoker)delegate ()
+               {
+                   ViewPanel.Controls.Remove(roomView[i]);
+               });
+                
+            }
+
+            setRoomIDString(newCount);
+
+            if (defaultCount < newCount)
+            {
+                Array.Resize(ref roomView, newCount);
+                for(int k = defaultCount; k < newCount; k++)
+                {
+                    roomView[k] = new RoomView(this);
+                }
             }
 
             for (int i = 0; i < newCount; i++)
             {
-                if (defaultCount < newCount)
+                
+                roomView[i].roomName.Text = roomID[i];
+                ViewPanel.Invoke((MethodInvoker)delegate ()
                 {
-                    roomView[i] = new RoomView(this);
-                }
+                    ViewPanel.Controls.Add(roomView[i]);
+                });
 
-                roomView[i].roomName.Text = roomInfo.ID.ToString();
-                roomView[i].current_Temp.Text = roomInfo.NowTemp.ToString();
-                roomView[i].desired_Temp.Text = roomInfo.SetTemp.ToString();
-                roomView[i].picture_Lock.Visible = roomInfo.LockOn;
-                roomView[i].picture_Heat.Visible = roomInfo.HeaterOn;
-
-                ViewPanel.Controls.Add(roomView[i]);
             }
         }
-
-        public void updateRoomView(int count, RoomInfo roomInfo)
+        /**
+         *  18.05.01 설정에서 방 줄이면 화면 이상, 늘리면 터짐 
+         *  인덱스문제 해결
+         * 
+         * */
+        public void updateRoomView(int count, RoomInfo roomInfo, String roomID)
         {
-            for (int i = 0; i < count; i++)
+            //MessageBox.Show("roomID " + roomID + roomID.GetType());
+            for (int i = 0; i <count; i++)
             {
-                //roomView[i] = new RoomView(); 바보 다시 할당하니까 안되지
-                roomView[i].roomName.Text = roomInfo.ID.ToString();
-                roomView[i].current_Temp.Text = roomInfo.NowTemp.ToString();
-                roomView[i].desired_Temp.Text = roomInfo.SetTemp.ToString();
-                roomView[i].picture_Lock.Visible = roomInfo.LockOn;
-                roomView[i].picture_Heat.Visible = roomInfo.HeaterOn;
+                //MessageBox.Show("roomView " + roomView[i].roomName.Text + roomView[i].Text.GetType());
+                if (roomView[i].roomName.Text == roomID)
+                {
+                    roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
+                   {
+                       roomView[i].current_Temp.Text = roomInfo.NowTemp.ToString();
+                   });
+                    roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
+                    {
+                        roomView[i].desired_Temp.Text = roomInfo.SetTemp.ToString();
+                    });
+                    roomView[i].picture_Lock.Invoke((MethodInvoker)delegate ()
+                    {
+                        roomView[i].picture_Lock.Visible = roomInfo.LockOn;
+                    });
+                    roomView[i].picture_Heat.Invoke((MethodInvoker)delegate ()
+                    {
+                        roomView[i].picture_Heat.Visible = roomInfo.HeaterOn;
+                    });
+
+                }
             }
+            //roomView[i] = new RoomView(); 바보 다시 할당하니까 안되지
+            //roomView[i].roomName.Text = roomInfo.ID.ToString();
+
             //MessageBox.Show(roomInfo.LockOn.ToString());
         }
 
@@ -398,22 +465,7 @@ namespace GrixControler
                  * object를 강제형변환으로 int로 변환 불가능한 이유?
                  **/
                 ////////////////////////////////////////////////////
-                
-
-                sql = "select * from idTable";
-
-                command = new SQLiteCommand(sql, dbConn);
-
-                rdr = command.ExecuteReader();
-
-                int i = 0;
-
-                while (rdr.Read())
-                {
-                    roomID[i] = Convert.ToInt32(rdr["roomID"]).ToString();
-                    i++;
-                }
-                rdr.Close();
+               
 
                 ////////////////////////////////////////////////
                 return count;
@@ -425,10 +477,37 @@ namespace GrixControler
             }
         }
 
+        public void setRoomIDString(int count)
+        {
+            roomID = new string[count];
+
+            sql = "select * from idTable";
+
+            command = new SQLiteCommand(sql, dbConn);
+
+            rdr = command.ExecuteReader();
+
+            int i = 0;
+            object remRoomID;
+
+            while (rdr.Read())
+            {
+                //remRoomID= rdr["roomID"];
+                //MessageBox.Show(remRoomID.ToString());
+                //roomID[i] =remRoomID.ToString();
+                roomID[i] = Convert.ToInt32(rdr["roomID"]).ToString(); //한번에 쓰면 개체참조의 인스턴스로 설정되지 않았습니다.
+
+                // ------------> Convert쓰는이유? 그냥 .tostring도 되긴함
+
+                i++;
+            }
+            rdr.Close();
+        }
+
         private void testButton_Click(object sender, EventArgs e)
         {
-            serialConnect.setSerialPacket(serialConnect.readCmd);
-            updateRoomView(defaultCount, ri);
+            //serialConnect.setSerialPacket(serialConnect.readCmd);
+            //updateRoomView(defaultCount, ri);
         }
     }
 }

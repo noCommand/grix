@@ -46,7 +46,7 @@
             this.desired_Temp.Name = "desired_Temp";
             this.desired_Temp.Size = new System.Drawing.Size(56, 23);
             this.desired_Temp.TabIndex = 27;
-            this.desired_Temp.Text = "30";
+            this.desired_Temp.Text = "0";
             this.desired_Temp.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.desired_Temp.Click += new System.EventHandler(this.label3_Click);
             // 
@@ -57,7 +57,7 @@
             this.current_Temp.Name = "current_Temp";
             this.current_Temp.Size = new System.Drawing.Size(76, 23);
             this.current_Temp.TabIndex = 26;
-            this.current_Temp.Text = "23";
+            this.current_Temp.Text = "0";
             this.current_Temp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.current_Temp.Click += new System.EventHandler(this.label2_Click);
             // 
@@ -69,6 +69,7 @@
             this.picture_Lock.Size = new System.Drawing.Size(15, 16);
             this.picture_Lock.TabIndex = 25;
             this.picture_Lock.TabStop = false;
+            this.picture_Lock.Visible = false;
             this.picture_Lock.Click += new System.EventHandler(this.pictureBox3_Click);
             // 
             // picture_Heat
@@ -79,6 +80,7 @@
             this.picture_Heat.Size = new System.Drawing.Size(15, 16);
             this.picture_Heat.TabIndex = 24;
             this.picture_Heat.TabStop = false;
+            this.picture_Heat.Visible = false;
             this.picture_Heat.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // roomName
@@ -90,7 +92,7 @@
             this.roomName.Name = "roomName";
             this.roomName.Size = new System.Drawing.Size(76, 29);
             this.roomName.TabIndex = 23;
-            this.roomName.Text = "label1";
+            this.roomName.Text = "0";
             this.roomName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.roomName.Click += new System.EventHandler(this.roomName_Click);
             // 

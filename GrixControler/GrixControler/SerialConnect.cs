@@ -11,6 +11,8 @@ namespace GrixControler
 
     public class SerialConnect
     {
+        public byte[] findPort = { 0xAA, 0x00, 0x01, 0x00, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0x01, 0x55 };
+
         public byte[] readCmd = { 0xAA, 0xBB, 0xBB, 0x00, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0x55 };
         public byte[] powerOffCmd = { 0xAA, 0xBB, 0xBB, 0x10, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0x55 };
         public byte[] powerOnCmd = { 0xAA, 0xBB, 0xBB, 0x11, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0x55 };
@@ -21,7 +23,7 @@ namespace GrixControler
 
         public byte[] Cmd = { 0xAA, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0x55 };
 
-    SerialPort sp = new SerialPort();
+        SerialPort sp = new SerialPort();
 
         public SerialConnect()
         {
@@ -59,7 +61,7 @@ namespace GrixControler
             {
                 return true;
             }
-        
+
         }
         /*
         public void SendPacket(SerialPort sp, byte[] packet)
@@ -69,14 +71,14 @@ namespace GrixControler
         */
         public void AutoConnect()
         {
-            
+
             foreach (string s in System.IO.Ports.SerialPort.GetPortNames())
             {
                 try
                 {
                     sp.PortName = s;
                     sp.Open();
-                    sp.Write(readCmd, 0, readCmd.Length);
+                    sp.Write(findPort, 0, findPort.Length);
                     System.Threading.Thread.Sleep(100);
 
                     if (sp.BytesToRead != 0)
@@ -122,7 +124,7 @@ namespace GrixControler
 
             writeCmd[6] = setTemp;
 
-            for(int i = 1; i < 16; i++)
+            for (int i = 1; i < 16; i++)
             {
                 checksum ^= writeCmd[i];
             }
@@ -133,6 +135,9 @@ namespace GrixControler
             // 수정해야함 -> 
         }
 
+
+
+
         public RoomInfo GetSerialPacket(byte[] serialRead, byte id_H, byte id_L)
         {
             int originTemp;
@@ -140,7 +145,7 @@ namespace GrixControler
             int islock;
 
             int a, b, c, d, e, f, g, h;
-            
+
             RoomInfo roominfo = new RoomInfo();
 
             string test;
@@ -151,42 +156,54 @@ namespace GrixControler
             serialRead[16] = FindCheckSum(serialRead);
 
             sp.Write(serialRead, 0, serialRead.Length);
-
             System.Threading.Thread.Sleep(100);
 
-            a = sp.ReadByte();
-            b = sp.ReadByte();
-            c = sp.ReadByte();
-            roominfo.ID = b * 100 + c;
-            d = sp.ReadByte();
-            islock = sp.ReadByte();
-            if (islock == 3)
-            {
-                roominfo.LockOn = false;
+            /**
+             * 송신 패킷을 보낼 때 수신하는 데이터가 없으면 sp.ReadByte에서 입력값을 받을때까지 대기하는 듯 하다.
+             * 
+             * */
+            //MessageBox.Show(sp.BytesToRead.ToString());
 
-            } else if(islock == 7)
+            if (sp.BytesToRead == 18)
             {
-                roominfo.LockOn = true;
+                a = sp.ReadByte();
+                b = sp.ReadByte();
+                c = sp.ReadByte();
+                roominfo.ID = b * 100 + c;
+                d = sp.ReadByte();
+                islock = sp.ReadByte();
+                if (islock == 3)
+                {
+                    roominfo.LockOn = false;
+
+                }
+                else if (islock == 7)
+                {
+                    roominfo.LockOn = true;
+                }
+
+                originTemp = sp.ReadByte();
+                compareTemp = sp.ReadByte();
+
+                roominfo.NowTemp = originTemp;
+                roominfo.SetTemp = compareTemp;
+
+                if (compareTemp > originTemp)
+                {
+                    roominfo.HeaterOn = true;
+                }
+                else
+                {
+                    roominfo.HeaterOn = false;
+                }
+
+                for (int i = 0; i < 11; i++)
+                {
+                    sp.ReadByte();
+                }
+                sp.DiscardInBuffer();
             }
 
-            originTemp = sp.ReadByte();
-            compareTemp = sp.ReadByte();
-
-            roominfo.NowTemp = originTemp;
-            roominfo.SetTemp = compareTemp;
-
-            if(compareTemp>originTemp)
-            {
-                roominfo.HeaterOn = true;
-            } else
-            {
-                roominfo.HeaterOn = false;
-            }
-            
-            for(int i = 0; i < 11; i++)
-            {
-                sp.ReadByte();
-            }
             /*
             MessageBox.Show(" 테스트" + 
                 a + " " + b + " " + c + " " + d + " " + islock + " " + originTemp + " " + compareTemp + " "
@@ -196,11 +213,13 @@ namespace GrixControler
                 + sp.ReadByte() + " " + sp.ReadByte() + " " );
                 */
 
-            sp.DiscardInBuffer();
             return roominfo;
         }
 
-        public void setSerialPacket(byte[] serialCommand ,byte id_H, byte id_L)
+
+
+
+        public void setSerialPacket(byte[] serialCommand, byte id_H, byte id_L)
         {
             serialCommand[1] = id_H;
             serialCommand[2] = id_L;

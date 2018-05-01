@@ -25,7 +25,7 @@ namespace GrixControler
             lockOffBtn.Checked = true;
 
             RoomInfo settingValue = new RoomInfo();
-            settingValue = main.serialConnect.GetSerialPacket(main.serialConnect.readCmd);
+            //settingValue = main.serialConnect.GetSerialPacket(main.serialConnect.readCmd);
             setTempControl.Value = settingValue.SetTemp;
         }
 
@@ -38,23 +38,23 @@ namespace GrixControler
 
             if (powerOnBtn.Checked)
             {
-                main.serialConnect.setSerialPacket(main.serialConnect.powerOnCmd);
+                //main.serialConnect.setSerialPacket(main.serialConnect.powerOnCmd);
             }
             else if (powerOffBtn.Checked)
             {
-                main.serialConnect.setSerialPacket(main.serialConnect.powerOffCmd);
+                //main.serialConnect.setSerialPacket(main.serialConnect.powerOffCmd);
             }
 
             if (LockOnBtn.Checked)
             {
-                main.serialConnect.setSerialPacket(main.serialConnect.lockOnCmd);
+               // main.serialConnect.setSerialPacket(main.serialConnect.lockOnCmd);
             }
             else if (lockOffBtn.Checked)
             {
-                main.serialConnect.setSerialPacket(main.serialConnect.lockOffCmd);
+               // main.serialConnect.setSerialPacket(main.serialConnect.lockOffCmd);
             }
 
-            main.serialConnect.setSerialPacket(main.serialConnect.setTempCmd((Byte)setTempControl.Value));
+            //main.serialConnect.setSerialPacket(main.serialConnect.setTempCmd((Byte)setTempControl.Value));
             //setTempControl.Value
 
             
