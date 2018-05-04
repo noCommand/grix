@@ -38,6 +38,8 @@ namespace GrixControler
 
         int _TempStep;
 
+        int _CheckSum;
+
         public RoomInfo()
         {
 
@@ -52,6 +54,8 @@ namespace GrixControler
                 _notifyPropertyChanged();
             }
         }
+
+     
 
         public string Name
         {
@@ -149,6 +153,16 @@ namespace GrixControler
             set
             {
                 _TempStep = value;
+                _notifyPropertyChanged();
+            }
+        }
+
+        public int CheckSum
+        {
+            get { return _CheckSum; }
+            set
+            {
+                _CheckSum = value;
                 _notifyPropertyChanged();
             }
         }

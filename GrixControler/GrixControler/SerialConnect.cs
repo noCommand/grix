@@ -106,11 +106,12 @@ namespace GrixControler
                     + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " "
                     + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " "
                     + sp.ReadByte() + " " + sp.ReadByte() + " ");
+
             }
             else
             {
                 MessageBox.Show(sp.PortName + " 포트연결실패");
-            }
+            }            
         }
 
         public void PortClose()
@@ -140,6 +141,9 @@ namespace GrixControler
 
         public RoomInfo GetSerialPacket(byte[] serialRead, byte id_H, byte id_L)
         {
+            
+
+
             int originTemp;
             int compareTemp;
             int islock;
@@ -156,16 +160,40 @@ namespace GrixControler
             serialRead[16] = FindCheckSum(serialRead);
 
             sp.Write(serialRead, 0, serialRead.Length);
-            System.Threading.Thread.Sleep(100);
+
 
             /**
              * 송신 패킷을 보낼 때 수신하는 데이터가 없으면 sp.ReadByte에서 입력값을 받을때까지 대기하는 듯 하다.
              * 
              * */
-            //MessageBox.Show(sp.BytesToRead.ToString());
+
+            /*
+            if(sp.BytesToRead > 18) 
+            {
+                for(int k = 0; k <18; k ++)
+                {
+                    sp.ReadByte();
+                }
+            } // 혹시 모르니 -> X      이러게하면 패킷이 중복으로 보내질 때 섞여서 보내질 위험이 있음 그냥 전부 지우고 차례로 보내야함
+            */
+            //MessageBox.Show("읽는 바이트 수" + sp.BytesToRead.ToString());
+
+            System.Threading.Thread.Sleep(500);
+            /** 18.5.2
+             * 위의 MessgaeBox에 sp.BytesToRead에서 0이 결과값으로 나옴
+             * 
+             * 근데 아래 sp.BytesToRead는 18이 나옴
+             * 
+             * 즉 sp.write를 하고나서 바로 bytesToRead를 사용하면 0이 되는데, 이후 같은메소드를 사용하면 18이 나옴
+             * 
+             * ...시간차때문?
+             * ---------------------------------------- 결론----
+             * thread.sleep으로 들어갈 시간을 줬더니 예상한 결과값이 나옴
+             * */
 
             if (sp.BytesToRead == 18)
             {
+                
                 a = sp.ReadByte();
                 b = sp.ReadByte();
                 c = sp.ReadByte();
@@ -196,23 +224,22 @@ namespace GrixControler
                 {
                     roominfo.HeaterOn = false;
                 }
-
-                for (int i = 0; i < 11; i++)
+                /*
+                MessageBox.Show(" 테스트" + 
+                    a + " " + b + " " + c + " " + d + " " + islock + " " + originTemp + " " + compareTemp + " "
+                    + sp.ReadByte() + " " 
+                    + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " 
+                    + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " 
+                    + sp.ReadByte() + " " + sp.ReadByte() + " " );
+                 */
+                for (int i = 0; i < 9; i++)
                 {
                     sp.ReadByte();
                 }
-                sp.DiscardInBuffer();
+                roominfo.CheckSum = sp.ReadByte();
+                sp.ReadByte();
             }
-
-            /*
-            MessageBox.Show(" 테스트" + 
-                a + " " + b + " " + c + " " + d + " " + islock + " " + originTemp + " " + compareTemp + " "
-                + sp.ReadByte() + " " 
-                + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " 
-                + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " 
-                + sp.ReadByte() + " " + sp.ReadByte() + " " );
-                */
-
+            sp.DiscardInBuffer();
             return roominfo;
         }
 
@@ -228,7 +255,9 @@ namespace GrixControler
 
             sp.Write(serialCommand, 0, serialCommand.Length);
             sp.DiscardInBuffer();
-            System.Threading.Thread.Sleep(200);
+            System.Threading.Thread.Sleep(500);
+            // sleep을 써줘야 데이터가 제데로 전송됨
+            
         }
 
         public byte FindCheckSum(byte[] cmd)

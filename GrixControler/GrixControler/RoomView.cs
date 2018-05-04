@@ -61,7 +61,7 @@ namespace GrixControler
 
         public void show_RoomSetting()
         {
-            RoomSetting roomSet = new RoomSetting(main);
+            RoomSetting roomSet = new RoomSetting(main, roomName.Text);
             roomSet.ShowDialog();
         }
 

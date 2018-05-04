@@ -36,6 +36,14 @@ namespace GrixControler
 
         int currentCount, defaultCount, compareCount;
 
+        String id_H, id_L;
+
+        byte[] compareChecksum = new byte[18];
+
+        /** 배열 말고 ArrayList를 사용해야 한다. 이유는 -> 길이를 바꿀 수 없기 때문에
+         *  궂이 removeroomView를 만들 필요가 없다.
+         * */
+        
         public MainForm()
         {
             InitializeComponent();
@@ -57,10 +65,9 @@ namespace GrixControler
             
             /**
              * 폴더 접근불가때문에 권한설정문제인가했는데, 그냥 경로설정을 잘못한거였음. 
-             * */
+             **/
 
-
-            RoomView roomDataView = new RoomView(this);
+            
 
             try
             {
@@ -138,7 +145,6 @@ namespace GrixControler
 
         private void testThread()
         {
-            String id_H, id_L;
 
             while (_pauseEvent.WaitOne())
             {
@@ -176,26 +182,39 @@ namespace GrixControler
                         id_L = roomID[nowCount];
                     }
 
-                    //MessageBox.Show("테스트다~~"+roomID[nowCount]+ id_H + id_L);
-                    
-                    ri = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
-                    try
-                    {
-                        //ri = serialConnect.GetSerialPacket(serialConnect.readCmd);
-                        updateRoomView(currentCount, ri, roomID[nowCount]);
-                        /* 비동기시 사용한다고 하는데,, 딱히
-                        BeginInvoke((MethodInvoker)(() => {
-                            updateRoomView(count, ri);
+                    compareChecksum[1] = (byte)Convert.ToInt32(id_H);
+                    compareChecksum[2] = (byte)Convert.ToInt32(id_L);
 
-                        }));
-                        */
-                    }
-                    catch (Exception e)
-                    {
-                        MessageBox.Show(e.ToString());
-                    }
+                    //MessageBox.Show("GetserialPacket이 실행되는 시점");
+                    ri = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                    
+                    /** 
+                     * 15.5.2 
+                     * GetserialPacket이 디버깅모드로 f11누르면서 진행하면 실행하는데
+                     * f5로 전체 프로그램 돌리면 이부분은 그냥 넘어감 -> 이유?
+                     *  --> serialConnect에서 해결
+                     * */
+                     
+
+                    //MessageBox.Show("테스트다~~" + roomID[nowCount] + " " + id_H + " " + id_L + " " +ri.NowTemp);
+                        try
+                        {
+                            //ri = serialConnect.GetSerialPacket(serialConnect.readCmd);
+                            updateRoomView(currentCount, ri, roomID[nowCount], compareChecksum);
+                            /* 비동기시 사용한다고 하는데,, 딱히
+                            BeginInvoke((MethodInvoker)(() => {
+                                updateRoomView(count, ri);
+
+                            }));
+                            */
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show(e.ToString());
+                        }
+                   
+                    Thread.Sleep(500);
                 }
-                Thread.Sleep(1000);
 
             }
 
@@ -281,16 +300,31 @@ namespace GrixControler
          *  인덱스문제 해결
          * 
          * */
-        public void updateRoomView(int count, RoomInfo roomInfo, String roomID)
+        public void updateRoomView(int count, RoomInfo roomInfo, String roomID, byte[] compareChecksum)
         {
+
+
+            /** 18.5.1
+             *  read를 한 값을 넣치 말고 내가 roominfo에 저장해놓은 정보를 가져오자
+             * 
+             *  main에서 roominfo 배열이나 리스트를 만들어서 계속 저장시켜놓으면 될듯
+             * 
+             * */
+
+            
+
             //MessageBox.Show("roomID " + roomID + roomID.GetType());
             for (int i = 0; i <count; i++)
             {
-                //MessageBox.Show("roomView " + roomView[i].roomName.Text + roomView[i].Text.GetType());
-                if (roomView[i].roomName.Text == roomID)
+                MessageBox.Show("roomView " + roomView[i].roomName.Text + roomView[i].Text.GetType());
+                
+
+                if (roomView[i].roomName.Text == roomID )
                 {
                     roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
                    {
+                       
+                       //MessageBox.Show(roomView[i].roomName.Text + "   " + roomID + " " + roomInfo.NowTemp.ToString());
                        roomView[i].current_Temp.Text = roomInfo.NowTemp.ToString();
                    });
                     roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
@@ -306,6 +340,7 @@ namespace GrixControler
                         roomView[i].picture_Heat.Visible = roomInfo.HeaterOn;
                     });
 
+                    //.UI 갱신이 안됨
                 }
             }
             //roomView[i] = new RoomView(); 바보 다시 할당하니까 안되지
