@@ -61,6 +61,7 @@ namespace GrixControler
 
         public void show_RoomSetting()
         {
+            //main.serialConnect.spLength();
             RoomSetting roomSet = new RoomSetting(main, roomName.Text);
             roomSet.ShowDialog();
         }

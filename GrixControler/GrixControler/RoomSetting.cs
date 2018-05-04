@@ -24,16 +24,44 @@ namespace GrixControler
         {
             this.main = main;
             this.roomID = roomID;
-
             InitializeComponent();
             main.ThreadPause();
+
+            /*
+            main.ThreadPause();
+            System.Threading.Thread.Sleep(500);
+            main.serialConnect.ClearBuffer();
+
             powerOnBtn.Checked = true;
             lockOffBtn.Checked = true;
+
 
             RoomInfo settingValue = new RoomInfo();
             IDStringToByte();
             settingValue = main.serialConnect.GetSerialPacket(main.serialConnect.readCmd, idValue[0], idValue[1]);
+            // 앱이 중단상태에 있습니다
             setTempControl.Value = settingValue.SetTemp;
+            */
+            /*18.5.4
+             * sp 길이 0 36 나오는 문제 해결해야함
+             * 
+             * -----------------해결
+             * 패킷 보낼필요없이 저장해놓은 list에서 가지고오면됨
+             * */
+
+            IDStringToByte();
+            foreach (RoomInfo info in main.roomInfoList)
+            {
+                if (roomID == info.ID.ToString())
+                {
+                    setTempControl.Value = info.SetTemp;
+                    if (info.LockOn) LockOnBtn.Checked = true;
+                    else lockOffBtn.Checked = true;
+                    powerOnBtn.Checked = true;
+                }
+            }
+            main.serialConnect.ClearBuffer();
+
         }
 
         private void IDStringToByte()
@@ -55,6 +83,7 @@ namespace GrixControler
                 id_H = "0";
                 id_L = roomID;
             }
+            //MessageBox.Show(id_H + id_L);
             byte h = (byte)Convert.ToInt32(id_H);
             byte l = (byte)Convert.ToInt32(id_L);
 
@@ -64,11 +93,10 @@ namespace GrixControler
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+           
         }
         private void ConfirmBtn_Click(object sender, EventArgs e)
         {
-
             if (powerOnBtn.Checked)
             {
                 main.serialConnect.setSerialPacket(main.serialConnect.powerOnCmd, idValue[0], idValue[1]);
@@ -96,7 +124,7 @@ namespace GrixControler
             {
                 main.serialConnect.setSerialPacket(main.serialConnect.lockOffCmd, idValue[0], idValue[1]);
             }
-
+            //MessageBox.Show(setTempControl.Value.ToString() +  idValue[0] + idValue[1]);
             main.serialConnect.setSerialPacket(main.serialConnect.setTempCmd((Byte)setTempControl.Value), idValue[0], idValue[1]);
             //setTempControl.Value
 

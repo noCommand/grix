@@ -141,12 +141,13 @@ namespace GrixControler
 
         public RoomInfo GetSerialPacket(byte[] serialRead, byte id_H, byte id_L)
         {
-            
 
+
+            ClearBuffer();
 
             int originTemp;
             int compareTemp;
-            int islock;
+            int environment;
 
             int a, b, c, d, e, f, g, h;
 
@@ -158,7 +159,7 @@ namespace GrixControler
             serialRead[2] = id_L;
 
             serialRead[16] = FindCheckSum(serialRead);
-
+            
             sp.Write(serialRead, 0, serialRead.Length);
 
 
@@ -190,6 +191,7 @@ namespace GrixControler
              * ---------------------------------------- 결론----
              * thread.sleep으로 들어갈 시간을 줬더니 예상한 결과값이 나옴
              * */
+             
 
             if (sp.BytesToRead == 18)
             {
@@ -199,20 +201,22 @@ namespace GrixControler
                 c = sp.ReadByte();
                 roominfo.ID = b * 100 + c;
                 d = sp.ReadByte();
-                islock = sp.ReadByte();
-                if (islock == 3)
-                {
-                    roominfo.LockOn = false;
+                environment = sp.ReadByte();
 
-                }
-                else if (islock == 7)
+                if((environment & 0x04) == 0x04)
                 {
                     roominfo.LockOn = true;
                 }
+                else roominfo.LockOn = false;
+
+                if ((environment & 0x01) == 0x01)
+                {
+                    roominfo.PowerOn = true;
+                }
+                else roominfo.PowerOn = false;
 
                 originTemp = sp.ReadByte();
                 compareTemp = sp.ReadByte();
-
                 roominfo.NowTemp = originTemp;
                 roominfo.SetTemp = compareTemp;
 
@@ -232,6 +236,7 @@ namespace GrixControler
                     + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " 
                     + sp.ReadByte() + " " + sp.ReadByte() + " " );
                  */
+                 
                 for (int i = 0; i < 9; i++)
                 {
                     sp.ReadByte();
@@ -239,7 +244,11 @@ namespace GrixControler
                 roominfo.CheckSum = sp.ReadByte();
                 sp.ReadByte();
             }
-            sp.DiscardInBuffer();
+            else
+            {
+                //MessageBox.Show("serialconnection "+sp.BytesToRead.ToString());
+            }
+            ClearBuffer();
             return roominfo;
         }
 
@@ -248,13 +257,28 @@ namespace GrixControler
 
         public void setSerialPacket(byte[] serialCommand, byte id_H, byte id_L)
         {
+            ClearBuffer();
+
             serialCommand[1] = id_H;
             serialCommand[2] = id_L;
 
             serialCommand[16] = FindCheckSum(serialCommand);
+            /*
+             * MessageBox.Show(serialCommand[0].ToString() + " " +
+               serialCommand[1].ToString() + " " + serialCommand[2].ToString() + " " + serialCommand[3].ToString() + " " +
+               serialCommand[4].ToString() + " " + serialCommand[5].ToString() + " " + serialCommand[6].ToString() + " " +
+               serialCommand[7].ToString() + " " + serialCommand[8].ToString() + " " + serialCommand[9].ToString() + " " +
+               serialCommand[10].ToString() + " " + serialCommand[11].ToString() + " " + serialCommand[12].ToString() + " " +
+               serialCommand[13].ToString() + " " + serialCommand[14].ToString() + " " + serialCommand[15].ToString() + " " +
+               serialCommand[16].ToString() + " " + serialCommand[17].ToString() + " ");
+               */
+            /**
+             * Messagebox만 들어가면 invoke로 빠짐,,, 이유를 모르겠음
+             * */
 
             sp.Write(serialCommand, 0, serialCommand.Length);
-            sp.DiscardInBuffer();
+            //MessageBox.Show("setSerialPacket!!! " + sp.BytesToRead.ToString());
+            ClearBuffer();
             System.Threading.Thread.Sleep(500);
             // sleep을 써줘야 데이터가 제데로 전송됨
             
@@ -269,5 +293,16 @@ namespace GrixControler
             }
             return checksum;
         }
+
+        public void ClearBuffer()
+        {
+            sp.DiscardInBuffer();
+        }
+
+        public void spLength()
+        {
+            MessageBox.Show("Length : " +sp.BytesToRead.ToString());
+        }
+
     }
 }
