@@ -178,6 +178,7 @@
             this.Controls.Add(this.confirmButton);
             this.Name = "ProgramSetting";
             this.Text = "Form1";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ProgramSetting_FormClosed);
             this.Load += new System.EventHandler(this.ProgramSetting_Load);
             this.portGroupBox.ResumeLayout(false);
             this.portGroupBox.PerformLayout();

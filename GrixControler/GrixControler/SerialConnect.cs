@@ -23,11 +23,14 @@ namespace GrixControler
 
         public byte[] Cmd = { 0xAA, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0x55 };
 
+        MainForm main;
+
         SerialPort sp = new SerialPort();
+      
 
-        public SerialConnect()
+        public SerialConnect(MainForm main)
         {
-
+            this.main = main;
         }
 
         public SerialConnect(String pttx)
@@ -55,11 +58,11 @@ namespace GrixControler
         {
             if (sp.IsOpen)
             {
-                return false;
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
 
         }
@@ -142,7 +145,6 @@ namespace GrixControler
         public RoomInfo GetSerialPacket(byte[] serialRead, byte id_H, byte id_L)
         {
 
-
             ClearBuffer();
 
             int originTemp;
@@ -179,7 +181,7 @@ namespace GrixControler
             */
             //MessageBox.Show("읽는 바이트 수" + sp.BytesToRead.ToString());
 
-            System.Threading.Thread.Sleep(500);
+            System.Threading.Thread.Sleep(100);
             /** 18.5.2
              * 위의 MessgaeBox에 sp.BytesToRead에서 0이 결과값으로 나옴
              * 
@@ -191,11 +193,12 @@ namespace GrixControler
              * ---------------------------------------- 결론----
              * thread.sleep으로 들어갈 시간을 줬더니 예상한 결과값이 나옴
              * */
-             
 
+            
             if (sp.BytesToRead == 18)
             {
                 
+
                 a = sp.ReadByte();
                 b = sp.ReadByte();
                 c = sp.ReadByte();
@@ -243,13 +246,30 @@ namespace GrixControler
                 }
                 roominfo.CheckSum = sp.ReadByte();
                 sp.ReadByte();
+                ClearBuffer();
+                return roominfo;
             }
             else
             {
+                
+
+                foreach(RoomInfo info in main.roomInfoList)
+                {
+                    if (info.ID == id_H * 100 + id_L)
+                    {
+                        roominfo = info;
+                    }
+                }
+                ClearBuffer();
+                return roominfo;
                 //MessageBox.Show("serialconnection "+sp.BytesToRead.ToString());
+                /** 18.5.5
+                 *  중간에 roomsetting을 눌렀을 때, sp.bytetoread가 18이 아니게됨. 따라서 패킷은 보내지 않치만, return roominfo는 무조건 반환을 함
+                 *  반환된 serial데이터가 없으므로, roominfo는 default값인 0을 넣어서 반환.
+                 *  따라서 18이 아닐 때에는 list에 들어있던 예전 데이터를 roominfo에 넣어서 반환시킴
+                 * */
             }
-            ClearBuffer();
-            return roominfo;
+            
         }
 
 
@@ -279,7 +299,7 @@ namespace GrixControler
             sp.Write(serialCommand, 0, serialCommand.Length);
             //MessageBox.Show("setSerialPacket!!! " + sp.BytesToRead.ToString());
             ClearBuffer();
-            System.Threading.Thread.Sleep(500);
+            System.Threading.Thread.Sleep(100);
             // sleep을 써줘야 데이터가 제데로 전송됨
             
         }

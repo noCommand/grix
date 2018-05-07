@@ -261,6 +261,7 @@
             this.Controls.Add(this.RoomList);
             this.Name = "ReservationSetting";
             this.Text = "ReservationSetting";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ReservationSetting_FormClosed);
             this.Load += new System.EventHandler(this.ReservationSetting_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

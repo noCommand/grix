@@ -25,10 +25,13 @@ namespace GrixControler
 
         int all_check = 0;
 
-        public ReservationSetting()
+        MainForm main;
+
+        public ReservationSetting(MainForm main)
         {
+            main.ThreadPause();
             InitializeComponent();
-            }
+        }
 
         private void tabPage1_Click(object sender, EventArgs e)
         {
@@ -47,17 +50,17 @@ namespace GrixControler
             RoomList.Columns.Add("꺼질 시간", 100);
             RoomList.Columns.Add("켜질때의 설정 온도", 150);
 
-            for(int i = 0; i < 25; i++)
+            for (int i = 0; i < 25; i++)
             {
                 on_Hour.Items.Add(i);
                 off_Hour.Items.Add(i);
             }
-            for(int j = 0; j < 61; j++)
+            for (int j = 0; j < 61; j++)
             {
                 on_Min.Items.Add(j);
                 off_Min.Items.Add(j);
             }
-            for(int k = 0; k < 60; k++)
+            for (int k = 0; k < 60; k++)
             {
                 on_temp.Items.Add(k);
             }
@@ -102,8 +105,8 @@ namespace GrixControler
                         MessageBox.Show("2");
                         try
                         {
-                            if(on_Hour.SelectedItem != null && on_Min.SelectedItem != null && on_temp.SelectedItem != null
-                                && off_Hour.SelectedItem !=null && off_Min.SelectedItem !=null) //전부입력시 
+                            if (on_Hour.SelectedItem != null && on_Min.SelectedItem != null && on_temp.SelectedItem != null
+                                && off_Hour.SelectedItem != null && off_Min.SelectedItem != null) //전부입력시 
                             {
                                 sql = "update idTable set onTime = \'" + on_Hour.SelectedItem + "시 " + on_Min.SelectedItem + "분\'," +
                                "offTime =\'" + off_Hour.SelectedItem + "시 " + off_Min.SelectedItem + "분\'," +
@@ -141,7 +144,7 @@ namespace GrixControler
                             {
                                 MessageBox.Show("정확히 입력해주세요");
                             }
-                            
+
 
                             /* 지저분한 if문 코드 깔끔하게 할 수 있는 방법은...?ㅠ
                              * ...
@@ -162,7 +165,7 @@ namespace GrixControler
                     }
 
                 }
-                
+
             }
             show_RoomList();
 
@@ -216,12 +219,12 @@ namespace GrixControler
 
         public void execute_Query(String sql)
         {
-         
+
         }
 
         private void all_button_Click(object sender, EventArgs e)
         {
-            
+
 
             if (all_check == 0 && RoomList.Items.Count > 0)
             {
@@ -281,6 +284,10 @@ namespace GrixControler
             }
             rdr.Close();
         }
-        
+
+        private void ReservationSetting_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            main.ThreadResume();
+        }
     }
 }

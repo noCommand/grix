@@ -127,7 +127,7 @@ namespace GrixControler
             //MessageBox.Show(setTempControl.Value.ToString() +  idValue[0] + idValue[1]);
             main.serialConnect.setSerialPacket(main.serialConnect.setTempCmd((Byte)setTempControl.Value), idValue[0], idValue[1]);
             //setTempControl.Value
-
+            System.Threading.Thread.Sleep(100);
             this.Close();
             
         }

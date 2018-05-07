@@ -30,6 +30,7 @@ namespace GrixControler
         
         public ProgramSetting(MainForm main)
         {
+            main.ThreadPause();
             InitializeComponent();
 
             roomGridView.RowHeadersWidth = 20;
@@ -202,7 +203,7 @@ namespace GrixControler
 
         private void apply_btn_Click(object sender, EventArgs e)
         {
-            if (main.serialConnect.CheckPortOpen())
+            if (!main.serialConnect.CheckPortOpen())
             {
                 main.serialConnect = new SerialConnect(portCombx.Text);
             }
@@ -235,6 +236,11 @@ namespace GrixControler
             }
 
             show_roomGridView();
+        }
+
+        private void ProgramSetting_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            main.ThreadResume();
         }
     }
 
