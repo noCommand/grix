@@ -87,7 +87,6 @@
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(185, 687);
             this.panel7.TabIndex = 8;
-            this.panel7.Paint += new System.Windows.Forms.PaintEventHandler(this.panel7_Paint);
             // 
             // listView1
             // 
@@ -103,7 +102,6 @@
             this.listView1.TabIndex = 3;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
             // 시간
             // 
@@ -157,7 +155,6 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(185, 27);
             this.panel5.TabIndex = 4;
-            this.panel5.Paint += new System.Windows.Forms.PaintEventHandler(this.panel5_Paint);
             // 
             // timeLabel
             // 
@@ -170,7 +167,6 @@
             this.timeLabel.Size = new System.Drawing.Size(23, 13);
             this.timeLabel.TabIndex = 0;
             this.timeLabel.Text = "10";
-            this.timeLabel.Click += new System.EventHandler(this.label1_Click);
             // 
             // panel1
             // 
@@ -183,7 +179,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(837, 27);
             this.panel1.TabIndex = 1;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // panel3
             // 
@@ -233,7 +228,6 @@
             this.Help.TabIndex = 3;
             this.Help.Text = "도움말";
             this.Help.UseVisualStyleBackColor = true;
-            this.Help.Click += new System.EventHandler(this.button3_Click);
             // 
             // Setting
             // 
@@ -263,7 +257,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1022, 741);
             this.tableLayoutPanel1.TabIndex = 0;
-            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint_1);
             // 
             // pictureBox1
             // 
@@ -276,7 +269,6 @@
             this.pictureBox1.Size = new System.Drawing.Size(185, 27);
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // ViewPanel
             // 
@@ -296,7 +288,6 @@
             this.testButton.TabIndex = 1;
             this.testButton.Text = "button1";
             this.testButton.UseVisualStyleBackColor = true;
-            this.testButton.Click += new System.EventHandler(this.testButton_Click);
             // 
             // MainForm
             // 

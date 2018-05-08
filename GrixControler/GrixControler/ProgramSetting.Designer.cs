@@ -36,10 +36,10 @@
             this.resetButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.roomGridView = new System.Windows.Forms.DataGridView();
+            this.apply_btn = new System.Windows.Forms.Button();
             this.setNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.setID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.setRoomName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.apply_btn = new System.Windows.Forms.Button();
             this.portGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.roomGridView)).BeginInit();
@@ -130,6 +130,16 @@
             this.roomGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.roomGridView_CellValueChanged);
             this.roomGridView.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.roomGridView_KeyPress);
             // 
+            // apply_btn
+            // 
+            this.apply_btn.Location = new System.Drawing.Point(31, 303);
+            this.apply_btn.Name = "apply_btn";
+            this.apply_btn.Size = new System.Drawing.Size(75, 23);
+            this.apply_btn.TabIndex = 7;
+            this.apply_btn.Text = "적용";
+            this.apply_btn.UseVisualStyleBackColor = true;
+            this.apply_btn.Click += new System.EventHandler(this.apply_btn_Click);
+            // 
             // setNo
             // 
             this.setNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -143,6 +153,7 @@
             // 
             this.setID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.setID.HeaderText = "ID";
+            this.setID.MaxInputLength = 9999;
             this.setID.Name = "setID";
             this.setID.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.setID.Width = 63;
@@ -154,16 +165,6 @@
             this.setRoomName.Name = "setRoomName";
             this.setRoomName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.setRoomName.Width = 84;
-            // 
-            // apply_btn
-            // 
-            this.apply_btn.Location = new System.Drawing.Point(31, 303);
-            this.apply_btn.Name = "apply_btn";
-            this.apply_btn.Size = new System.Drawing.Size(75, 23);
-            this.apply_btn.TabIndex = 7;
-            this.apply_btn.Text = "적용";
-            this.apply_btn.UseVisualStyleBackColor = true;
-            this.apply_btn.Click += new System.EventHandler(this.apply_btn_Click);
             // 
             // ProgramSetting
             // 
@@ -198,9 +199,9 @@
         private System.Windows.Forms.Button resetButton;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView roomGridView;
+        private System.Windows.Forms.Button apply_btn;
         private System.Windows.Forms.DataGridViewTextBoxColumn setNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn setID;
         private System.Windows.Forms.DataGridViewTextBoxColumn setRoomName;
-        private System.Windows.Forms.Button apply_btn;
     }
 }

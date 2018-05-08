@@ -194,82 +194,87 @@ namespace GrixControler
              * thread.sleep으로 들어갈 시간을 줬더니 예상한 결과값이 나옴
              * */
 
-            
-            if (sp.BytesToRead == 18)
+            try
             {
-                
-
-                a = sp.ReadByte();
-                b = sp.ReadByte();
-                c = sp.ReadByte();
-                roominfo.ID = b * 100 + c;
-                d = sp.ReadByte();
-                environment = sp.ReadByte();
-
-                if((environment & 0x04) == 0x04)
+                if (sp.BytesToRead == 18)
                 {
-                    roominfo.LockOn = true;
-                }
-                else roominfo.LockOn = false;
 
-                if ((environment & 0x01) == 0x01)
-                {
-                    roominfo.PowerOn = true;
-                }
-                else roominfo.PowerOn = false;
 
-                originTemp = sp.ReadByte();
-                compareTemp = sp.ReadByte();
-                roominfo.NowTemp = originTemp;
-                roominfo.SetTemp = compareTemp;
+                    a = sp.ReadByte();
+                    b = sp.ReadByte();
+                    c = sp.ReadByte();
+                    roominfo.ID = b * 100 + c;
+                    d = sp.ReadByte();
+                    environment = sp.ReadByte();
 
-                if (compareTemp > originTemp)
-                {
-                    roominfo.HeaterOn = true;
+                    if ((environment & 0x04) == 0x04)
+                    {
+                        roominfo.LockOn = true;
+                    }
+                    else roominfo.LockOn = false;
+
+                    if ((environment & 0x01) == 0x01)
+                    {
+                        roominfo.PowerOn = true;
+                    }
+                    else roominfo.PowerOn = false;
+
+                    originTemp = sp.ReadByte();
+                    compareTemp = sp.ReadByte();
+                    roominfo.NowTemp = originTemp;
+                    roominfo.SetTemp = compareTemp;
+
+                    if (compareTemp > originTemp)
+                    {
+                        roominfo.HeaterOn = true;
+                    }
+                    else
+                    {
+                        roominfo.HeaterOn = false;
+                    }
+                    /*
+                    MessageBox.Show(" 테스트" + 
+                        a + " " + b + " " + c + " " + d + " " + islock + " " + originTemp + " " + compareTemp + " "
+                        + sp.ReadByte() + " " 
+                        + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " 
+                        + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " 
+                        + sp.ReadByte() + " " + sp.ReadByte() + " " );
+                     */
+
+                    for (int i = 0; i < 9; i++)
+                    {
+                        sp.ReadByte();
+                    }
+                    roominfo.CheckSum = sp.ReadByte();
+                    sp.ReadByte();
+                    ClearBuffer();
+                    return roominfo;
                 }
                 else
                 {
-                    roominfo.HeaterOn = false;
-                }
-                /*
-                MessageBox.Show(" 테스트" + 
-                    a + " " + b + " " + c + " " + d + " " + islock + " " + originTemp + " " + compareTemp + " "
-                    + sp.ReadByte() + " " 
-                    + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " 
-                    + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " 
-                    + sp.ReadByte() + " " + sp.ReadByte() + " " );
-                 */
-                 
-                for (int i = 0; i < 9; i++)
-                {
-                    sp.ReadByte();
-                }
-                roominfo.CheckSum = sp.ReadByte();
-                sp.ReadByte();
-                ClearBuffer();
-                return roominfo;
-            }
-            else
-            {
-                
 
-                foreach(RoomInfo info in main.roomInfoList)
-                {
-                    if (info.ID == id_H * 100 + id_L)
+
+                    foreach (RoomInfo info in main.roomInfoList)
                     {
-                        roominfo = info;
+                        if (info.ID == id_H * 100 + id_L)
+                        {
+                            roominfo = info;
+                        }
                     }
+                    ClearBuffer();
+                    return roominfo;
+                    //MessageBox.Show("serialconnection "+sp.BytesToRead.ToString());
+                    /** 18.5.5
+                     *  중간에 roomsetting을 눌렀을 때, sp.bytetoread가 18이 아니게됨. 따라서 패킷은 보내지 않치만, return roominfo는 무조건 반환을 함
+                     *  반환된 serial데이터가 없으므로, roominfo는 default값인 0을 넣어서 반환.
+                     *  따라서 18이 아닐 때에는 list에 들어있던 예전 데이터를 roominfo에 넣어서 반환시킴
+                     * */
                 }
-                ClearBuffer();
+            } catch(InvalidOperationException ioe)
+            {
                 return roominfo;
-                //MessageBox.Show("serialconnection "+sp.BytesToRead.ToString());
-                /** 18.5.5
-                 *  중간에 roomsetting을 눌렀을 때, sp.bytetoread가 18이 아니게됨. 따라서 패킷은 보내지 않치만, return roominfo는 무조건 반환을 함
-                 *  반환된 serial데이터가 없으므로, roominfo는 default값인 0을 넣어서 반환.
-                 *  따라서 18이 아닐 때에는 list에 들어있던 예전 데이터를 roominfo에 넣어서 반환시킴
-                 * */
+                //프로그램 종료시에만 발생
             }
-            
         }
 
 

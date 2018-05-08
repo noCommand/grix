@@ -29,6 +29,7 @@ namespace GrixControler
 
         public ReservationSetting(MainForm main)
         {
+            this.main = main;
             main.ThreadPause();
             InitializeComponent();
         }
