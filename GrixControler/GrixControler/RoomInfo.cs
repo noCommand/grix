@@ -40,6 +40,10 @@ namespace GrixControler
 
         int _CheckSum;
 
+        int _ReservationTime_H;
+
+        int _ReservationTime_M;
+        
         public RoomInfo()
         {
 
@@ -161,6 +165,24 @@ namespace GrixControler
             set
             {
                 _CheckSum = value;
+            }
+        }
+
+        public int ReservationTime_H
+        {
+            get { return _ReservationTime_H; }
+            set
+            {
+                _ReservationTime_H = value;
+            }
+        }
+
+        public int ReservationTime_M
+        {
+            get { return _ReservationTime_M; }
+            set
+            {
+                _ReservationTime_M = value;
             }
         }
     }

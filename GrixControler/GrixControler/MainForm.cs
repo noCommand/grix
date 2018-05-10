@@ -30,6 +30,7 @@ namespace GrixControler
 
         public Thread thread_Serial;
         public Thread thread_UI;
+        public Thread thread_Reservation;
 
         RoomView[] roomView;
 
@@ -37,11 +38,20 @@ namespace GrixControler
 
         String[] roomID;
 
+        String[] reservationTime_ON;
+
+        String[] reservationTime_ON_ID;
+
+        String[] reservationTime_OFF;
+
+        String[] reservationTime_OFF_ID;
+
+        int[] reservationTime_TEMP;
+
         int currentCount, defaultCount, compareCount;
 
         String id_H, id_L;
-
-        byte[] compareChecksum = new byte[18];
+        
 
         public List<RoomInfo> roomInfoList = new List<RoomInfo>();
 
@@ -52,6 +62,10 @@ namespace GrixControler
         private int check = 0;
 
         private bool view_Handle = true;
+
+        int CheckHour;
+
+        int CheckMin;
 
         public MainForm()
         {
@@ -84,8 +98,9 @@ namespace GrixControler
 
             thread_Serial.IsBackground = true;
             thread_UI.IsBackground = true;
-            thread_UI.Start();
+
             thread_Serial.Start();
+            thread_UI.Start();
         }
 
         public void ThreadPause()
@@ -100,7 +115,7 @@ namespace GrixControler
             _pauseEvent.Set();
             roominfoControl = 1;
         }
-
+        
         private void UIThread()
         {
             while (_pauseEvent.WaitOne()) //false가 되면 while문을 빠져나가겠지 
@@ -159,11 +174,7 @@ namespace GrixControler
                             id_H = "0";
                             id_L = roomID[nowCount];
                         }
-
-                        compareChecksum[1] = (byte)Convert.ToInt32(id_H);
-                        compareChecksum[2] = (byte)Convert.ToInt32(id_L);
-
-
+                        
                         roomInfoList.Add(serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L)));
 
                         Thread.Sleep(50);
@@ -191,9 +202,7 @@ namespace GrixControler
                             id_H = "0";
                             id_L = roomID[nowCount];
                         }
-
-                        compareChecksum[1] = (byte)Convert.ToInt32(id_H);
-                        compareChecksum[2] = (byte)Convert.ToInt32(id_L);
+                        
                         if (roomInfoList.Count < nowCount + 1)
                         {
                             roomInfoList.Add(serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L)));
@@ -222,6 +231,10 @@ namespace GrixControler
                 }
 
                 defaultCount = currentCount;
+
+                CheckReservation_OFF(CheckReservationTuple_OFF());
+                CheckReservation_ON(CheckReservationTuple_ON());
+                ExecuteReservation(CheckReservationTuple_ON(), CheckReservationTuple_OFF());
             }
         }
 
@@ -397,6 +410,15 @@ namespace GrixControler
                 All = Year + "-" + Month + "-" + Day + "    " + Hour + ":" + Min + ":" + Sec;
             }
 
+            public static int GetHour()
+            {
+                return now.Hour;
+            }
+
+            public static int GetMin()
+            {
+                return now.Minute;
+            }
         }
 
 
@@ -415,14 +437,11 @@ namespace GrixControler
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
-
             timer1.Start();
             timer1.Interval = 1000;
 
             Time.setNow();
             timeLabel.Text = Time.All;
-
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -437,10 +456,10 @@ namespace GrixControler
             Time.loadNow();
             Time.setNow();
             timeLabel.Text = Time.All;
+
+            CheckHour = Time.GetHour();
+            CheckMin = Time.GetMin();
         }
-
-
-
 
         public int TupleCount()
         {
@@ -486,5 +505,219 @@ namespace GrixControler
             rdr.Close();
         }
 
+        private int CheckReservationTuple_ON()
+        {
+            int count;
+            try
+            {
+                sql = "select count(*) from idTable where not onTime = \"\"";
+
+                command = new SQLiteCommand(sql, dbConn);
+
+                object scalarValue = command.ExecuteScalar();
+                count = Convert.ToInt32(scalarValue);
+
+                return count;
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+                return 0;
+            }
+        }
+
+
+        private void CheckReservation_ON(int count)
+        {
+            reservationTime_ON = new String[count];
+            reservationTime_TEMP = new int[count];
+            reservationTime_ON_ID = new String[count];
+
+            sql = "select * from idTable where not onTime = \"\"";
+
+            command = new SQLiteCommand(sql, dbConn);
+
+            rdr = command.ExecuteReader();
+
+            int i = 0;
+
+            while (rdr.Read())
+            {
+                reservationTime_ON_ID[i] = Convert.ToInt32(rdr["roomID"]).ToString();
+                reservationTime_ON[i] = rdr["onTime"].ToString();
+                reservationTime_TEMP[i] = Convert.ToInt32(rdr["reservTemp"]);
+
+                i++;
+            }
+            rdr.Close();
+
+        }
+
+        private int CheckReservationTuple_OFF()
+        {
+            int count;
+            try
+            {
+                sql = "select count(*) from idTable where not offTime = \"\"";
+
+                command = new SQLiteCommand(sql, dbConn);
+
+                object scalarValue = command.ExecuteScalar();
+                count = Convert.ToInt32(scalarValue);
+
+                return count;
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+                return 0;
+            }
+        }
+
+
+        private void CheckReservation_OFF(int count)
+        {
+            reservationTime_OFF = new String[count];
+            reservationTime_OFF_ID = new String[count];
+
+            sql = "select * from idTable where not offtime = \"\"";
+
+            command = new SQLiteCommand(sql, dbConn);
+
+            rdr = command.ExecuteReader();
+
+            int i = 0;
+
+            while (rdr.Read())
+            {
+                reservationTime_OFF_ID[i] = Convert.ToInt32(rdr["roomID"]).ToString();
+                reservationTime_OFF[i] = rdr["offTime"].ToString();
+                i++;
+            }
+            rdr.Close();
+
+        }
+
+
+        private void ExecuteReservation(int onCount, int OffCount)
+        {
+            int hour = 0;
+            int min = 0;
+            int temp;
+
+            String id_H;
+            String id_L;
+
+            for (int i = 0; i < onCount; i++)
+            {
+                string[] onSpString = reservationTime_ON[i].Split(' ');
+
+                int onCheck = 1;
+                for (int j = 0; j < onSpString.Length; j++)
+                {
+                    if(onSpString[j].Length == 3 && onCheck == 1)
+                    {
+                        hour = Convert.ToInt32(onSpString[j].Substring(0, 2));
+                        onCheck = 0;
+                    } else if(onSpString[j].Length == 2 && onCheck == 1)
+                    {
+                        hour = Convert.ToInt32(onSpString[j].Substring(0, 1));
+                        onCheck = 0;
+                    } else if (onSpString[j].Length == 3 && onCheck == 0)
+                    {
+                        min = Convert.ToInt32(onSpString[j].Substring(0, 2));
+                        onCheck = 1;
+                    } else if(onSpString[j].Length == 2 && onCheck == 0)
+                    {
+                        min = Convert.ToInt32(onSpString[j].Substring(0, 1));
+                        onCheck = 1;
+                    }
+                }
+
+                if(CheckHour==hour && CheckMin==min)
+                {
+                    if (reservationTime_ON_ID[i].Length == 4)
+                    {
+                        id_H = reservationTime_ON_ID[i].Substring(0, 2);
+                        id_L = reservationTime_ON_ID[i].Substring(2, 2);
+                    }
+                    else if (reservationTime_ON_ID[i].Length == 3)
+                    {
+                        id_H = reservationTime_ON_ID[i].Substring(0, 1);
+                        id_L = reservationTime_ON_ID[i].Substring(1, 2);
+                    }
+                    else
+                    {
+                        id_H = "0";
+                        id_L = reservationTime_ON_ID[i];
+                    }
+
+                    serialConnect.GetSerialPacket(serialConnect.powerOnCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                    Thread.Sleep(50);
+                    serialConnect.GetSerialPacket(serialConnect.setTempCmd((Byte)reservationTime_TEMP[i]), (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                }
+            }
+
+            for (int i = 0; i < OffCount; i++)
+            {
+                int offCheck = 1;
+                string[] offSpString = reservationTime_OFF[i].Split(' ');
+
+                for (int j = 0; j < offSpString.Length; j++)
+                {
+                    if (offSpString[j].Length == 3 && offCheck == 1)
+                    {
+                        hour = Convert.ToInt32(offSpString[j].Substring(0, 2));
+                        offCheck = 0;
+                    }
+                    else if (offSpString[j].Length == 2 && offCheck == 1)
+                    {
+                        hour = Convert.ToInt32(offSpString[j].Substring(0, 1));
+                        offCheck = 0;
+                    }
+                    else if (offSpString[j].Length == 3 && offCheck == 0)
+                    {
+                        min = Convert.ToInt32(offSpString[j].Substring(0, 2));
+                        offCheck = 1;
+                    }
+                    else if (offSpString[j].Length == 2 && offCheck == 0)
+                    {
+                        min = Convert.ToInt32(offSpString[j].Substring(0, 1));
+                        offCheck = 1;
+                    }
+                }
+
+                if (CheckHour == hour && CheckMin == min)
+                {
+                    if (reservationTime_OFF_ID[i].Length == 4)
+                    {
+                        id_H = reservationTime_OFF_ID[i].Substring(0, 2);
+                        id_L = reservationTime_OFF_ID[i].Substring(2, 2);
+                    }
+                    else if (reservationTime_OFF_ID[i].Length == 3)
+                    {
+                        id_H = reservationTime_OFF_ID[i].Substring(0, 1);
+                        id_L = reservationTime_OFF_ID[i].Substring(1, 2);
+                    }
+                    else
+                    {
+                        id_H = "0";
+                        id_L = reservationTime_OFF_ID[i];
+                    }
+                    
+
+                    serialConnect.GetSerialPacket(serialConnect.powerOffCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                    Thread.Sleep(50);
+                 }
+            }
+
+
+        }
     }
+
+    /** 18.5.10
+     * 중복되는 코드가 많음 리펙토링 필수
+     * 
+     * 
+     * */
 }

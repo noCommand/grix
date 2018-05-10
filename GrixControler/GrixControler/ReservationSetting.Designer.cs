@@ -30,7 +30,6 @@
         {
             this.reset_Btn = new System.Windows.Forms.Button();
             this.comfirm_Btn = new System.Windows.Forms.Button();
-            this.cancel_btn = new System.Windows.Forms.Button();
             this.apply_Btn = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -48,6 +47,7 @@
             this.RoomList = new System.Windows.Forms.ListView();
             this.all_button = new System.Windows.Forms.Button();
             this.group_button = new System.Windows.Forms.Button();
+            this.delete_btn = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -64,29 +64,20 @@
             // 
             // comfirm_Btn
             // 
-            this.comfirm_Btn.Location = new System.Drawing.Point(240, 419);
+            this.comfirm_Btn.Location = new System.Drawing.Point(278, 415);
             this.comfirm_Btn.Name = "comfirm_Btn";
-            this.comfirm_Btn.Size = new System.Drawing.Size(75, 23);
+            this.comfirm_Btn.Size = new System.Drawing.Size(98, 23);
             this.comfirm_Btn.TabIndex = 12;
             this.comfirm_Btn.Text = "확인";
             this.comfirm_Btn.UseVisualStyleBackColor = true;
             // 
-            // cancel_btn
-            // 
-            this.cancel_btn.Location = new System.Drawing.Point(321, 419);
-            this.cancel_btn.Name = "cancel_btn";
-            this.cancel_btn.Size = new System.Drawing.Size(75, 23);
-            this.cancel_btn.TabIndex = 11;
-            this.cancel_btn.Text = "취소";
-            this.cancel_btn.UseVisualStyleBackColor = true;
-            // 
             // apply_Btn
             // 
-            this.apply_Btn.Location = new System.Drawing.Point(343, 371);
+            this.apply_Btn.Location = new System.Drawing.Point(310, 371);
             this.apply_Btn.Name = "apply_Btn";
             this.apply_Btn.Size = new System.Drawing.Size(75, 23);
             this.apply_Btn.TabIndex = 10;
-            this.apply_Btn.Text = "적용";
+            this.apply_Btn.Text = "예약적용";
             this.apply_Btn.UseVisualStyleBackColor = true;
             this.apply_Btn.Click += new System.EventHandler(this.apply_Btn_Click);
             // 
@@ -245,16 +236,26 @@
             this.group_button.Text = "그룹관리";
             this.group_button.UseVisualStyleBackColor = true;
             // 
+            // delete_btn
+            // 
+            this.delete_btn.Location = new System.Drawing.Point(229, 371);
+            this.delete_btn.Name = "delete_btn";
+            this.delete_btn.Size = new System.Drawing.Size(75, 23);
+            this.delete_btn.TabIndex = 16;
+            this.delete_btn.Text = "예약삭제";
+            this.delete_btn.UseVisualStyleBackColor = true;
+            this.delete_btn.Click += new System.EventHandler(this.delete_btn_Click);
+            // 
             // ReservationSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(436, 450);
+            this.ClientSize = new System.Drawing.Size(429, 450);
+            this.Controls.Add(this.delete_btn);
             this.Controls.Add(this.group_button);
             this.Controls.Add(this.all_button);
             this.Controls.Add(this.reset_Btn);
             this.Controls.Add(this.comfirm_Btn);
-            this.Controls.Add(this.cancel_btn);
             this.Controls.Add(this.apply_Btn);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -275,7 +276,6 @@
 
         private System.Windows.Forms.Button reset_Btn;
         private System.Windows.Forms.Button comfirm_Btn;
-        private System.Windows.Forms.Button cancel_btn;
         private System.Windows.Forms.Button apply_Btn;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label2;
@@ -293,5 +293,6 @@
         private System.Windows.Forms.ListView RoomList;
         private System.Windows.Forms.Button all_button;
         private System.Windows.Forms.Button group_button;
+        private System.Windows.Forms.Button delete_btn;
     }
 }

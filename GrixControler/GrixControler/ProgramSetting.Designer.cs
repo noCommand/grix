@@ -144,6 +144,7 @@
             // 
             this.setNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.setNo.HeaderText = "No.";
+            this.setNo.MaxInputLength = 4;
             this.setNo.Name = "setNo";
             this.setNo.ReadOnly = true;
             this.setNo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -153,7 +154,7 @@
             // 
             this.setID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.setID.HeaderText = "ID";
-            this.setID.MaxInputLength = 9999;
+            this.setID.MaxInputLength = 4;
             this.setID.Name = "setID";
             this.setID.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.setID.Width = 63;
@@ -162,6 +163,7 @@
             // 
             this.setRoomName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.setRoomName.HeaderText = "방이름";
+            this.setRoomName.MaxInputLength = 10;
             this.setRoomName.Name = "setRoomName";
             this.setRoomName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.setRoomName.Width = 84;

@@ -170,7 +170,6 @@ namespace GrixControler
             }
             show_RoomList();
 
-            dbConn.Close();
         }
 
 
@@ -288,7 +287,50 @@ namespace GrixControler
 
         private void ReservationSetting_FormClosed(object sender, FormClosedEventArgs e)
         {
+            dbConn.Close();
             main.ThreadResume();
+        }
+
+        private void delete_btn_Click(object sender, EventArgs e)
+        {
+
+
+            if (RoomList.Items.Count > 0)
+
+            {
+
+                for (int i = 0; i <= RoomList.Items.Count - 1; i++)
+
+                {
+                    if (RoomList.Items[i].Checked == true)
+
+                    {
+                        ListViewItem item = RoomList.Items[i];
+
+                        try
+                        {
+                            sql = "update idTable set onTime = \'" + on_Hour.SelectedItem + on_Min.SelectedItem + "\'," +
+                                    "offTime =\'" + off_Hour.SelectedItem + "" + off_Min.SelectedItem + "\'," +
+                                    "reservTemp =\'" + on_temp.SelectedItem + "\' where roomID = \'" + RoomList.Items[i].SubItems[0].Text + "\'";
+
+                            command = new SQLiteCommand(sql, dbConn);
+                            command.ExecuteNonQuery();
+                        }
+
+                        // 결국 sql문 빼고 아래 두줄은 무조건 들어가는데
+
+                        catch (Exception er)
+                        {
+
+                            MessageBox.Show("catch");
+                            MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+                        }
+                    }
+
+                }
+
+            }
+            show_RoomList();
         }
     }
 }
