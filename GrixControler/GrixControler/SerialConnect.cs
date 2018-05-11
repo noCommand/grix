@@ -33,11 +33,15 @@ namespace GrixControler
             this.main = main;
         }
 
-        public SerialConnect(String pttx)
+        public SerialConnect(String pttx, MainForm main)
         {
-
+            this.main = main;
             sp.PortName = pttx;
-            sp.BaudRate = 38400;
+            
+            /** 18.5.11 sp.bandrate에 따라 보내는 속성이 달라진다. 
+             * 
+             * */
+
 
             try
             {
@@ -74,7 +78,6 @@ namespace GrixControler
         */
         public void AutoConnect()
         {
-
             foreach (string s in System.IO.Ports.SerialPort.GetPortNames())
             {
                 try
@@ -109,7 +112,6 @@ namespace GrixControler
                     + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " "
                     + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " "
                     + sp.ReadByte() + " " + sp.ReadByte() + " ");
-
             }
             else
             {
@@ -162,8 +164,6 @@ namespace GrixControler
 
             serialRead[16] = FindCheckSum(serialRead);
             
-            sp.Write(serialRead, 0, serialRead.Length);
-
 
             /**
              * 송신 패킷을 보낼 때 수신하는 데이터가 없으면 sp.ReadByte에서 입력값을 받을때까지 대기하는 듯 하다.
@@ -181,7 +181,7 @@ namespace GrixControler
             */
             //MessageBox.Show("읽는 바이트 수" + sp.BytesToRead.ToString());
 
-            System.Threading.Thread.Sleep(100);
+           
             /** 18.5.2
              * 위의 MessgaeBox에 sp.BytesToRead에서 0이 결과값으로 나옴
              * 
@@ -194,8 +194,32 @@ namespace GrixControler
              * thread.sleep으로 들어갈 시간을 줬더니 예상한 결과값이 나옴
              * */
 
+
             try
             {
+                /*
+                MessageBox.Show(serialRead[0].ToString() +
+                serialRead[1].ToString() +
+                serialRead[2].ToString() +
+                serialRead[3].ToString() +
+                serialRead[4].ToString() +
+                serialRead[5].ToString() +
+                serialRead[6].ToString() +
+                serialRead[7].ToString() +
+                serialRead[8].ToString() +
+                serialRead[9].ToString() +
+                serialRead[10].ToString() +
+                serialRead[11].ToString() +
+                serialRead[12].ToString() +
+                serialRead[13].ToString() +
+                serialRead[14].ToString() +
+                serialRead[15].ToString() +
+                serialRead[16].ToString() +
+                serialRead[17].ToString() + " " + serialRead.Length
+                );
+                */
+                sp.Write(serialRead, 0, serialRead.Length);
+                System.Threading.Thread.Sleep(100);
                 if (sp.BytesToRead == 18)
                 {
 
@@ -252,8 +276,6 @@ namespace GrixControler
                 }
                 else
                 {
-
-
                     foreach (RoomInfo info in main.roomInfoList)
                     {
                         if (info.ID == id_H * 100 + id_L)
@@ -321,12 +343,30 @@ namespace GrixControler
 
         public void ClearBuffer()
         {
-            sp.DiscardInBuffer();
+            try
+            {
+                sp.DiscardInBuffer();
+            } catch(InvalidOperationException e)
+            {
+
+            }
         }
 
         public void spLength()
         {
             MessageBox.Show("Length : " +sp.BytesToRead.ToString());
+        }
+        
+        public String GetPortName()
+        {
+            if(sp.PortName == null)
+            {
+                return "COM1";
+            }
+            else
+            {
+                return sp.PortName;
+            }
         }
 
     }

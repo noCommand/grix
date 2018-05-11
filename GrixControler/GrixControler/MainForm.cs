@@ -30,7 +30,8 @@ namespace GrixControler
 
         public Thread thread_Serial;
         public Thread thread_UI;
-        public Thread thread_Reservation;
+        public Thread thread_Main;
+
 
         RoomView[] roomView;
 
@@ -51,7 +52,10 @@ namespace GrixControler
         int currentCount, defaultCount, compareCount;
 
         String id_H, id_L;
-        
+
+        int reserveCheck_A = 0;
+
+        int reserveCheck_B = 0;
 
         public List<RoomInfo> roomInfoList = new List<RoomInfo>();
 
@@ -72,7 +76,7 @@ namespace GrixControler
             InitializeComponent();
 
             serialConnect = new SerialConnect(this);
-            serialConnect.AutoConnect();
+            //serialConnect.AutoConnect();
 
             try
             {
@@ -93,6 +97,12 @@ namespace GrixControler
 
             SetRoomView(defaultCount, ri);
 
+            /*
+            thread_Main = new Thread(MainThread);
+            thread_Main.IsBackground = true;
+            thread_Main.Start();
+            */
+            
             thread_Serial = new Thread(SerialThread);
             thread_UI = new Thread(UIThread);
 
@@ -101,6 +111,7 @@ namespace GrixControler
 
             thread_Serial.Start();
             thread_UI.Start();
+            
         }
 
         public void ThreadPause()
@@ -115,22 +126,46 @@ namespace GrixControler
             _pauseEvent.Set();
             roominfoControl = 1;
         }
-        
+
+        /*
+        public void MainThread()
+        {
+            while (_pauseEvent.WaitOne())
+            { 
+                try
+                {
+                    thread_Serial = new Thread(SerialThread);
+                    thread_UI = new Thread(UIThread);
+
+                    thread_Serial.IsBackground = true;
+                    thread_UI.IsBackground = true;
+
+                    thread_Serial.Start();
+                    thread_UI.Start();
+                }
+                catch (InvalidOperationException e)
+                {
+                    MessageBox.Show(e.ToString());
+                }
+            }
+        }
+        */
+
         private void UIThread()
         {
             while (_pauseEvent.WaitOne()) //false가 되면 while문을 빠져나가겠지 
             {
-                if (view_Handle)
+                //MessageBox.Show(serialConnect.GetPortName());
+                
+                try
                 {
-                    //MessageBox.Show("UIThread");
-                    try
-                    {
-                        UpdateRoomView(currentCount);
-                    }
-                    catch (Exception e)
-                    {
-                        MessageBox.Show(e.ToString());
-                    }
+                    //MessageBox.Show("roomview" + roomView.Length + "roomInfoList" + roomInfoList.Count.ToString());
+                    //MessageBox.Show(serialConnect)
+                    UpdateRoomView(currentCount);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.ToString());
                 }
             }
         }
@@ -157,6 +192,11 @@ namespace GrixControler
 
                 if (check == 0)
                 {
+                    /** 포트 재설정할때 어떻게 add할껀지 생각해야함
+                     * 
+                     * */
+
+
                     for (int nowCount = 0; nowCount < currentCount; nowCount++)
                     {
                         if (roomID[nowCount].Length == 4)
@@ -174,7 +214,7 @@ namespace GrixControler
                             id_H = "0";
                             id_L = roomID[nowCount];
                         }
-                        
+
                         roomInfoList.Add(serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L)));
 
                         Thread.Sleep(50);
@@ -202,7 +242,7 @@ namespace GrixControler
                             id_H = "0";
                             id_L = roomID[nowCount];
                         }
-                        
+
                         if (roomInfoList.Count < nowCount + 1)
                         {
                             roomInfoList.Add(serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L)));
@@ -219,14 +259,15 @@ namespace GrixControler
                             break;
                         }
                         RoomInfo hi = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                        
                         roomInfoList[nowCount].NowTemp = hi.NowTemp;
                         roomInfoList[nowCount].SetTemp = hi.SetTemp;
                         roomInfoList[nowCount].CheckSum = hi.CheckSum;
                         roomInfoList[nowCount].LockOn = hi.LockOn;
                         roomInfoList[nowCount].HeaterOn = hi.HeaterOn;
+                        roomInfoList[nowCount].PowerOn = hi.PowerOn;
 
                         Thread.Sleep(50);
-
                     }
                 }
 
@@ -246,48 +287,57 @@ namespace GrixControler
                 {
                     for (int j = 0; j < roomInfoList.Count; j++)
                     {
-                        if (roomView[i].roomName.Text == roomInfoList[j].ID.ToString())
-                        /** 18.5.7 roomview 전부 다 지웠을때 여기서 인덱스 범위 벗어났습니다라는 에러 발생   ING
-                         *  -> 근데 삭제 이후 위의 MessageBox.Show(count.ToString());가 찍히지 않고 에러가 발생하는걸로 보아서.. 에러코드는 여기라고 인식하는데
-                         *  정작 다른데서 문제가 있는거같음
-                         * 
-                         * removeview에서 resize... 여부에따라 ui갱신 되고 안되고.. 쓰레드가 멈출때가 있음
-                         * 
-                         * room 지우고 새로 만들었을 때, 원래 배열 크기보다 더 커지면, UI 쓰레드가 멈춤 -> resize문제
-                         * 
-                         * ---------------------------------------------------------해결 18.5.8
-                         * while문에서 false가 되면 while문을 빠져나감 _pauseEvent.WaitOne()이 true false 내부적으로 다른듯 
-                         *  &&연산을 통하여 나온 결과로는 false가 되어 UI가 멈추는 거였음. 따라서 while은 _pauseEvent.WaitOne()만 두고 내부에서 
-                         *  if handle을 두어 여부에 따라 동작, 비동작으로 구분지음
-                         * 
-                         * */
+                        //MessageBox.Show("viewhandle " + view_Handle.ToString());
+                        if (view_Handle)
                         {
-                            //MessageBox.Show(roomInfoList.Count + " " + i + " roomName.Text " + roomView[i].roomName.Text + " roomInfoList " + roomInfoList[j].ID.ToString());
-
-                            if (roomInfoList[j].PowerOn == true)
+                            //MessageBox.Show("if문 " + (roomView[i].roomName.Text == roomInfoList[j].ID.ToString()).ToString() + " " 
+                                //+ roomView[i].roomName.Text + " " + roomInfoList[j].ID.ToString());
+                            if (roomView[i].roomName.Text == roomInfoList[j].ID.ToString())
                             {
-                                //MessageBox.Show("Update index" + i.ToString());
-                                roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
+                                if (roomInfoList[j].PowerOn == true)
                                 {
-                                    //MessageBox.Show(roomView[i].roomName.Text + "   " + roomID + " " + roomInfo.NowTemp.ToString());
-                                    roomView[i].current_Temp.Text = roomInfoList[j].NowTemp.ToString();
-                                });
-                                roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
+                                    roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        //MessageBox.Show(roomInfoList[j].NowTemp.ToString() + "UIThread");
+                                        roomView[i].current_Temp.Text = roomInfoList[j].NowTemp.ToString();
+                                    });
+                                    roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        roomView[i].desired_Temp.Text = roomInfoList[j].SetTemp.ToString();
+                                    });
+                                    roomView[i].picture_Lock.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        roomView[i].picture_Lock.Visible = roomInfoList[j].LockOn;
+                                    });
+                                    roomView[i].picture_Heat.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        roomView[i].picture_Heat.Visible = roomInfoList[j].HeaterOn;
+                                    });
+                                }
+                                else
                                 {
-                                    roomView[i].desired_Temp.Text = roomInfoList[j].SetTemp.ToString();
-                                });
-                                roomView[i].picture_Lock.Invoke((MethodInvoker)delegate ()
-                                {
-                                    roomView[i].picture_Lock.Visible = roomInfoList[j].LockOn;
-                                });
-                                roomView[i].picture_Heat.Invoke((MethodInvoker)delegate ()
-                                {
-                                    roomView[i].picture_Heat.Visible = roomInfoList[j].HeaterOn;
-                                });
+                                    
+                                    roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        //MessageBox.Show(roomInfoList[j].NowTemp.ToString() + "UIThread - poweroff");
+                                        roomView[i].current_Temp.Text = "0";
+                                    });
+                                    roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        roomView[i].desired_Temp.Text = "0";
+                                    });
+                                    roomView[i].picture_Lock.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        roomView[i].picture_Lock.Visible = false;
+                                    });
+                                    roomView[i].picture_Heat.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        roomView[i].picture_Heat.Visible = false;
+                                    });
+                                }
                             }
                         }
                     }
-
                 }
             }
             catch (IndexOutOfRangeException e)
@@ -595,7 +645,10 @@ namespace GrixControler
                 i++;
             }
             rdr.Close();
-
+            /** 18.5.11 
+             * 저거는 배열 두개가 아니라 해시태그 사용해도 되는데 라는 생각이 지금들었다. 수정하도록하자 
+             * 
+             * */
         }
 
 
@@ -608,6 +661,7 @@ namespace GrixControler
             String id_H;
             String id_L;
 
+
             for (int i = 0; i < onCount; i++)
             {
                 string[] onSpString = reservationTime_ON[i].Split(' ');
@@ -615,26 +669,29 @@ namespace GrixControler
                 int onCheck = 1;
                 for (int j = 0; j < onSpString.Length; j++)
                 {
-                    if(onSpString[j].Length == 3 && onCheck == 1)
+                    if (onSpString[j].Length == 3 && onCheck == 1)
                     {
                         hour = Convert.ToInt32(onSpString[j].Substring(0, 2));
                         onCheck = 0;
-                    } else if(onSpString[j].Length == 2 && onCheck == 1)
+                    }
+                    else if (onSpString[j].Length == 2 && onCheck == 1)
                     {
                         hour = Convert.ToInt32(onSpString[j].Substring(0, 1));
                         onCheck = 0;
-                    } else if (onSpString[j].Length == 3 && onCheck == 0)
+                    }
+                    else if (onSpString[j].Length == 3 && onCheck == 0)
                     {
                         min = Convert.ToInt32(onSpString[j].Substring(0, 2));
                         onCheck = 1;
-                    } else if(onSpString[j].Length == 2 && onCheck == 0)
+                    }
+                    else if (onSpString[j].Length == 2 && onCheck == 0)
                     {
                         min = Convert.ToInt32(onSpString[j].Substring(0, 1));
                         onCheck = 1;
                     }
                 }
 
-                if(CheckHour==hour && CheckMin==min)
+                if (CheckHour == hour && CheckMin == min && reserveCheck_A == 0)
                 {
                     if (reservationTime_ON_ID[i].Length == 4)
                     {
@@ -655,6 +712,7 @@ namespace GrixControler
                     serialConnect.GetSerialPacket(serialConnect.powerOnCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
                     Thread.Sleep(50);
                     serialConnect.GetSerialPacket(serialConnect.setTempCmd((Byte)reservationTime_TEMP[i]), (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                    reserveCheck_A = 1;
                 }
             }
 
@@ -687,7 +745,7 @@ namespace GrixControler
                     }
                 }
 
-                if (CheckHour == hour && CheckMin == min)
+                if (CheckHour == hour && CheckMin == min && reserveCheck_B == 0)
                 {
                     if (reservationTime_OFF_ID[i].Length == 4)
                     {
@@ -704,11 +762,12 @@ namespace GrixControler
                         id_H = "0";
                         id_L = reservationTime_OFF_ID[i];
                     }
-                    
+
 
                     serialConnect.GetSerialPacket(serialConnect.powerOffCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                    reserveCheck_B = 1;
                     Thread.Sleep(50);
-                 }
+                }
             }
 
 

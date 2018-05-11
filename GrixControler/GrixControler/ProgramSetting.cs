@@ -41,7 +41,7 @@ namespace GrixControler
             {
                 portCombx.Items.Add(portNumber);
             }
-            portCombx.Text = portsArray[0];
+            portCombx.Text = main.serialConnect.GetPortName();
 
             this.main = main;
         }
@@ -59,10 +59,6 @@ namespace GrixControler
 
         private void confirmButton_click(object sender, EventArgs e)
         {
-            if (main.serialConnect.CheckPortOpen())
-            {
-                main.serialConnect = new SerialConnect(portCombx.Text);
-            }
             
             //SQL
             row = roomGridView.RowCount;
@@ -197,17 +193,14 @@ namespace GrixControler
             {
                 MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
             }
-             MessageBox.Show(roomGridView.RowCount.ToString());
+             //MessageBox.Show(roomGridView.RowCount.ToString());
 
         }
 
         private void apply_btn_Click(object sender, EventArgs e)
         {
-            if (!main.serialConnect.CheckPortOpen())
-            {
-                main.serialConnect = new SerialConnect(portCombx.Text);
-            }
-
+        
+            
             //SQL
             row = roomGridView.RowCount;
 
@@ -240,7 +233,16 @@ namespace GrixControler
 
         private void ProgramSetting_FormClosed(object sender, FormClosedEventArgs e)
         {
+            if (!main.serialConnect.CheckPortOpen())
+            {
+                main.serialConnect.PortClose();
+                main.serialConnect = new SerialConnect(portCombx.Text, main);
+            }
+
+            MessageBox.Show(main.serialConnect.GetPortName());
+
             main.ThreadResume();
+            
         }
     }
 
