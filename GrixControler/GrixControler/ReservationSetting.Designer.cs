@@ -64,7 +64,7 @@
             // 
             // comfirm_Btn
             // 
-            this.comfirm_Btn.Location = new System.Drawing.Point(278, 415);
+            this.comfirm_Btn.Location = new System.Drawing.Point(288, 415);
             this.comfirm_Btn.Name = "comfirm_Btn";
             this.comfirm_Btn.Size = new System.Drawing.Size(98, 23);
             this.comfirm_Btn.TabIndex = 12;
@@ -73,7 +73,7 @@
             // 
             // apply_Btn
             // 
-            this.apply_Btn.Location = new System.Drawing.Point(310, 371);
+            this.apply_Btn.Location = new System.Drawing.Point(230, 371);
             this.apply_Btn.Name = "apply_Btn";
             this.apply_Btn.Size = new System.Drawing.Size(75, 23);
             this.apply_Btn.TabIndex = 10;
@@ -238,7 +238,7 @@
             // 
             // delete_btn
             // 
-            this.delete_btn.Location = new System.Drawing.Point(229, 371);
+            this.delete_btn.Location = new System.Drawing.Point(321, 371);
             this.delete_btn.Name = "delete_btn";
             this.delete_btn.Size = new System.Drawing.Size(75, 23);
             this.delete_btn.TabIndex = 16;

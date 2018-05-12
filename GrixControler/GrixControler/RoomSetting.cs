@@ -71,12 +71,12 @@ namespace GrixControler
             if (roomID.Length == 4)
             {
                 id_H = roomID.Substring(0, 2);
-                id_L = roomID.Substring(2, 4);
+                id_L = roomID.Substring(2, 2);
             }
             else if (roomID.Length == 3)
             {
                 id_H = roomID.Substring(0, 1);
-                id_L = roomID.Substring(1, 3);
+                id_L = roomID.Substring(1, 2);
             }
             else
             {
@@ -126,8 +126,8 @@ namespace GrixControler
             }
             //MessageBox.Show(setTempControl.Value.ToString() +  idValue[0] + idValue[1]);
             main.serialConnect.setSerialPacket(main.serialConnect.setTempCmd((Byte)setTempControl.Value), idValue[0], idValue[1]);
-            //setTempControl.Value
             System.Threading.Thread.Sleep(100);
+            //setTempControl.Value
             this.Close();
             
         }

@@ -23,10 +23,13 @@ namespace GrixControler
 
         public byte[] Cmd = { 0xAA, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0x55 };
 
+
+        public byte[] hhhhh = { 0xAA, 0x01, 0x04, 0x00, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0x55 };
+
         MainForm main;
 
         SerialPort sp = new SerialPort();
-      
+
 
         public SerialConnect(MainForm main)
         {
@@ -37,7 +40,7 @@ namespace GrixControler
         {
             this.main = main;
             sp.PortName = pttx;
-            
+
             /** 18.5.11 sp.bandrate에 따라 보내는 속성이 달라진다. 
              * 
              * */
@@ -46,10 +49,12 @@ namespace GrixControler
             try
             {
                 sp.Open();
+                /*
                 if (sp.IsOpen)
                     MessageBox.Show(sp.IsOpen.ToString());
                 else
                     MessageBox.Show(sp.IsOpen.ToString());
+                    */
             }
             catch (Exception exc)
             {
@@ -116,7 +121,7 @@ namespace GrixControler
             else
             {
                 MessageBox.Show(sp.PortName + " 포트연결실패");
-            }            
+            }
         }
 
         public void PortClose()
@@ -163,7 +168,7 @@ namespace GrixControler
             serialRead[2] = id_L;
 
             serialRead[16] = FindCheckSum(serialRead);
-            
+
 
             /**
              * 송신 패킷을 보낼 때 수신하는 데이터가 없으면 sp.ReadByte에서 입력값을 받을때까지 대기하는 듯 하다.
@@ -181,7 +186,7 @@ namespace GrixControler
             */
             //MessageBox.Show("읽는 바이트 수" + sp.BytesToRead.ToString());
 
-           
+
             /** 18.5.2
              * 위의 MessgaeBox에 sp.BytesToRead에서 0이 결과값으로 나옴
              * 
@@ -219,11 +224,9 @@ namespace GrixControler
                 );
                 */
                 sp.Write(serialRead, 0, serialRead.Length);
-                System.Threading.Thread.Sleep(100);
+                System.Threading.Thread.Sleep(300);
                 if (sp.BytesToRead == 18)
                 {
-
-
                     a = sp.ReadByte();
                     b = sp.ReadByte();
                     c = sp.ReadByte();
@@ -270,6 +273,7 @@ namespace GrixControler
                         sp.ReadByte();
                     }
                     roominfo.CheckSum = sp.ReadByte();
+                    roominfo.ConnectOn = true;
                     sp.ReadByte();
                     ClearBuffer();
                     return roominfo;
@@ -283,6 +287,7 @@ namespace GrixControler
                             roominfo = info;
                         }
                     }
+                    roominfo.ConnectOn = false;
                     ClearBuffer();
                     return roominfo;
                     //MessageBox.Show("serialconnection "+sp.BytesToRead.ToString());
@@ -291,15 +296,24 @@ namespace GrixControler
                      *  반환된 serial데이터가 없으므로, roominfo는 default값인 0을 넣어서 반환.
                      *  따라서 18이 아닐 때에는 list에 들어있던 예전 데이터를 roominfo에 넣어서 반환시킴
                      * */
+
+                    /** 18.5.12 -- ING
+                     *  roominfo.connecton에 중단점을 두었더니 roomsetting을 누를 때 serialread의 데이터는 잘 들어갔는데에도 불구하고
+                     *  sp.readbyte가 0이 되는 현상 발생 따라서 main에서 connecton을 이용하여 코딩하게되면 UI가 connecton조건에 따라
+                     *  바뀌게 됨..  sp.write..는 될텐데ㅠ 왜 readbyte가 0으로나올까 
+                     *  
+                     *  중간에 clear시키는것도 없는데 
+                     * */
+
+
                 }
-            } catch(InvalidOperationException ioe)
+            }
+            catch (InvalidOperationException ioe)
             {
                 return roominfo;
                 //프로그램 종료시에만 발생
             }
         }
-
-
 
 
         public void setSerialPacket(byte[] serialCommand, byte id_H, byte id_L)
@@ -328,13 +342,13 @@ namespace GrixControler
             ClearBuffer();
             System.Threading.Thread.Sleep(100);
             // sleep을 써줘야 데이터가 제데로 전송됨
-            
+
         }
 
         public byte FindCheckSum(byte[] cmd)
         {
             byte checksum = cmd[1];
-            for (int i = 1; i < 16; i++)
+            for (int i = 2; i < 16; i++)
             {
                 checksum ^= cmd[i];
             }
@@ -346,7 +360,8 @@ namespace GrixControler
             try
             {
                 sp.DiscardInBuffer();
-            } catch(InvalidOperationException e)
+            }
+            catch (InvalidOperationException e)
             {
 
             }
@@ -354,12 +369,12 @@ namespace GrixControler
 
         public void spLength()
         {
-            MessageBox.Show("Length : " +sp.BytesToRead.ToString());
+            MessageBox.Show("Length : " + sp.BytesToRead.ToString());
         }
-        
+
         public String GetPortName()
         {
-            if(sp.PortName == null)
+            if (sp.PortName == null)
             {
                 return "COM1";
             }
@@ -368,6 +383,5 @@ namespace GrixControler
                 return sp.PortName;
             }
         }
-
     }
 }

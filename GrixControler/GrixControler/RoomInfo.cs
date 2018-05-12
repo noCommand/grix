@@ -43,6 +43,8 @@ namespace GrixControler
         int _ReservationTime_H;
 
         int _ReservationTime_M;
+
+        bool _Exist;
         
         public RoomInfo()
         {
@@ -183,6 +185,15 @@ namespace GrixControler
             set
             {
                 _ReservationTime_M = value;
+            }
+        }
+
+        public bool Exist
+        {
+            get { return _Exist; }
+            set
+            {
+                _Exist = value;
             }
         }
     }

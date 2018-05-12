@@ -36,10 +36,10 @@
             this.resetButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.roomGridView = new System.Windows.Forms.DataGridView();
-            this.apply_btn = new System.Windows.Forms.Button();
             this.setNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.setID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.setRoomName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.apply_btn = new System.Windows.Forms.Button();
             this.portGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.roomGridView)).BeginInit();
@@ -64,7 +64,7 @@
             // 
             // confirmButton
             // 
-            this.confirmButton.Location = new System.Drawing.Point(114, 303);
+            this.confirmButton.Location = new System.Drawing.Point(136, 320);
             this.confirmButton.Name = "confirmButton";
             this.confirmButton.Size = new System.Drawing.Size(75, 23);
             this.confirmButton.TabIndex = 2;
@@ -74,7 +74,7 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(200, 303);
+            this.cancelButton.Location = new System.Drawing.Point(217, 320);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 3;
@@ -130,16 +130,6 @@
             this.roomGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.roomGridView_CellValueChanged);
             this.roomGridView.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.roomGridView_KeyPress);
             // 
-            // apply_btn
-            // 
-            this.apply_btn.Location = new System.Drawing.Point(31, 303);
-            this.apply_btn.Name = "apply_btn";
-            this.apply_btn.Size = new System.Drawing.Size(75, 23);
-            this.apply_btn.TabIndex = 7;
-            this.apply_btn.Text = "적용";
-            this.apply_btn.UseVisualStyleBackColor = true;
-            this.apply_btn.Click += new System.EventHandler(this.apply_btn_Click);
-            // 
             // setNo
             // 
             this.setNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -168,11 +158,21 @@
             this.setRoomName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.setRoomName.Width = 84;
             // 
+            // apply_btn
+            // 
+            this.apply_btn.Location = new System.Drawing.Point(200, 291);
+            this.apply_btn.Name = "apply_btn";
+            this.apply_btn.Size = new System.Drawing.Size(75, 23);
+            this.apply_btn.TabIndex = 7;
+            this.apply_btn.Text = "적용";
+            this.apply_btn.UseVisualStyleBackColor = true;
+            this.apply_btn.Click += new System.EventHandler(this.apply_btn_Click);
+            // 
             // ProgramSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(313, 338);
+            this.ClientSize = new System.Drawing.Size(313, 351);
             this.Controls.Add(this.apply_btn);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.resetButton);

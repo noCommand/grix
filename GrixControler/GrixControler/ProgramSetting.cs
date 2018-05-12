@@ -59,8 +59,9 @@ namespace GrixControler
 
         private void confirmButton_click(object sender, EventArgs e)
         {
-            
+            this.Close();
             //SQL
+            /*
             row = roomGridView.RowCount;
             
             int scalarNum;
@@ -88,7 +89,7 @@ namespace GrixControler
             }
 
            dbConn.Close();
-            
+            */
 
             /*
             //???
@@ -233,14 +234,20 @@ namespace GrixControler
 
         private void ProgramSetting_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (!main.serialConnect.CheckPortOpen())
+
+
+            /* 18.5.12
+             * 시리얼포트 수동연결 가능
+             * */
+            if (main.serialConnect.GetPortName() != portCombx.Text || !main.serialConnect.CheckPortOpen())
             {
                 main.serialConnect.PortClose();
                 main.serialConnect = new SerialConnect(portCombx.Text, main);
+                main.ResetAllVariable();
             }
 
-            MessageBox.Show(main.serialConnect.GetPortName());
-
+            //MessageBox.Show(main.serialConnect.GetPortName());
+            dbConn.Close();
             main.ThreadResume();
             
         }

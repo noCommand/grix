@@ -103,6 +103,7 @@ namespace GrixControler
             thread_Main.Start();
             */
             
+
             thread_Serial = new Thread(SerialThread);
             thread_UI = new Thread(UIThread);
 
@@ -112,6 +113,7 @@ namespace GrixControler
             thread_Serial.Start();
             thread_UI.Start();
             
+
         }
 
         public void ThreadPause()
@@ -156,16 +158,18 @@ namespace GrixControler
             while (_pauseEvent.WaitOne()) //false가 되면 while문을 빠져나가겠지 
             {
                 //MessageBox.Show(serialConnect.GetPortName());
-                
-                try
+                if (serialConnect.CheckPortOpen())
                 {
-                    //MessageBox.Show("roomview" + roomView.Length + "roomInfoList" + roomInfoList.Count.ToString());
-                    //MessageBox.Show(serialConnect)
-                    UpdateRoomView(currentCount);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.ToString());
+                    try
+                    {
+                        //MessageBox.Show("roomview" + roomView.Length + "roomInfoList" + roomInfoList.Count.ToString());
+                        //MessageBox.Show(serialConnect)
+                        UpdateRoomView(currentCount);
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.ToString());
+                    }
                 }
             }
         }
@@ -174,108 +178,125 @@ namespace GrixControler
         {
             while (_pauseEvent.WaitOne())
             {
-
-                //MessageBox.Show(thread_UI.IsAlive.ToString());
-                compareCount = TupleCount();
-                SetRoomIDString(compareCount);
-
-                if (defaultCount == compareCount && CheckRoomIDChange(compareCount))
+                if (serialConnect.CheckPortOpen())
                 {
-                    currentCount = defaultCount;
-                }
-                else
-                {
-                    currentCount = compareCount;
-                    view_Handle = false;
-                    RemoveRoomView(defaultCount, currentCount);
-                }
-
-                if (check == 0)
-                {
-                    /** 포트 재설정할때 어떻게 add할껀지 생각해야함
-                     * 
-                     * */
-
-
-                    for (int nowCount = 0; nowCount < currentCount; nowCount++)
+                    //MessageBox.Show(thread_UI.IsAlive.ToString());
+                    compareCount = TupleCount();
+                    SetRoomIDString(compareCount);
+                    
+                    if (defaultCount == compareCount && CheckRoomIDChange(compareCount))
                     {
-                        if (roomID[nowCount].Length == 4)
-                        {
-                            id_H = roomID[nowCount].Substring(0, 2);
-                            id_L = roomID[nowCount].Substring(2, 2);
-                        }
-                        else if (roomID[nowCount].Length == 3)
-                        {
-                            id_H = roomID[nowCount].Substring(0, 1);
-                            id_L = roomID[nowCount].Substring(1, 2);
-                        }
-                        else
-                        {
-                            id_H = "0";
-                            id_L = roomID[nowCount];
-                        }
-
-                        roomInfoList.Add(serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L)));
-
-                        Thread.Sleep(50);
+                        currentCount = defaultCount;
                     }
-                    check = 1;
-                }
-                else
-                {
-
-                    for (int nowCount = 0; nowCount < currentCount; nowCount++)
+                    else
                     {
+                        currentCount = compareCount;
+                        view_Handle = false;
+                        RemoveRoomView(defaultCount, currentCount);
+                    }
 
-                        if (roomID[nowCount].Length == 4)
-                        {
-                            id_H = roomID[nowCount].Substring(0, 2);
-                            id_L = roomID[nowCount].Substring(2, 2);
-                        }
-                        else if (roomID[nowCount].Length == 3)
-                        {
-                            id_H = roomID[nowCount].Substring(0, 1);
-                            id_L = roomID[nowCount].Substring(1, 2);
-                        }
-                        else
-                        {
-                            id_H = "0";
-                            id_L = roomID[nowCount];
-                        }
+                    if (check == 0)
+                    {
+                        /** 포트 재설정할때 어떻게 add할껀지 생각해야함
+                         * 
+                         * */
 
-                        if (roomInfoList.Count < nowCount + 1)
+
+                        for (int nowCount = 0; nowCount < currentCount; nowCount++)
                         {
+                            if (roomID[nowCount].Length == 4)
+                            {
+                                id_H = roomID[nowCount].Substring(0, 2);
+                                id_L = roomID[nowCount].Substring(2, 2);
+                            }
+                            else if (roomID[nowCount].Length == 3)
+                            {
+                                id_H = roomID[nowCount].Substring(0, 1);
+                                id_L = roomID[nowCount].Substring(1, 2);
+                            }
+                            else
+                            {
+                                id_H = "0";
+                                id_L = roomID[nowCount];
+                            }
+
                             roomInfoList.Add(serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L)));
 
+                            Thread.Sleep(50);
                         }
-
-                        if (roomView.Length < roomInfoList.Count)
-                        {
-                            roomInfoList.RemoveRange(roomView.Length, roomInfoList.Count - roomView.Length);
-                        }
-
-                        if (roominfoControl == 0)
-                        {
-                            break;
-                        }
-                        RoomInfo hi = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
-                        
-                        roomInfoList[nowCount].NowTemp = hi.NowTemp;
-                        roomInfoList[nowCount].SetTemp = hi.SetTemp;
-                        roomInfoList[nowCount].CheckSum = hi.CheckSum;
-                        roomInfoList[nowCount].LockOn = hi.LockOn;
-                        roomInfoList[nowCount].HeaterOn = hi.HeaterOn;
-                        roomInfoList[nowCount].PowerOn = hi.PowerOn;
-
-                        Thread.Sleep(50);
+                        check = 1;
                     }
+                    else
+                    {
+
+                        for (int nowCount = 0; nowCount < currentCount; nowCount++)
+                        {
+
+                            if (roomID[nowCount].Length == 4)
+                            {
+                                id_H = roomID[nowCount].Substring(0, 2);
+                                id_L = roomID[nowCount].Substring(2, 2);
+                            }
+                            else if (roomID[nowCount].Length == 3)
+                            {
+                                id_H = roomID[nowCount].Substring(0, 1);
+                                id_L = roomID[nowCount].Substring(1, 2);
+                            }
+                            else
+                            {
+                                id_H = "0";
+                                id_L = roomID[nowCount];
+                            }
+
+                            if (roomInfoList.Count < nowCount + 1)
+                            {
+                                roomInfoList.Add(serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L)));
+
+                            }
+
+                            if (roomView.Length < roomInfoList.Count)
+                            {
+                                roomInfoList.RemoveRange(roomView.Length, roomInfoList.Count - roomView.Length);
+                            }
+
+                            if (roominfoControl == 0)
+                            {
+                                break;
+                            }
+
+                            //MessageBox.Show(roomID[nowCount].ToString());
+                            //MessageBox.Show(id_H.ToString() + " " + id_L.ToString());
+
+                            RoomInfo hi = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                            //MessageBox.Show(roomID[nowCount].ToString() + " " + hi.ConnectOn);
+                            
+                            if(hi.ConnectOn==false)
+                            {
+
+                                roomInfoList[nowCount].SetTemp = 100;
+                            }
+
+                            roomInfoList[nowCount].ID = Convert.ToInt32(roomID[nowCount]);
+                            roomInfoList[nowCount].NowTemp = hi.NowTemp;
+                            roomInfoList[nowCount].SetTemp = hi.SetTemp;
+                            roomInfoList[nowCount].CheckSum = hi.CheckSum;
+                            roomInfoList[nowCount].LockOn = hi.LockOn;
+                            roomInfoList[nowCount].HeaterOn = hi.HeaterOn;
+                            roomInfoList[nowCount].PowerOn = hi.PowerOn;
+                            roomInfoList[nowCount].ConnectOn = hi.ConnectOn;
+
+
+                            Thread.Sleep(50);
+                        }
+                    }
+                    defaultCount = currentCount;
+
+                    CheckReservation_OFF(CheckReservationTuple_OFF());
+                    CheckReservation_ON(CheckReservationTuple_ON());
+                    ExecuteReservation(CheckReservationTuple_ON(), CheckReservationTuple_OFF());
                 }
 
-                defaultCount = currentCount;
 
-                CheckReservation_OFF(CheckReservationTuple_OFF());
-                CheckReservation_ON(CheckReservationTuple_ON());
-                ExecuteReservation(CheckReservationTuple_ON(), CheckReservationTuple_OFF());
             }
         }
 
@@ -290,8 +311,10 @@ namespace GrixControler
                         //MessageBox.Show("viewhandle " + view_Handle.ToString());
                         if (view_Handle)
                         {
-                            //MessageBox.Show("if문 " + (roomView[i].roomName.Text == roomInfoList[j].ID.ToString()).ToString() + " " 
-                                //+ roomView[i].roomName.Text + " " + roomInfoList[j].ID.ToString());
+                            /*
+                            MessageBox.Show("if문 " + (roomView[i].roomName.Text == roomInfoList[j].ID.ToString()).ToString() + " " 
+                            + roomView[i].roomName.Text + " " + roomInfoList[j].ID.ToString());
+                            */
                             if (roomView[i].roomName.Text == roomInfoList[j].ID.ToString())
                             {
                                 if (roomInfoList[j].PowerOn == true)
@@ -316,7 +339,6 @@ namespace GrixControler
                                 }
                                 else
                                 {
-                                    
                                     roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
                                     {
                                         //MessageBox.Show(roomInfoList[j].NowTemp.ToString() + "UIThread - poweroff");
@@ -770,7 +792,35 @@ namespace GrixControler
                 }
             }
 
+        }
+        public void ResetAllVariable()
+        {
+            check_UI = 1;
+            roominfoControl = 1;
+            check = 0;
+            reserveCheck_A = 0;
+            reserveCheck_B = 0;
+            roomInfoList.Clear();
 
+            for(int i = 0; i < roomView.Length; i++)
+            {
+                roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
+                {
+                    roomView[i].current_Temp.Text = "0";
+                });
+                roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
+                {
+                    roomView[i].desired_Temp.Text = "0";
+                });
+                roomView[i].picture_Lock.Invoke((MethodInvoker)delegate ()
+                {
+                    roomView[i].picture_Lock.Visible = false;
+                });
+                roomView[i].picture_Heat.Invoke((MethodInvoker)delegate ()
+                {
+                    roomView[i].picture_Heat.Visible = false;
+                });
+            }
         }
     }
 
