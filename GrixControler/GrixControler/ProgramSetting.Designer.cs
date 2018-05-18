@@ -39,7 +39,6 @@
             this.setNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.setID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.setRoomName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.apply_btn = new System.Windows.Forms.Button();
             this.portGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.roomGridView)).BeginInit();
@@ -158,22 +157,11 @@
             this.setRoomName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.setRoomName.Width = 84;
             // 
-            // apply_btn
-            // 
-            this.apply_btn.Location = new System.Drawing.Point(200, 291);
-            this.apply_btn.Name = "apply_btn";
-            this.apply_btn.Size = new System.Drawing.Size(75, 23);
-            this.apply_btn.TabIndex = 7;
-            this.apply_btn.Text = "적용";
-            this.apply_btn.UseVisualStyleBackColor = true;
-            this.apply_btn.Click += new System.EventHandler(this.apply_btn_Click);
-            // 
             // ProgramSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(313, 351);
-            this.Controls.Add(this.apply_btn);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.resetButton);
             this.Controls.Add(this.portGroupBox);
@@ -201,7 +189,6 @@
         private System.Windows.Forms.Button resetButton;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView roomGridView;
-        private System.Windows.Forms.Button apply_btn;
         private System.Windows.Forms.DataGridViewTextBoxColumn setNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn setID;
         private System.Windows.Forms.DataGridViewTextBoxColumn setRoomName;

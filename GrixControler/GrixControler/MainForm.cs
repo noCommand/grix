@@ -270,12 +270,13 @@ namespace GrixControler
                             RoomInfo hi = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
                             //MessageBox.Show(roomID[nowCount].ToString() + " " + hi.ConnectOn);
                             
+                            /*
                             if(hi.ConnectOn==false)
                             {
 
                                 roomInfoList[nowCount].SetTemp = 100;
                             }
-
+                            */
                             roomInfoList[nowCount].ID = Convert.ToInt32(roomID[nowCount]);
                             roomInfoList[nowCount].NowTemp = hi.NowTemp;
                             roomInfoList[nowCount].SetTemp = hi.SetTemp;

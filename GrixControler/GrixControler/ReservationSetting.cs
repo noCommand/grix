@@ -76,6 +76,11 @@ namespace GrixControler
             {
                 MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
             }
+
+
+            dateTimePicker1.ShowUpDown = true;
+           
+
         }
 
         private void label1_Click(object sender, EventArgs e)

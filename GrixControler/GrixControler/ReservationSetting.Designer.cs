@@ -48,8 +48,43 @@
             this.all_button = new System.Windows.Forms.Button();
             this.group_button = new System.Windows.Forms.Button();
             this.delete_btn = new System.Windows.Forms.Button();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker4 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker5 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker6 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker7 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker8 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker9 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker10 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker11 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker12 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker13 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker14 = new System.Windows.Forms.DateTimePicker();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
+            this.MondayRadBtn = new System.Windows.Forms.RadioButton();
+            this.TuesdayRadBtn = new System.Windows.Forms.RadioButton();
+            this.WednesdayRadBtn = new System.Windows.Forms.RadioButton();
+            this.ThursdayRadBtn = new System.Windows.Forms.RadioButton();
+            this.FridayRadBtn = new System.Windows.Forms.RadioButton();
+            this.SaturdayRadBtn = new System.Windows.Forms.RadioButton();
+            this.SundayRadBtn = new System.Windows.Forms.RadioButton();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
             this.SuspendLayout();
             // 
             // reset_Btn
@@ -213,7 +248,7 @@
             // 
             this.RoomList.Location = new System.Drawing.Point(12, 73);
             this.RoomList.Name = "RoomList";
-            this.RoomList.Size = new System.Drawing.Size(406, 206);
+            this.RoomList.Size = new System.Drawing.Size(420, 206);
             this.RoomList.TabIndex = 7;
             this.RoomList.UseCompatibleStateImageBehavior = false;
             // 
@@ -246,11 +281,277 @@
             this.delete_btn.UseVisualStyleBackColor = true;
             this.delete_btn.Click += new System.EventHandler(this.delete_btn_Click);
             // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker1.Location = new System.Drawing.Point(523, 92);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(101, 21);
+            this.dateTimePicker1.TabIndex = 18;
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker2.Location = new System.Drawing.Point(700, 91);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(101, 21);
+            this.dateTimePicker2.TabIndex = 19;
+            // 
+            // dateTimePicker3
+            // 
+            this.dateTimePicker3.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker3.Location = new System.Drawing.Point(523, 119);
+            this.dateTimePicker3.Name = "dateTimePicker3";
+            this.dateTimePicker3.Size = new System.Drawing.Size(101, 21);
+            this.dateTimePicker3.TabIndex = 20;
+            // 
+            // dateTimePicker4
+            // 
+            this.dateTimePicker4.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker4.Location = new System.Drawing.Point(700, 118);
+            this.dateTimePicker4.Name = "dateTimePicker4";
+            this.dateTimePicker4.Size = new System.Drawing.Size(101, 21);
+            this.dateTimePicker4.TabIndex = 21;
+            // 
+            // dateTimePicker5
+            // 
+            this.dateTimePicker5.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker5.Location = new System.Drawing.Point(523, 146);
+            this.dateTimePicker5.Name = "dateTimePicker5";
+            this.dateTimePicker5.Size = new System.Drawing.Size(101, 21);
+            this.dateTimePicker5.TabIndex = 22;
+            // 
+            // dateTimePicker6
+            // 
+            this.dateTimePicker6.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker6.Location = new System.Drawing.Point(700, 145);
+            this.dateTimePicker6.Name = "dateTimePicker6";
+            this.dateTimePicker6.Size = new System.Drawing.Size(101, 21);
+            this.dateTimePicker6.TabIndex = 23;
+            // 
+            // dateTimePicker7
+            // 
+            this.dateTimePicker7.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker7.Location = new System.Drawing.Point(523, 173);
+            this.dateTimePicker7.Name = "dateTimePicker7";
+            this.dateTimePicker7.Size = new System.Drawing.Size(101, 21);
+            this.dateTimePicker7.TabIndex = 24;
+            // 
+            // dateTimePicker8
+            // 
+            this.dateTimePicker8.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker8.Location = new System.Drawing.Point(700, 172);
+            this.dateTimePicker8.Name = "dateTimePicker8";
+            this.dateTimePicker8.Size = new System.Drawing.Size(101, 21);
+            this.dateTimePicker8.TabIndex = 25;
+            // 
+            // dateTimePicker9
+            // 
+            this.dateTimePicker9.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker9.Location = new System.Drawing.Point(523, 200);
+            this.dateTimePicker9.Name = "dateTimePicker9";
+            this.dateTimePicker9.Size = new System.Drawing.Size(101, 21);
+            this.dateTimePicker9.TabIndex = 26;
+            // 
+            // dateTimePicker10
+            // 
+            this.dateTimePicker10.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker10.Location = new System.Drawing.Point(700, 199);
+            this.dateTimePicker10.Name = "dateTimePicker10";
+            this.dateTimePicker10.Size = new System.Drawing.Size(101, 21);
+            this.dateTimePicker10.TabIndex = 27;
+            // 
+            // dateTimePicker11
+            // 
+            this.dateTimePicker11.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker11.Location = new System.Drawing.Point(523, 227);
+            this.dateTimePicker11.Name = "dateTimePicker11";
+            this.dateTimePicker11.Size = new System.Drawing.Size(101, 21);
+            this.dateTimePicker11.TabIndex = 28;
+            // 
+            // dateTimePicker12
+            // 
+            this.dateTimePicker12.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker12.Location = new System.Drawing.Point(700, 226);
+            this.dateTimePicker12.Name = "dateTimePicker12";
+            this.dateTimePicker12.Size = new System.Drawing.Size(101, 21);
+            this.dateTimePicker12.TabIndex = 29;
+            // 
+            // dateTimePicker13
+            // 
+            this.dateTimePicker13.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker13.Location = new System.Drawing.Point(523, 254);
+            this.dateTimePicker13.Name = "dateTimePicker13";
+            this.dateTimePicker13.Size = new System.Drawing.Size(101, 21);
+            this.dateTimePicker13.TabIndex = 30;
+            // 
+            // dateTimePicker14
+            // 
+            this.dateTimePicker14.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePicker14.Location = new System.Drawing.Point(700, 253);
+            this.dateTimePicker14.Name = "dateTimePicker14";
+            this.dateTimePicker14.Size = new System.Drawing.Size(101, 21);
+            this.dateTimePicker14.TabIndex = 31;
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(631, 91);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(44, 21);
+            this.numericUpDown1.TabIndex = 32;
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(631, 118);
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(44, 21);
+            this.numericUpDown2.TabIndex = 33;
+            // 
+            // numericUpDown3
+            // 
+            this.numericUpDown3.Location = new System.Drawing.Point(631, 145);
+            this.numericUpDown3.Name = "numericUpDown3";
+            this.numericUpDown3.Size = new System.Drawing.Size(44, 21);
+            this.numericUpDown3.TabIndex = 34;
+            // 
+            // numericUpDown4
+            // 
+            this.numericUpDown4.Location = new System.Drawing.Point(631, 172);
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(44, 21);
+            this.numericUpDown4.TabIndex = 35;
+            // 
+            // numericUpDown5
+            // 
+            this.numericUpDown5.Location = new System.Drawing.Point(631, 199);
+            this.numericUpDown5.Name = "numericUpDown5";
+            this.numericUpDown5.Size = new System.Drawing.Size(44, 21);
+            this.numericUpDown5.TabIndex = 36;
+            // 
+            // numericUpDown6
+            // 
+            this.numericUpDown6.Location = new System.Drawing.Point(631, 227);
+            this.numericUpDown6.Name = "numericUpDown6";
+            this.numericUpDown6.Size = new System.Drawing.Size(44, 21);
+            this.numericUpDown6.TabIndex = 37;
+            // 
+            // numericUpDown7
+            // 
+            this.numericUpDown7.Location = new System.Drawing.Point(631, 254);
+            this.numericUpDown7.Name = "numericUpDown7";
+            this.numericUpDown7.Size = new System.Drawing.Size(44, 21);
+            this.numericUpDown7.TabIndex = 38;
+            // 
+            // MondayRadBtn
+            // 
+            this.MondayRadBtn.AutoSize = true;
+            this.MondayRadBtn.Location = new System.Drawing.Point(458, 95);
+            this.MondayRadBtn.Name = "MondayRadBtn";
+            this.MondayRadBtn.Size = new System.Drawing.Size(59, 16);
+            this.MondayRadBtn.TabIndex = 39;
+            this.MondayRadBtn.TabStop = true;
+            this.MondayRadBtn.Text = "월요일";
+            this.MondayRadBtn.UseVisualStyleBackColor = true;
+            // 
+            // TuesdayRadBtn
+            // 
+            this.TuesdayRadBtn.AutoSize = true;
+            this.TuesdayRadBtn.Location = new System.Drawing.Point(458, 122);
+            this.TuesdayRadBtn.Name = "TuesdayRadBtn";
+            this.TuesdayRadBtn.Size = new System.Drawing.Size(59, 16);
+            this.TuesdayRadBtn.TabIndex = 40;
+            this.TuesdayRadBtn.TabStop = true;
+            this.TuesdayRadBtn.Text = "화요일";
+            this.TuesdayRadBtn.UseVisualStyleBackColor = true;
+            // 
+            // WednesdayRadBtn
+            // 
+            this.WednesdayRadBtn.AutoSize = true;
+            this.WednesdayRadBtn.Location = new System.Drawing.Point(458, 149);
+            this.WednesdayRadBtn.Name = "WednesdayRadBtn";
+            this.WednesdayRadBtn.Size = new System.Drawing.Size(59, 16);
+            this.WednesdayRadBtn.TabIndex = 41;
+            this.WednesdayRadBtn.TabStop = true;
+            this.WednesdayRadBtn.Text = "수요일";
+            this.WednesdayRadBtn.UseVisualStyleBackColor = true;
+            // 
+            // ThursdayRadBtn
+            // 
+            this.ThursdayRadBtn.AutoSize = true;
+            this.ThursdayRadBtn.Location = new System.Drawing.Point(458, 176);
+            this.ThursdayRadBtn.Name = "ThursdayRadBtn";
+            this.ThursdayRadBtn.Size = new System.Drawing.Size(59, 16);
+            this.ThursdayRadBtn.TabIndex = 42;
+            this.ThursdayRadBtn.TabStop = true;
+            this.ThursdayRadBtn.Text = "목요일";
+            this.ThursdayRadBtn.UseVisualStyleBackColor = true;
+            // 
+            // FridayRadBtn
+            // 
+            this.FridayRadBtn.AutoSize = true;
+            this.FridayRadBtn.Location = new System.Drawing.Point(458, 203);
+            this.FridayRadBtn.Name = "FridayRadBtn";
+            this.FridayRadBtn.Size = new System.Drawing.Size(59, 16);
+            this.FridayRadBtn.TabIndex = 43;
+            this.FridayRadBtn.TabStop = true;
+            this.FridayRadBtn.Text = "금요일";
+            this.FridayRadBtn.UseVisualStyleBackColor = true;
+            // 
+            // SaturdayRadBtn
+            // 
+            this.SaturdayRadBtn.AutoSize = true;
+            this.SaturdayRadBtn.Location = new System.Drawing.Point(458, 230);
+            this.SaturdayRadBtn.Name = "SaturdayRadBtn";
+            this.SaturdayRadBtn.Size = new System.Drawing.Size(59, 16);
+            this.SaturdayRadBtn.TabIndex = 44;
+            this.SaturdayRadBtn.TabStop = true;
+            this.SaturdayRadBtn.Text = "토요일";
+            this.SaturdayRadBtn.UseVisualStyleBackColor = true;
+            // 
+            // SundayRadBtn
+            // 
+            this.SundayRadBtn.AutoSize = true;
+            this.SundayRadBtn.Location = new System.Drawing.Point(458, 257);
+            this.SundayRadBtn.Name = "SundayRadBtn";
+            this.SundayRadBtn.Size = new System.Drawing.Size(59, 16);
+            this.SundayRadBtn.TabIndex = 45;
+            this.SundayRadBtn.TabStop = true;
+            this.SundayRadBtn.Text = "일요일";
+            this.SundayRadBtn.UseVisualStyleBackColor = true;
+            // 
             // ReservationSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(429, 450);
+            this.ClientSize = new System.Drawing.Size(1045, 450);
+            this.Controls.Add(this.SundayRadBtn);
+            this.Controls.Add(this.SaturdayRadBtn);
+            this.Controls.Add(this.FridayRadBtn);
+            this.Controls.Add(this.ThursdayRadBtn);
+            this.Controls.Add(this.WednesdayRadBtn);
+            this.Controls.Add(this.TuesdayRadBtn);
+            this.Controls.Add(this.MondayRadBtn);
+            this.Controls.Add(this.numericUpDown7);
+            this.Controls.Add(this.numericUpDown6);
+            this.Controls.Add(this.numericUpDown5);
+            this.Controls.Add(this.numericUpDown4);
+            this.Controls.Add(this.numericUpDown3);
+            this.Controls.Add(this.numericUpDown2);
+            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.dateTimePicker14);
+            this.Controls.Add(this.dateTimePicker13);
+            this.Controls.Add(this.dateTimePicker12);
+            this.Controls.Add(this.dateTimePicker11);
+            this.Controls.Add(this.dateTimePicker10);
+            this.Controls.Add(this.dateTimePicker9);
+            this.Controls.Add(this.dateTimePicker8);
+            this.Controls.Add(this.dateTimePicker7);
+            this.Controls.Add(this.dateTimePicker6);
+            this.Controls.Add(this.dateTimePicker5);
+            this.Controls.Add(this.dateTimePicker4);
+            this.Controls.Add(this.dateTimePicker3);
+            this.Controls.Add(this.dateTimePicker2);
+            this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.delete_btn);
             this.Controls.Add(this.group_button);
             this.Controls.Add(this.all_button);
@@ -268,7 +569,15 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -294,5 +603,33 @@
         private System.Windows.Forms.Button all_button;
         private System.Windows.Forms.Button group_button;
         private System.Windows.Forms.Button delete_btn;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.DateTimePicker dateTimePicker3;
+        private System.Windows.Forms.DateTimePicker dateTimePicker4;
+        private System.Windows.Forms.DateTimePicker dateTimePicker5;
+        private System.Windows.Forms.DateTimePicker dateTimePicker6;
+        private System.Windows.Forms.DateTimePicker dateTimePicker7;
+        private System.Windows.Forms.DateTimePicker dateTimePicker8;
+        private System.Windows.Forms.DateTimePicker dateTimePicker9;
+        private System.Windows.Forms.DateTimePicker dateTimePicker10;
+        private System.Windows.Forms.DateTimePicker dateTimePicker11;
+        private System.Windows.Forms.DateTimePicker dateTimePicker12;
+        private System.Windows.Forms.DateTimePicker dateTimePicker13;
+        private System.Windows.Forms.DateTimePicker dateTimePicker14;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown numericUpDown3;
+        private System.Windows.Forms.NumericUpDown numericUpDown4;
+        private System.Windows.Forms.NumericUpDown numericUpDown5;
+        private System.Windows.Forms.NumericUpDown numericUpDown6;
+        private System.Windows.Forms.NumericUpDown numericUpDown7;
+        private System.Windows.Forms.RadioButton MondayRadBtn;
+        private System.Windows.Forms.RadioButton TuesdayRadBtn;
+        private System.Windows.Forms.RadioButton WednesdayRadBtn;
+        private System.Windows.Forms.RadioButton ThursdayRadBtn;
+        private System.Windows.Forms.RadioButton FridayRadBtn;
+        private System.Windows.Forms.RadioButton SaturdayRadBtn;
+        private System.Windows.Forms.RadioButton SundayRadBtn;
     }
 }

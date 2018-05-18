@@ -59,6 +59,37 @@ namespace GrixControler
 
         private void confirmButton_click(object sender, EventArgs e)
         {
+
+
+            //SQL
+            row = roomGridView.RowCount;
+
+            int scalarNum;
+
+            SQLExcute("delete from idTable");
+            SQLExcute("update sqlite_sequence set seq = 0 where name = 'idTable'");
+
+
+            try
+            {
+                for (int i = 0; i < row - 1; i++)
+                {
+
+                    sql = "insert into idTable(roomID,roomNum) Values(\'" +
+                        roomGridView.Rows[i].Cells[1].FormattedValue.ToString() + "\',\'" +
+                        roomGridView.Rows[i].Cells[2].FormattedValue.ToString() + "\')";
+                    SQLExcute(sql);
+
+                }
+
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+            }
+
+            show_roomGridView();
+
             this.Close();
             //SQL
             /*
@@ -201,35 +232,6 @@ namespace GrixControler
         private void apply_btn_Click(object sender, EventArgs e)
         {
         
-            
-            //SQL
-            row = roomGridView.RowCount;
-
-            int scalarNum;
-
-            SQLExcute("delete from idTable");
-            SQLExcute("update sqlite_sequence set seq = 0 where name = 'idTable'");
-
-
-            try
-            {
-                for (int i = 0; i < row - 1; i++)
-                {
-
-                    sql = "insert into idTable(roomID,roomNum) Values(\'" +
-                        roomGridView.Rows[i].Cells[1].FormattedValue.ToString() + "\',\'" +
-                        roomGridView.Rows[i].Cells[2].FormattedValue.ToString() + "\')";
-                    SQLExcute(sql);
-
-                }
-
-            }
-            catch (Exception er)
-            {
-                MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
-            }
-
-            show_roomGridView();
         }
 
         private void ProgramSetting_FormClosed(object sender, FormClosedEventArgs e)
