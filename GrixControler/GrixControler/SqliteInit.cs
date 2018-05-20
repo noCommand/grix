@@ -32,12 +32,21 @@ namespace GrixControler
 
 
             sql = "create table if not exists idTable(groupNum integer primary key autoincrement," +
-                " roomID string, roomNum string, onTime string, offTime string ," +
-                "reservTemp string )";
+                " roomID string default \'X\', roomNum string," +
+                " MondayStartTime string Default \'오전0800\', MondayEndTime string Default '오후0800', MondayTemp string default 25," +
+                " TuesdayStartTime string Default \'오전0800\', TuesdayEndTime string Default \'오후0800\', TuesdayTemp string default 25," +
+                " WednesdayStartTime string Default \'오전0800\', WednesdayEndTime string Default \'오후0800\', WednesdayTemp string default 25," +
+                " ThursdayStartTime string Default \'오전0800\', ThursdayEndTime string Default \'오후0800\', ThursdayTemp string default 25," +
+                " FridayStartTime string Default \'오전0800\', FridayEndTime string Default \'오후0800\', FridayTemp string default 25," +
+                " SaturdayStartTime string Default \'오전0800\', SaturdayEndTime string Default \'오후0800\', SaturdayTemp string default 25," +
+                " SundayStartTime string Default \'오전0800\', SundayEndTime string Default \'오후0800\', SundayTemp string default 25," +
+                " ReservationStartDay string Default \'-\' , ReservationEndDay string Default \'-\'" +
+                ")";
+
             command = new SQLiteCommand(sql, dbConn);
             result = command.ExecuteNonQuery();
 
-            
+
             /**
              * 18.04.19  16:03 
              * programSetting sql 데이터 삽입 코딩중
@@ -57,7 +66,7 @@ namespace GrixControler
              * */
 
         }
-        
+
 
 
     }

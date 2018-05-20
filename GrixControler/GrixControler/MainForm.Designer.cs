@@ -183,7 +183,6 @@
             // panel3
             // 
             this.panel3.Controls.Add(this.testButton);
-            this.panel3.Controls.Add(this.customButton2);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";

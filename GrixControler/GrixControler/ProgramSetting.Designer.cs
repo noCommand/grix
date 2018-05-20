@@ -63,7 +63,7 @@
             // 
             // confirmButton
             // 
-            this.confirmButton.Location = new System.Drawing.Point(136, 320);
+            this.confirmButton.Location = new System.Drawing.Point(136, 363);
             this.confirmButton.Name = "confirmButton";
             this.confirmButton.Size = new System.Drawing.Size(75, 23);
             this.confirmButton.TabIndex = 2;
@@ -73,7 +73,7 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(217, 320);
+            this.cancelButton.Location = new System.Drawing.Point(217, 363);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 3;
@@ -107,7 +107,7 @@
             this.groupBox1.Controls.Add(this.roomGridView);
             this.groupBox1.Location = new System.Drawing.Point(12, 76);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(280, 209);
+            this.groupBox1.Size = new System.Drawing.Size(280, 271);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Room Setting";
@@ -123,7 +123,7 @@
             this.roomGridView.Location = new System.Drawing.Point(19, 18);
             this.roomGridView.Name = "roomGridView";
             this.roomGridView.RowTemplate.Height = 23;
-            this.roomGridView.Size = new System.Drawing.Size(244, 183);
+            this.roomGridView.Size = new System.Drawing.Size(244, 242);
             this.roomGridView.TabIndex = 0;
             this.roomGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.roomGridView_CellContentClick);
             this.roomGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.roomGridView_CellValueChanged);
@@ -161,7 +161,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(313, 351);
+            this.ClientSize = new System.Drawing.Size(305, 400);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.resetButton);
             this.Controls.Add(this.portGroupBox);

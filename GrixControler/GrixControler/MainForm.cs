@@ -292,9 +292,9 @@ namespace GrixControler
                     }
                     defaultCount = currentCount;
 
-                    CheckReservation_OFF(CheckReservationTuple_OFF());
-                    CheckReservation_ON(CheckReservationTuple_ON());
-                    ExecuteReservation(CheckReservationTuple_ON(), CheckReservationTuple_OFF());
+                    //CheckReservation_OFF(CheckReservationTuple_OFF());
+                    //CheckReservation_ON(CheckReservationTuple_ON());
+                    //ExecuteReservation(CheckReservationTuple_ON(), CheckReservationTuple_OFF());
                 }
 
 
