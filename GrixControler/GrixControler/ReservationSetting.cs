@@ -35,7 +35,7 @@ namespace GrixControler
         bool ThursdayEndIsChecked = false;
         bool FridayEndIsChecked = false;
         bool SaturdayEndIsChecked = false;
-         bool SundayEndIsChecked = false;
+        bool SundayEndIsChecked = false;
 
         public ReservationSetting(MainForm main)
         {
@@ -57,7 +57,7 @@ namespace GrixControler
             RoomList.CheckBoxes = true;
 
             RoomList.Columns.Add("", 50);
-            
+
             dbConn.Open();
 
             try
@@ -97,7 +97,7 @@ namespace GrixControler
                     if (RoomList.Items[i].Checked == true)
 
                     {
-                        checkRoomNum.Append(RoomList.Items[i].Text+ "호 ");
+                        checkRoomNum.Append(RoomList.Items[i].Text + "호 ");
                         try
                         {
                             sql = "update idTable set MondayStartTime = \'"
@@ -128,7 +128,7 @@ namespace GrixControler
                            "SundayStartTime = \'" + SundayStartTimePicker.Value.ToString("tthhmm") + "\', " +
                            "SundayEndTime = \'" + SundayEndTimePicker.Value.ToString("tthhmm") + "\', " +
                            "SundayTemp = \'" + SundayTempUpDown.Value.ToString() + "\', " +
-                           
+
                            "ReservationStartDay = \'" + FindReservationStartDayFromForm() + "\', " +
                            "ReservationEndDay = \'" + FindReservationEndDayFromForm() + "\' " +
 
@@ -142,7 +142,7 @@ namespace GrixControler
                         {
                             MessageBox.Show(easda.ToString());
                         }
-                        
+
 
                     }
 
@@ -175,31 +175,31 @@ namespace GrixControler
                         try
                         {
                             sql = "update idTable set MondayStartTime = \'오전0800\', " +
-                              "MondayEndTime = \'오전0800\', " +
+                              "MondayEndTime = \'오후0800\', " +
                               "MondayTemp = \'25\', " +
 
                               "TuesdayStartTime = \'오전0800\', " +
-                              "TuesdayEndTime = \'오전0800\', " +
+                              "TuesdayEndTime = \'오후0800\', " +
                               "TuesdayTemp = \'25\', " +
 
                               "WednesdayStartTime = \'오전0800\', " +
-                              "WednesdayEndTime = \'오전0800\', " +
+                              "WednesdayEndTime = \'오후0800\', " +
                               "WednesdayTemp = \'25\', " +
 
                               "ThursdayStartTime = \'오전0800\', " +
-                              "ThursdayEndTime = \'오전0800\', " +
+                              "ThursdayEndTime = \'오후0800\', " +
                               "ThursdayTemp = \'25\', " +
 
                               "FridayStartTime = \'오전0800\', " +
-                              "FridayEndTime = \'오전0800\', " +
+                              "FridayEndTime = \'오후0800\', " +
                               "FridayTemp = \'25\', " +
 
                               "SaturdayStartTime = \'오전0800\', " +
-                              "SaturdayEndTime = \'오전0800\', " +
+                              "SaturdayEndTime = \'오후0800\', " +
                               "SaturdayTemp = \'25\', " +
 
                               "SundayStartTime = \'오전0800\', " +
-                              "SundayEndTime = \'오전0800\', " +
+                              "SundayEndTime = \'오후0800\', " +
                               "SundayTemp = \'25\', " +
 
                               "ReservationStartDay = \'-\', " +
@@ -324,27 +324,27 @@ namespace GrixControler
                               "MondayTemp = \'25\', " +
 
                               "TuesdayStartTime = \'오전0800\', " +
-                              "TuesdayEndTime = \'오전0800\', " +
+                              "TuesdayEndTime = \'오후0800\', " +
                               "TuesdayTemp = \'25\', " +
 
                               "WednesdayStartTime = \'오전0800\', " +
-                              "WednesdayEndTime = \'오전0800\', " +
+                              "WednesdayEndTime = \'오후0800\', " +
                               "WednesdayTemp = \'25\', " +
 
                               "ThursdayStartTime = \'오전0800\', " +
-                              "ThursdayEndTime = \'오전0800\', " +
+                              "ThursdayEndTime = \'오후0800\', " +
                               "ThursdayTemp = \'25\', " +
 
                               "FridayStartTime = \'오전0800\', " +
-                              "FridayEndTime = \'오전0800\', " +
+                              "FridayEndTime = \'오후0800\', " +
                               "FridayTemp = \'25\', " +
 
                               "SaturdayStartTime = \'오전0800\', " +
-                              "SaturdayEndTime = \'오전0800\', " +
+                              "SaturdayEndTime = \'오후0800\', " +
                               "SaturdayTemp = \'25\', " +
 
                               "SundayStartTime = \'오전0800\', " +
-                              "SundayEndTime = \'오전0800\', " +
+                              "SundayEndTime = \'오후0800\', " +
                               "SundayTemp = \'25\', " +
 
                               "ReservationStartDay = \'-\', " +
@@ -375,7 +375,7 @@ namespace GrixControler
             show_RoomList();
         }
 
-        
+
 
         private String FindReservationStartDayFromForm()
         {
@@ -389,30 +389,30 @@ namespace GrixControler
             {
                 appendDay.Append("화");
             }
-             if (WednesdayStartCheckbox.Checked)
+            if (WednesdayStartCheckbox.Checked)
             {
                 appendDay.Append("수");
             }
-             if (ThursdayStartCheckbox.Checked)
+            if (ThursdayStartCheckbox.Checked)
             {
                 appendDay.Append("목");
             }
-             if (FridayStartCheckbox.Checked)
+            if (FridayStartCheckbox.Checked)
             {
                 appendDay.Append("금");
             }
-             if (SaturdayStartCheckbox.Checked)
+            if (SaturdayStartCheckbox.Checked)
             {
                 appendDay.Append("토");
             }
-             if (SundayStartCheckbox.Checked)
+            if (SundayStartCheckbox.Checked)
             {
                 appendDay.Append("일");
             }
-            if(!MondayStartCheckbox.Checked&&
-                !TuesdayStartCheckbox.Checked&&!WednesdayStartCheckbox.Checked&&
-                !ThursdayStartCheckbox.Checked&&!FridayStartCheckbox.Checked&&
-                    !SaturdayStartCheckbox.Checked&&!SundayStartCheckbox.Checked)
+            if (!MondayStartCheckbox.Checked &&
+                !TuesdayStartCheckbox.Checked && !WednesdayStartCheckbox.Checked &&
+                !ThursdayStartCheckbox.Checked && !FridayStartCheckbox.Checked &&
+                    !SaturdayStartCheckbox.Checked && !SundayStartCheckbox.Checked)
             {
                 appendDay.Append("-");
             }
@@ -428,31 +428,31 @@ namespace GrixControler
             {
                 appendDay.Append("월");
             }
-             if (TuesdayEndCheckbox.Checked)
+            if (TuesdayEndCheckbox.Checked)
             {
                 appendDay.Append("화");
             }
-             if (WednesdayEndCheckbox.Checked)
+            if (WednesdayEndCheckbox.Checked)
             {
                 appendDay.Append("수");
             }
-             if (ThursdayEndCheckbox.Checked)
+            if (ThursdayEndCheckbox.Checked)
             {
                 appendDay.Append("목");
             }
-             if (FridayEndCheckbox.Checked)
+            if (FridayEndCheckbox.Checked)
             {
                 appendDay.Append("금");
             }
-             if (SaturdayEndCheckbox.Checked)
+            if (SaturdayEndCheckbox.Checked)
             {
                 appendDay.Append("토");
             }
-             if (SundayEndCheckbox.Checked)
+            if (SundayEndCheckbox.Checked)
             {
                 appendDay.Append("일");
             }
-            if(!MondayStartCheckbox.Checked &&
+            if (!MondayStartCheckbox.Checked &&
                 !TuesdayStartCheckbox.Checked && !WednesdayStartCheckbox.Checked &&
                 !ThursdayStartCheckbox.Checked && !FridayStartCheckbox.Checked &&
                     !SaturdayStartCheckbox.Checked && !SundayStartCheckbox.Checked)
@@ -491,32 +491,29 @@ namespace GrixControler
             {
                 MondayStartCheckbox.Checked = true;
             }
-            else if (day == "화")
+            if (day == "화")
             {
                 TuesdayStartCheckbox.Checked = true;
             }
-            else if (day == "수")
+            if (day == "수")
             {
                 WednesdayStartCheckbox.Checked = true;
             }
-            else if (day == "목")
+            if (day == "목")
             {
                 ThursdayStartCheckbox.Checked = true;
             }
-            else if (day == "금")
+            if (day == "금")
             {
                 FridayStartCheckbox.Checked = true;
             }
-            else if (day == "토")
+            if (day == "토")
             {
                 SaturdayStartCheckbox.Checked = true;
             }
-            else if (day == "일")
+            if (day == "일")
             {
                 SundayStartCheckbox.Checked = true;
-            }
-            else {
-                AllStartCheckboxUnCheck();
             }
         }
 
@@ -526,37 +523,53 @@ namespace GrixControler
             {
                 MondayEndCheckbox.Checked = true;
             }
-            else if (day == "화")
+            if (day == "화")
             {
                 TuesdayEndCheckbox.Checked = true;
             }
-            else if (day == "수")
+            if (day == "수")
             {
                 WednesdayEndCheckbox.Checked = true;
             }
-            else if (day == "목")
+            if (day == "목")
             {
                 ThursdayEndCheckbox.Checked = true;
             }
-            else if (day == "금")
+            if (day == "금")
             {
                 FridayEndCheckbox.Checked = true;
             }
-            else if (day == "토")
+            if (day == "토")
             {
                 SaturdayEndCheckbox.Checked = true;
             }
-            else if (day == "일")
+            if (day == "일")
             {
                 SundayEndCheckbox.Checked = true;
             }
-            else {
-                AllEndCheckboxUnCheck();
+        }
+
+        private int SetMorningEveningToInt(String time)
+        {
+            if (time == "오전")
+            {
+                return 0;
             }
+            else
+            {
+                return 1;
+            }
+        }
+
+        private void SetTimeIfHourOverflow(DateTimePicker dateTimePicker)
+        {
+            dateTimePicker.Value = new DateTime(2000, 1, 1, 12,00, 0);
         }
 
         private void Show_RoomReservationInfo()
         {
+            AllStartCheckboxUnCheck();
+            AllEndCheckboxUnCheck();
             if (RoomList.Items.Count > 0)
             {
                 for (int i = 0; i <= RoomList.Items.Count - 1; i++)
@@ -579,78 +592,193 @@ namespace GrixControler
 
                             while (rdr.Read())
                             {
-                                MondayStartTimePicker.Value = new DateTime(2000, 1, 1,
-                                    Convert.ToInt32(rdr["MondayStartTime"].ToString().Substring(2, 2)),
-                                    Convert.ToInt32(rdr["MondayStartTime"].ToString().Substring(4, 2)), 0);
+                                String mondayOnStr = rdr["MondayStartTime"].ToString();
+                                String tuesdayOnStr = rdr["TuesdayStartTime"].ToString();
+                                String wednesdayOnStr = rdr["WednesdayStartTime"].ToString();
+                                String thursdayOnStr = rdr["ThursdayStartTime"].ToString();
+                                String fridayOnStr = rdr["FridayStartTime"].ToString();
+                                String saturdayOnStr = rdr["SaturdayStartTime"].ToString();
+                                String sundayOnStr = rdr["SundayStartTime"].ToString();
+
+                                String mondayOffStr = rdr["MondayEndTime"].ToString();
+                                String tuesdayOffStr = rdr["TuesdayEndTime"].ToString();
+                                String wednesdayOffStr = rdr["WednesdayEndTime"].ToString();
+                                String thursdayOffStr = rdr["ThursdayEndTime"].ToString();
+                                String fridayOffStr = rdr["FridayEndTime"].ToString();
+                                String saturdayOffStr = rdr["SaturdayEndTime"].ToString();
+                                String sundayOffStr = rdr["SundayEndTime"].ToString();
+                                
+                                if(Convert.ToInt32(mondayOnStr.Substring(2, 2)) + SetMorningEveningToInt(mondayOnStr.Substring(0, 2)) * 12 == 24)
+                                {
+                                    SetTimeIfHourOverflow(MondayStartTimePicker);
+                                }
+                                else
+                                {
+                                    MondayStartTimePicker.Value = new DateTime(2000, 1, 1,
+                                       Convert.ToInt32(mondayOnStr.Substring(2, 2)) + SetMorningEveningToInt(mondayOnStr.Substring(0, 2)) * 12,
+                                       Convert.ToInt32(mondayOnStr.Substring(4, 2)), 0);
+                                }
                                 MondayTempUpDown.Value = Convert.ToInt32(rdr["MondayTemp"].ToString());
 
-                                TuesdayStartTimePicker.Value = new DateTime(2000, 1, 1,
-                                   Convert.ToInt32(rdr["TuesdayStartTime"].ToString().Substring(2, 2)),
-                                   Convert.ToInt32(rdr["TuesdayStartTime"].ToString().Substring(4, 2)), 0);
+                                if(Convert.ToInt32(tuesdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(tuesdayOnStr.Substring(0, 2)) * 12 == 24)
+                                {
+                                    SetTimeIfHourOverflow(TuesdayStartTimePicker);
+                                }
+                                else
+                                {
+                                    TuesdayStartTimePicker.Value = new DateTime(2000, 1, 1,
+                                   Convert.ToInt32(tuesdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(tuesdayOnStr.Substring(0, 2)) * 12,
+                                   Convert.ToInt32(tuesdayOnStr.Substring(4, 2)), 0);
+                                }
+                                
                                 TuesdayTempUpDown.Value = Convert.ToInt32(rdr["TuesdayTemp"].ToString());
-
-                                WednesdayStartTimePicker.Value = new DateTime(2000, 1, 1,
-                                    Convert.ToInt32(rdr["WednesdayStartTime"].ToString().Substring(2, 2)),
-                                    Convert.ToInt32(rdr["WednesdayStartTime"].ToString().Substring(4, 2)), 0);
+                                if(Convert.ToInt32(wednesdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(wednesdayOnStr.Substring(0, 2)) * 12 == 24)
+                                {
+                                    SetTimeIfHourOverflow(WednesdayStartTimePicker);
+                                }
+                                else
+                                {
+                                    WednesdayStartTimePicker.Value = new DateTime(2000, 1, 1,
+                                        Convert.ToInt32(wednesdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(wednesdayOnStr.Substring(0, 2)) * 12,
+                                        Convert.ToInt32(wednesdayOnStr.Substring(4, 2)), 0);
+                                }
                                 WednesdayTempUpDown.Value = Convert.ToInt32(rdr["WednesdayTemp"].ToString());
 
-                                ThursdayStartTimePicker.Value = new DateTime(2000, 1, 1,
-                                    Convert.ToInt32(rdr["ThursdayStartTime"].ToString().Substring(2, 2)),
-                                    Convert.ToInt32(rdr["ThursdayStartTime"].ToString().Substring(4, 2)), 0);
+                                if(Convert.ToInt32(thursdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(thursdayOnStr.Substring(0, 2)) * 12 == 24)
+                                {
+                                    SetTimeIfHourOverflow(ThursdayStartTimePicker);
+                                }else
+                                {
+                                    ThursdayStartTimePicker.Value = new DateTime(2000, 1, 1,
+                                        Convert.ToInt32(thursdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(thursdayOnStr.Substring(0, 2)) * 12,
+                                        Convert.ToInt32(thursdayOnStr.Substring(4, 2)), 0);
+                                }
                                 ThursdayTempUpDown.Value = Convert.ToInt32(rdr["ThursdayTemp"].ToString());
 
-                                FridayStartTimePicker.Value = new DateTime(2000, 1, 1,
-                                    Convert.ToInt32(rdr["FridayStartTime"].ToString().Substring(2, 2)),
-                                    Convert.ToInt32(rdr["FridayStartTime"].ToString().Substring(4, 2)), 0);
+                                if(Convert.ToInt32(fridayOnStr.Substring(2, 2)) + SetMorningEveningToInt(fridayOnStr.Substring(0, 2)) * 12 == 24)
+                                {
+                                    SetTimeIfHourOverflow(FridayStartTimePicker);
+                                }else
+                                {
+                                    FridayStartTimePicker.Value = new DateTime(2000, 1, 1,
+                                        Convert.ToInt32(fridayOnStr.Substring(2, 2)) + SetMorningEveningToInt(fridayOnStr.Substring(0, 2)) * 12,
+                                        Convert.ToInt32(fridayOnStr.Substring(4, 2)), 0);
+                                }
                                 FridayTempUpDown.Value = Convert.ToInt32(rdr["FridayTemp"].ToString());
-                                
-                                SaturdayStartTimePicker.Value = new DateTime(2000, 1, 1,
-                                    Convert.ToInt32(rdr["SaturdayStartTime"].ToString().Substring(2, 2)),
-                                    Convert.ToInt32(rdr["SaturdayStartTime"].ToString().Substring(4, 2)), 0);
+
+                                if (Convert.ToInt32(saturdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(saturdayOnStr.Substring(0, 2)) * 12 == 24)
+                                {
+                                    SetTimeIfHourOverflow(SaturdayStartTimePicker);
+                                }
+                                else
+                                {
+                                    SaturdayStartTimePicker.Value = new DateTime(2000, 1, 1,
+                                        Convert.ToInt32(saturdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(saturdayOnStr.Substring(0, 2)) * 12,
+                                        Convert.ToInt32(saturdayOnStr.Substring(4, 2)), 0);
+
+                                }
                                 SaturdayTempUpDown.Value = Convert.ToInt32(rdr["SaturdayTemp"].ToString());
 
-                                SundayStartTimePicker.Value = new DateTime(2000, 1, 1,
-                                    Convert.ToInt32(rdr["SundayStartTime"].ToString().Substring(2, 2)),
-                                    Convert.ToInt32(rdr["SundayStartTime"].ToString().Substring(4, 2)), 0);
+                                if (Convert.ToInt32(sundayOnStr.Substring(2, 2)) + SetMorningEveningToInt(sundayOnStr.Substring(0, 2)) * 12 == 24)
+                                {
+                                    SetTimeIfHourOverflow(SundayStartTimePicker);
+                                }
+                                else
+                                {
+                                    SundayStartTimePicker.Value = new DateTime(2000, 1, 1,
+                                   Convert.ToInt32(sundayOnStr.Substring(2, 2)) + SetMorningEveningToInt(sundayOnStr.Substring(0, 2)) * 12,
+                                   Convert.ToInt32(sundayOnStr.Substring(4, 2)), 0);
+                                }
+                               
                                 SundayTempUpDown.Value = Convert.ToInt32(rdr["SundayTemp"].ToString());
 
+                                if (Convert.ToInt32(mondayOffStr.Substring(2, 2)) + SetMorningEveningToInt(mondayOffStr.Substring(0, 2)) * 12 == 24)
+                                {
+                                    SetTimeIfHourOverflow(MondayEndTimePicker);
+                                }
+                                else
+                                {
+                                    MondayEndTimePicker.Value = new DateTime(2000, 1, 1,
+                                   Convert.ToInt32(mondayOffStr.Substring(2, 2)) + SetMorningEveningToInt(mondayOffStr.Substring(0, 2)) * 12,
+                                   Convert.ToInt32(mondayOffStr.Substring(4, 2)), 0);
+                                }
+                                
 
-                                MondayEndTimePicker.Value = new DateTime(2000, 1, 1,
-                                   Convert.ToInt32(rdr["MondayEndTime"].ToString().Substring(2, 2)),
-                                   Convert.ToInt32(rdr["MondayEndTime"].ToString().Substring(4, 2)), 0);
+                                if (Convert.ToInt32(tuesdayOffStr.Substring(2, 2)) + SetMorningEveningToInt(tuesdayOffStr.Substring(0, 2)) * 12 == 24)
+                                {
+                                    SetTimeIfHourOverflow(TuesdayEndTimePicker);
+                                }
+                                else
+                                {
+                                    TuesdayEndTimePicker.Value = new DateTime(2000, 1, 1,
+                                   Convert.ToInt32(tuesdayOffStr.Substring(2, 2)) + SetMorningEveningToInt(tuesdayOffStr.Substring(0, 2)) * 12,
+                                   Convert.ToInt32(tuesdayOffStr.Substring(4, 2)), 0);
+                                }
 
-                                TuesdayEndTimePicker.Value = new DateTime(2000, 1, 1,
-                                   Convert.ToInt32(rdr["TuesdayEndTime"].ToString().Substring(2, 2)),
-                                   Convert.ToInt32(rdr["TuesdayEndTime"].ToString().Substring(4, 2)), 0);
-
-                                WednesdayEndTimePicker.Value = new DateTime(2000, 1, 1,
-                                    Convert.ToInt32(rdr["WednesdayEndTime"].ToString().Substring(2, 2)),
-                                    Convert.ToInt32(rdr["WednesdayEndTime"].ToString().Substring(4, 2)), 0);
-
-                                ThursdayEndTimePicker.Value = new DateTime(2000, 1, 1,
-                                    Convert.ToInt32(rdr["ThursdayEndTime"].ToString().Substring(2, 2)),
-                                    Convert.ToInt32(rdr["ThursdayEndTime"].ToString().Substring(4, 2)), 0);
-
-                                FridayEndTimePicker.Value = new DateTime(2000, 1, 1,
-                                    Convert.ToInt32(rdr["FridayEndTime"].ToString().Substring(2, 2)),
-                                    Convert.ToInt32(rdr["FridayEndTime"].ToString().Substring(4, 2)), 0);
-
-                                SaturdayEndTimePicker.Value = new DateTime(2000, 1, 1,
-                                    Convert.ToInt32(rdr["SaturdayEndTime"].ToString().Substring(2, 2)),
-                                    Convert.ToInt32(rdr["SaturdayEndTime"].ToString().Substring(4, 2)), 0);
-
-                                SundayEndTimePicker.Value = new DateTime(2000, 1, 1,
-                                    Convert.ToInt32(rdr["SundayEndTime"].ToString().Substring(2, 2)),
-                                    Convert.ToInt32(rdr["SundayEndTime"].ToString().Substring(4, 2)), 0);
+                                if (Convert.ToInt32(wednesdayOffStr.Substring(2, 2)) + SetMorningEveningToInt(wednesdayOffStr.Substring(0, 2)) * 12 == 24)
+                                {
+                                    SetTimeIfHourOverflow(WednesdayEndTimePicker);
+                                }
+                                else
+                                {
+                                    WednesdayEndTimePicker.Value = new DateTime(2000, 1, 1,
+                                    Convert.ToInt32(wednesdayOffStr.Substring(2, 2)) + SetMorningEveningToInt(wednesdayOffStr.Substring(0, 2)) * 12,
+                                    Convert.ToInt32(wednesdayOffStr.Substring(4, 2)), 0);
+                                }
+                                
+                                if (Convert.ToInt32(thursdayOffStr.Substring(2, 2)) + SetMorningEveningToInt(thursdayOffStr.Substring(0, 2)) * 12 == 24)
+                                {
+                                    SetTimeIfHourOverflow(ThursdayEndTimePicker);
+                                }
+                                else
+                                {
+                                    ThursdayEndTimePicker.Value = new DateTime(2000, 1, 1,
+                                    Convert.ToInt32(thursdayOffStr.Substring(2, 2)) + SetMorningEveningToInt(thursdayOffStr.Substring(0, 2)) * 12,
+                                    Convert.ToInt32(thursdayOffStr.Substring(4, 2)), 0);
+                                }
+                                
+                                if (Convert.ToInt32(fridayOffStr.Substring(2, 2)) + SetMorningEveningToInt(fridayOffStr.Substring(0, 2)) * 12 == 24)
+                                {
+                                    SetTimeIfHourOverflow(FridayEndTimePicker);
+                                }
+                                else
+                                {
+                                    FridayEndTimePicker.Value = new DateTime(2000, 1, 1,
+                                   Convert.ToInt32(fridayOffStr.Substring(2, 2)) + SetMorningEveningToInt(fridayOffStr.Substring(0, 2)) * 12,
+                                   Convert.ToInt32(fridayOffStr.Substring(4, 2)), 0);
+                                }
+                               
+                                if (Convert.ToInt32(saturdayOffStr.Substring(2, 2)) + SetMorningEveningToInt(saturdayOffStr.Substring(0, 2)) * 12 == 24)
+                                {
+                                    SetTimeIfHourOverflow(SaturdayEndTimePicker);
+                                }
+                                else
+                                {
+                                    SaturdayEndTimePicker.Value = new DateTime(2000, 1, 1,
+                                    Convert.ToInt32(saturdayOffStr.Substring(2, 2)) + SetMorningEveningToInt(saturdayOffStr.Substring(0, 2)) * 12,
+                                    Convert.ToInt32(saturdayOffStr.Substring(4, 2)), 0);
+                                }
+                                
+                                if (Convert.ToInt32(sundayOffStr.Substring(2, 2)) + SetMorningEveningToInt(sundayOffStr.Substring(0, 2)) * 12  == 24)
+                                {
+                                    SetTimeIfHourOverflow(SundayEndTimePicker);
+                                }
+                                else
+                                {
+                                    SundayEndTimePicker.Value = new DateTime(2000, 1, 1,
+                                    Convert.ToInt32(sundayOffStr.Substring(2, 2)) + SetMorningEveningToInt(sundayOffStr.Substring(0, 2)) * 12,
+                                    Convert.ToInt32(sundayOffStr.Substring(4, 2)), 0);
+                                }
+                                
 
                                 startDay = SeperateDay(rdr["ReservationStartDay"].ToString());
                                 endDay = SeperateDay(rdr["ReservationEndDay"].ToString());
 
-                                for(count = 0; count < startDay.Length; count++)
+                                for (count = 0; count < startDay.Length; count++)
                                 {
                                     FindReservationStartDayFromDB(startDay[count]);
                                 }
-                                for(count = 0; count < endDay.Length; count++)
+                                for (count = 0; count < endDay.Length; count++)
                                 {
                                     FindReservationEndDayFromDB(endDay[count]);
                                 }
@@ -672,9 +800,9 @@ namespace GrixControler
         private String[] SeperateDay(String str)
         {
             String[] strArray = new String[str.Length];
-            for(int i = 0; i < str.Length; i++)
+            for (int i = 0; i < str.Length; i++)
             {
-                strArray[i] = str.Substring(i,1);
+                strArray[i] = str.Substring(i, 1);
             }
             return strArray;
         }

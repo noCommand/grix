@@ -39,15 +39,38 @@ namespace GrixControler
 
         String[] roomID;
 
-        String[] reservationTime_ON;
+        String[] reservationTime_Mon_ON;
+        String[] reservationTime_Tues_ON;
+        String[] reservationTime_Wednes_ON;
+        String[] reservationTime_Thurs_ON;
+        String[] reservationTime_Fri_ON;
+        String[] reservationTime_Satur_ON;
+        String[] reservationTime_Sun_ON;
+
+
+        String[] reservationTime_ON_DAY;
 
         String[] reservationTime_ON_ID;
 
-        String[] reservationTime_OFF;
+        String[] reservationTime_Mon_OFF;
+        String[] reservationTime_Tues_OFF;
+        String[] reservationTime_Wednes_OFF;
+        String[] reservationTime_Thurs_OFF;
+        String[] reservationTime_Fri_OFF;
+        String[] reservationTime_Satur_OFF;
+        String[] reservationTime_Sun_OFF;
 
         String[] reservationTime_OFF_ID;
 
-        int[] reservationTime_TEMP;
+        String[] reservationTime_OFF_DAY;
+
+        int[] reservationTime_Mon_TEMP;
+        int[] reservationTime_Tues_TEMP;
+        int[] reservationTime_Wednes_TEMP;
+        int[] reservationTime_Thurs_TEMP;
+        int[] reservationTime_Fri_TEMP;
+        int[] reservationTime_Satur_TEMP;
+        int[] reservationTime_Sun_TEMP;
 
         int currentCount, defaultCount, compareCount;
 
@@ -70,6 +93,8 @@ namespace GrixControler
         int CheckHour;
 
         int CheckMin;
+
+        String CheckDayOfWeek;
 
         public MainForm()
         {
@@ -292,9 +317,9 @@ namespace GrixControler
                     }
                     defaultCount = currentCount;
 
-                    //CheckReservation_OFF(CheckReservationTuple_OFF());
-                    //CheckReservation_ON(CheckReservationTuple_ON());
-                    //ExecuteReservation(CheckReservationTuple_ON(), CheckReservationTuple_OFF());
+                    CheckReservation_OFF(CheckReservationTuple_OFF());
+                    CheckReservation_ON(CheckReservationTuple_ON());
+                    ExecuteReservation(CheckReservationTuple_ON(), CheckReservationTuple_OFF());
                 }
 
 
@@ -480,7 +505,6 @@ namespace GrixControler
                 int Hour = now.Hour;
                 int Min = now.Minute;
                 int Sec = now.Second;
-                String day = now.DayOfWeek.ToString();
 
                 All = Year + "-" + Month + "-" + Day + "    " + Hour + ":" + Min + ":" + Sec;
             }
@@ -493,6 +517,11 @@ namespace GrixControler
             public static int GetMin()
             {
                 return now.Minute;
+            }
+
+            public static String GetDayOfWeek()
+            {
+                return now.DayOfWeek.ToString();
             }
         }
 
@@ -534,6 +563,7 @@ namespace GrixControler
 
             CheckHour = Time.GetHour();
             CheckMin = Time.GetMin();
+            CheckDayOfWeek = Time.GetDayOfWeek();
         }
 
         public int TupleCount()
@@ -585,7 +615,7 @@ namespace GrixControler
             int count;
             try
             {
-                sql = "select count(*) from idTable where not onTime = \"\"";
+                sql = "select count(*) from idTable where not ReservationStartDay = \'-\'";
 
                 command = new SQLiteCommand(sql, dbConn);
 
@@ -604,11 +634,26 @@ namespace GrixControler
 
         private void CheckReservation_ON(int count)
         {
-            reservationTime_ON = new String[count];
-            reservationTime_TEMP = new int[count];
-            reservationTime_ON_ID = new String[count];
+             reservationTime_Mon_ON = new String[count];
+             reservationTime_Tues_ON = new String[count];
+             reservationTime_Wednes_ON = new String[count];
+             reservationTime_Thurs_ON = new String[count];
+             reservationTime_Fri_ON = new String[count];
+             reservationTime_Satur_ON = new String[count];
+             reservationTime_Sun_ON = new String[count];
+            
+            reservationTime_Mon_TEMP = new int[count];
+            reservationTime_Tues_TEMP = new int[count];
+            reservationTime_Wednes_TEMP = new int[count];
+            reservationTime_Thurs_TEMP = new int[count];
+            reservationTime_Fri_TEMP = new int[count];
+            reservationTime_Satur_TEMP = new int[count];
+            reservationTime_Sun_TEMP = new int[count];
 
-            sql = "select * from idTable where not onTime = \"\"";
+            reservationTime_ON_ID = new String[count];
+            reservationTime_ON_DAY = new String[count];
+
+            sql = "select * from idTable where not ReservationStartDay = \'-\'";
 
             command = new SQLiteCommand(sql, dbConn);
 
@@ -619,8 +664,23 @@ namespace GrixControler
             while (rdr.Read())
             {
                 reservationTime_ON_ID[i] = Convert.ToInt32(rdr["roomID"]).ToString();
-                reservationTime_ON[i] = rdr["onTime"].ToString();
-                reservationTime_TEMP[i] = Convert.ToInt32(rdr["reservTemp"]);
+                reservationTime_ON_DAY[i] = rdr["ReservationStartDay"].ToString();
+
+                reservationTime_Mon_ON[i] = rdr["MondayStartTime"].ToString();
+                reservationTime_Tues_ON[i] = rdr["TuesdayStartTime"].ToString();
+                reservationTime_Wednes_ON[i] = rdr["WednesdayStartTime"].ToString();
+                reservationTime_Thurs_ON[i] = rdr["ThursdayStartTime"].ToString();
+                reservationTime_Fri_ON[i] = rdr["FridayStartTime"].ToString();
+                reservationTime_Satur_ON[i] = rdr["SaturdayStartTime"].ToString();
+                reservationTime_Sun_ON[i] = rdr["SundayStartTime"].ToString();
+
+                reservationTime_Mon_TEMP[i] = Convert.ToInt32(rdr["MondayTemp"]);
+                reservationTime_Tues_TEMP[i] = Convert.ToInt32(rdr["TuesdayTemp"]);
+                reservationTime_Wednes_TEMP[i] = Convert.ToInt32(rdr["WednesdayTemp"]);
+                reservationTime_Thurs_TEMP[i] = Convert.ToInt32(rdr["ThursdayTemp"]);
+                reservationTime_Fri_TEMP[i] = Convert.ToInt32(rdr["FridayTemp"]);
+                reservationTime_Satur_TEMP[i] = Convert.ToInt32(rdr["SaturdayTemp"]);
+                reservationTime_Sun_TEMP[i] = Convert.ToInt32(rdr["SundayTemp"]);
 
                 i++;
             }
@@ -633,7 +693,7 @@ namespace GrixControler
             int count;
             try
             {
-                sql = "select count(*) from idTable where not offTime = \"\"";
+                sql = "select count(*) from idTable where not ReservationEndDay = \'-\'";
 
                 command = new SQLiteCommand(sql, dbConn);
 
@@ -652,10 +712,19 @@ namespace GrixControler
 
         private void CheckReservation_OFF(int count)
         {
-            reservationTime_OFF = new String[count];
+            
+             reservationTime_Mon_OFF = new String[count];
+             reservationTime_Tues_OFF = new String[count];
+             reservationTime_Wednes_OFF = new String[count];
+             reservationTime_Thurs_OFF = new String[count];
+             reservationTime_Fri_OFF = new String[count];
+             reservationTime_Satur_OFF = new String[count];
+             reservationTime_Sun_OFF = new String[count];
+            
             reservationTime_OFF_ID = new String[count];
+            reservationTime_OFF_DAY = new String[count];
 
-            sql = "select * from idTable where not offtime = \"\"";
+            sql = "select * from idTable where not ReservationEndDay = \'-\'";
 
             command = new SQLiteCommand(sql, dbConn);
 
@@ -666,7 +735,16 @@ namespace GrixControler
             while (rdr.Read())
             {
                 reservationTime_OFF_ID[i] = Convert.ToInt32(rdr["roomID"]).ToString();
-                reservationTime_OFF[i] = rdr["offTime"].ToString();
+                reservationTime_OFF_DAY[i] = rdr["ReservationEndDay"].ToString();
+
+                reservationTime_Mon_OFF[i] = rdr["MondayEndTime"].ToString();
+                reservationTime_Tues_OFF[i] = rdr["TuesdayEndTime"].ToString();
+                reservationTime_Wednes_OFF[i] = rdr["WednesdayEndTime"].ToString();
+                reservationTime_Thurs_OFF[i] = rdr["ThursdayEndTime"].ToString();
+                reservationTime_Fri_OFF[i] = rdr["FridayEndTime"].ToString();
+                reservationTime_Satur_OFF[i] = rdr["SaturdayEndTime"].ToString();
+                reservationTime_Sun_OFF[i] = rdr["SundayEndTime"].ToString();
+
                 i++;
             }
             rdr.Close();
@@ -677,123 +755,212 @@ namespace GrixControler
         }
 
 
-        private void ExecuteReservation(int onCount, int OffCount)
+        private string[] ReservationEachDay_ON_Time(String day)
+        {
+            if (day == "Monday")
+            {
+                return reservationTime_Mon_ON;
+            }
+            else if (day == "Tuesday")
+            {
+                return reservationTime_Tues_ON;
+            }
+            else if (day == "Wednesday")
+            {
+                return reservationTime_Wednes_ON;
+            }
+            else if (day == "Thursday")
+            {
+                return reservationTime_Thurs_ON;
+            }
+            else if (day == "Saturday")
+            {
+                return reservationTime_Satur_ON;
+            }
+            else
+                return reservationTime_Sun_ON;
+            
+        }
+
+        private string[] ReservationEachDay_OFF_Time(String day)
+        {
+            if (day == "Monday")
+            {
+                return reservationTime_Mon_OFF;
+            }
+            else if (day == "Tuesday")
+            {
+                return reservationTime_Tues_OFF;
+            }
+            else if (day == "Wednesday")
+            {
+                return reservationTime_Wednes_OFF;
+            }
+            else if (day == "Thursday")
+            {
+                return reservationTime_Thurs_OFF;
+            }
+            else if (day == "Saturday")
+            {
+                return reservationTime_Satur_OFF;
+            }
+            else
+                return reservationTime_Sun_OFF;
+
+        }
+
+        private int[] ReservationEachDay_ON_Temp(String day)
+        {
+            if (day == "Monday")
+            {
+                return reservationTime_Mon_TEMP;
+            }
+            else if (day == "Tuesday")
+            {
+                return reservationTime_Tues_TEMP;
+            }
+            else if (day == "Wednesday")
+            {
+                return reservationTime_Wednes_TEMP;
+            }
+            else if (day == "Thursday")
+            {
+                return reservationTime_Thurs_TEMP;
+            }
+            else if (day == "Saturday")
+            {
+                return reservationTime_Satur_TEMP;
+            }
+            else
+                return reservationTime_Sun_TEMP;
+
+        }
+
+        private void ExecuteEachDay_ON(String day, String time, int temp, int roomIDIndex)
         {
             int hour = 0;
             int min = 0;
-            int temp;
+            String tt;
+            int ttToInt = 0;
+            
 
-            String id_H;
-            String id_L;
+            tt = time.Substring(0, 2);
+            if (tt == "오전") { }
+                else ttToInt = 1;
+            hour = Convert.ToInt32(time.Substring(2, 2));
+            min = Convert.ToInt32(time.Substring(4, 2));
 
-
-            for (int i = 0; i < onCount; i++)
-            {
-                string[] onSpString = reservationTime_ON[i].Split(' ');
-
-                int onCheck = 1;
-                for (int j = 0; j < onSpString.Length; j++)
+            if (CheckDayOfWeek == day && CheckHour == hour+ttToInt*12 && CheckMin == min && reserveCheck_A == 0)
                 {
-                    if (onSpString[j].Length == 3 && onCheck == 1)
+                    if (reservationTime_ON_ID[roomIDIndex].Length == 4)
                     {
-                        hour = Convert.ToInt32(onSpString[j].Substring(0, 2));
-                        onCheck = 0;
+                        id_H = reservationTime_ON_ID[roomIDIndex].Substring(0, 2);
+                        id_L = reservationTime_ON_ID[roomIDIndex].Substring(2, 2);
                     }
-                    else if (onSpString[j].Length == 2 && onCheck == 1)
+                    else if (reservationTime_ON_ID[roomIDIndex].Length == 3)
                     {
-                        hour = Convert.ToInt32(onSpString[j].Substring(0, 1));
-                        onCheck = 0;
-                    }
-                    else if (onSpString[j].Length == 3 && onCheck == 0)
-                    {
-                        min = Convert.ToInt32(onSpString[j].Substring(0, 2));
-                        onCheck = 1;
-                    }
-                    else if (onSpString[j].Length == 2 && onCheck == 0)
-                    {
-                        min = Convert.ToInt32(onSpString[j].Substring(0, 1));
-                        onCheck = 1;
-                    }
-                }
-
-                if (CheckHour == hour && CheckMin == min && reserveCheck_A == 0)
-                {
-                    if (reservationTime_ON_ID[i].Length == 4)
-                    {
-                        id_H = reservationTime_ON_ID[i].Substring(0, 2);
-                        id_L = reservationTime_ON_ID[i].Substring(2, 2);
-                    }
-                    else if (reservationTime_ON_ID[i].Length == 3)
-                    {
-                        id_H = reservationTime_ON_ID[i].Substring(0, 1);
-                        id_L = reservationTime_ON_ID[i].Substring(1, 2);
+                        id_H = reservationTime_ON_ID[roomIDIndex].Substring(0, 1);
+                        id_L = reservationTime_ON_ID[roomIDIndex].Substring(1, 2);
                     }
                     else
                     {
                         id_H = "0";
-                        id_L = reservationTime_ON_ID[i];
+                        id_L = reservationTime_ON_ID[roomIDIndex];
                     }
 
                     serialConnect.GetSerialPacket(serialConnect.powerOnCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
                     Thread.Sleep(50);
-                    serialConnect.GetSerialPacket(serialConnect.setTempCmd((Byte)reservationTime_TEMP[i]), (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                    serialConnect.GetSerialPacket(serialConnect.setTempCmd((Byte)temp), (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
                     reserveCheck_A = 1;
                 }
+
+        }
+
+
+        private void ExecuteEachDay_OFF(String day, String time, int roomIDIndex)
+        {
+            int hour = 0;
+            int min = 0;
+            String tt;
+            int ttToInt = 0;
+
+            tt = time.Substring(0, 2);
+            if (tt == "오전") { }
+            else ttToInt = 1;
+            
+            hour = Convert.ToInt32(time.Substring(2, 2));
+            min = Convert.ToInt32(time.Substring(4, 2));
+
+            if (CheckDayOfWeek == day && CheckHour == hour + ttToInt * 12 && CheckMin == min && reserveCheck_B == 0)
+            {
+                if (reservationTime_OFF_ID[roomIDIndex].Length == 4)
+                {
+                    id_H = reservationTime_OFF_ID[roomIDIndex].Substring(0, 2);
+                    id_L = reservationTime_OFF_ID[roomIDIndex].Substring(2, 2);
+                }
+                else if (reservationTime_OFF_ID[roomIDIndex].Length == 3)
+                {
+                    id_H = reservationTime_OFF_ID[roomIDIndex].Substring(0, 1);
+                    id_L = reservationTime_OFF_ID[roomIDIndex].Substring(1, 2);
+                }
+                else
+                { 
+                    id_H = "0";
+                    id_L = reservationTime_OFF_ID[roomIDIndex];
+                }
+
+                serialConnect.GetSerialPacket(serialConnect.powerOffCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                reserveCheck_B = 1;
+                Thread.Sleep(50);
             }
+            
+        }
+
+        private void ExecuteReservation(int onCount, int OffCount)
+        {
+            
+
+            String id_H;
+            String id_L;
+
+            String[] eachDay;
+
+            for (int i = 0; i < onCount; i++)
+            {
+                eachDay = SeperateDay(reservationTime_ON_DAY[i]);
+                /**
+                 * 해당 방의, 시작 요일들을 나눠서 eachday에 넣어놓고,
+                 * 아래에서 월요일이면, 월요일의 전체 time을 가져오고
+                 * i번째에 해당하는 time을 추출하면 끝
+                 * */
+
+                for(int k = 0; k < eachDay.Length; k++)
+                {
+                    string[] onTimeEachDay = ReservationEachDay_ON_Time(eachDay[k]);
+                    int[] tempEachDay = ReservationEachDay_ON_Temp(eachDay[k]);
+                    ExecuteEachDay_ON(eachDay[k],onTimeEachDay[i], tempEachDay[i], i); //여기는 오전0800이 들어감
+                }
+            }
+
 
             for (int i = 0; i < OffCount; i++)
             {
-                int offCheck = 1;
-                string[] offSpString = reservationTime_OFF[i].Split(' ');
+                eachDay = SeperateDay(reservationTime_OFF_DAY[i]);
+                /**
+                 * 해당 방의, 시작 요일들을 나눠서 eachday에 넣어놓고,
+                 * 아래에서 월요일이면, 월요일의 전체 time을 가져오고
+                 * i번째에 해당하는 time을 추출하면 끝
+                 * */
 
-                for (int j = 0; j < offSpString.Length; j++)
+                for (int k = 0; k < eachDay.Length; k++)
                 {
-                    if (offSpString[j].Length == 3 && offCheck == 1)
-                    {
-                        hour = Convert.ToInt32(offSpString[j].Substring(0, 2));
-                        offCheck = 0;
-                    }
-                    else if (offSpString[j].Length == 2 && offCheck == 1)
-                    {
-                        hour = Convert.ToInt32(offSpString[j].Substring(0, 1));
-                        offCheck = 0;
-                    }
-                    else if (offSpString[j].Length == 3 && offCheck == 0)
-                    {
-                        min = Convert.ToInt32(offSpString[j].Substring(0, 2));
-                        offCheck = 1;
-                    }
-                    else if (offSpString[j].Length == 2 && offCheck == 0)
-                    {
-                        min = Convert.ToInt32(offSpString[j].Substring(0, 1));
-                        offCheck = 1;
-                    }
-                }
-
-                if (CheckHour == hour && CheckMin == min && reserveCheck_B == 0)
-                {
-                    if (reservationTime_OFF_ID[i].Length == 4)
-                    {
-                        id_H = reservationTime_OFF_ID[i].Substring(0, 2);
-                        id_L = reservationTime_OFF_ID[i].Substring(2, 2);
-                    }
-                    else if (reservationTime_OFF_ID[i].Length == 3)
-                    {
-                        id_H = reservationTime_OFF_ID[i].Substring(0, 1);
-                        id_L = reservationTime_OFF_ID[i].Substring(1, 2);
-                    }
-                    else
-                    {
-                        id_H = "0";
-                        id_L = reservationTime_OFF_ID[i];
-                    }
-
-
-                    serialConnect.GetSerialPacket(serialConnect.powerOffCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
-                    reserveCheck_B = 1;
-                    Thread.Sleep(50);
+                    string[] onTimeEachDay = ReservationEachDay_OFF_Time(eachDay[k]);
+                    ExecuteEachDay_OFF(eachDay[k], onTimeEachDay[i], i); //여기는 오전0800이 들어감
                 }
             }
+
+
+           
 
         }
         public void ResetAllVariable()
