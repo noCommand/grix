@@ -307,6 +307,14 @@ namespace GrixControler
 
                             MessageBox.Show(roomInfoList[nowCount].LockOn.ToString() + " " + hi.LockOn.ToString());
 
+                            /** 18.5.21 
+                             *  visual studio error
+                             *  중단점이 현재 적중되지 않습니다. 소스코드가 원래 버전과 다릅니다
+                             *  messagebox는  뜨지도않고 중단점설정도 안되고 
+                             *  아래 eventlistview 아이템 add하는 코드를 지워도
+                             *  디버깅시 add됨
+                             * */
+
                             if (roomInfoList[nowCount].LockOn == false && roomInfoList[nowCount].LockOn != hi.LockOn)
                             {
                                 String[] eventArr
