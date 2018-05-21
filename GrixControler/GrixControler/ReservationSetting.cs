@@ -21,6 +21,8 @@ namespace GrixControler
 
         MainForm main;
 
+        int listviewCheckboxCount = 0;
+
         bool MondayStartIsChecked = false;
         bool TuesdayStartIsChecked = false;
         bool WednesdayStartIsChecked = false;
@@ -202,8 +204,8 @@ namespace GrixControler
                               "SundayEndTime = \'오후0800\', " +
                               "SundayTemp = \'25\', " +
 
-                              "ReservationStartDay = \'-\', " +
-                              "ReservationEndDay = \'-\' " +
+                              "ReservationStartDay = \"\", " +
+                              "ReservationEndDay = \"\" " +
 
                               "where roomID = \'" + RoomList.Items[i].SubItems[0].Text + "\'";
                             command = new SQLiteCommand(sql, dbConn);
@@ -347,8 +349,8 @@ namespace GrixControler
                               "SundayEndTime = \'오후0800\', " +
                               "SundayTemp = \'25\', " +
 
-                              "ReservationStartDay = \'-\', " +
-                              "ReservationEndDay = \'-\' " +
+                              "ReservationStartDay = \"\", " +
+                              "ReservationEndDay = \"\" " +
 
 
                               "where roomID = \'" + RoomList.Items[i].SubItems[0].Text + "\'";
@@ -414,7 +416,7 @@ namespace GrixControler
                 !ThursdayStartCheckbox.Checked && !FridayStartCheckbox.Checked &&
                     !SaturdayStartCheckbox.Checked && !SundayStartCheckbox.Checked)
             {
-                appendDay.Append("-");
+                appendDay.Append("");
             }
             return appendDay.ToString();
 
@@ -457,7 +459,7 @@ namespace GrixControler
                 !ThursdayStartCheckbox.Checked && !FridayStartCheckbox.Checked &&
                     !SaturdayStartCheckbox.Checked && !SundayStartCheckbox.Checked)
             {
-                appendDay.Append("-");
+                appendDay.Append("");
             }
 
             return appendDay.ToString();
@@ -563,7 +565,7 @@ namespace GrixControler
 
         private void SetTimeIfHourOverflow(DateTimePicker dateTimePicker)
         {
-            dateTimePicker.Value = new DateTime(2000, 1, 1, 12,00, 0);
+            dateTimePicker.Value = new DateTime(2000, 1, 1, 12, 00, 0);
         }
 
         private void Show_RoomReservationInfo()
@@ -607,8 +609,8 @@ namespace GrixControler
                                 String fridayOffStr = rdr["FridayEndTime"].ToString();
                                 String saturdayOffStr = rdr["SaturdayEndTime"].ToString();
                                 String sundayOffStr = rdr["SundayEndTime"].ToString();
-                                
-                                if(Convert.ToInt32(mondayOnStr.Substring(2, 2)) + SetMorningEveningToInt(mondayOnStr.Substring(0, 2)) * 12 == 24)
+
+                                if (Convert.ToInt32(mondayOnStr.Substring(2, 2)) + SetMorningEveningToInt(mondayOnStr.Substring(0, 2)) * 12 == 24)
                                 {
                                     SetTimeIfHourOverflow(MondayStartTimePicker);
                                 }
@@ -620,7 +622,7 @@ namespace GrixControler
                                 }
                                 MondayTempUpDown.Value = Convert.ToInt32(rdr["MondayTemp"].ToString());
 
-                                if(Convert.ToInt32(tuesdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(tuesdayOnStr.Substring(0, 2)) * 12 == 24)
+                                if (Convert.ToInt32(tuesdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(tuesdayOnStr.Substring(0, 2)) * 12 == 24)
                                 {
                                     SetTimeIfHourOverflow(TuesdayStartTimePicker);
                                 }
@@ -630,9 +632,9 @@ namespace GrixControler
                                    Convert.ToInt32(tuesdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(tuesdayOnStr.Substring(0, 2)) * 12,
                                    Convert.ToInt32(tuesdayOnStr.Substring(4, 2)), 0);
                                 }
-                                
+
                                 TuesdayTempUpDown.Value = Convert.ToInt32(rdr["TuesdayTemp"].ToString());
-                                if(Convert.ToInt32(wednesdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(wednesdayOnStr.Substring(0, 2)) * 12 == 24)
+                                if (Convert.ToInt32(wednesdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(wednesdayOnStr.Substring(0, 2)) * 12 == 24)
                                 {
                                     SetTimeIfHourOverflow(WednesdayStartTimePicker);
                                 }
@@ -644,10 +646,11 @@ namespace GrixControler
                                 }
                                 WednesdayTempUpDown.Value = Convert.ToInt32(rdr["WednesdayTemp"].ToString());
 
-                                if(Convert.ToInt32(thursdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(thursdayOnStr.Substring(0, 2)) * 12 == 24)
+                                if (Convert.ToInt32(thursdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(thursdayOnStr.Substring(0, 2)) * 12 == 24)
                                 {
                                     SetTimeIfHourOverflow(ThursdayStartTimePicker);
-                                }else
+                                }
+                                else
                                 {
                                     ThursdayStartTimePicker.Value = new DateTime(2000, 1, 1,
                                         Convert.ToInt32(thursdayOnStr.Substring(2, 2)) + SetMorningEveningToInt(thursdayOnStr.Substring(0, 2)) * 12,
@@ -655,10 +658,11 @@ namespace GrixControler
                                 }
                                 ThursdayTempUpDown.Value = Convert.ToInt32(rdr["ThursdayTemp"].ToString());
 
-                                if(Convert.ToInt32(fridayOnStr.Substring(2, 2)) + SetMorningEveningToInt(fridayOnStr.Substring(0, 2)) * 12 == 24)
+                                if (Convert.ToInt32(fridayOnStr.Substring(2, 2)) + SetMorningEveningToInt(fridayOnStr.Substring(0, 2)) * 12 == 24)
                                 {
                                     SetTimeIfHourOverflow(FridayStartTimePicker);
-                                }else
+                                }
+                                else
                                 {
                                     FridayStartTimePicker.Value = new DateTime(2000, 1, 1,
                                         Convert.ToInt32(fridayOnStr.Substring(2, 2)) + SetMorningEveningToInt(fridayOnStr.Substring(0, 2)) * 12,
@@ -689,7 +693,7 @@ namespace GrixControler
                                    Convert.ToInt32(sundayOnStr.Substring(2, 2)) + SetMorningEveningToInt(sundayOnStr.Substring(0, 2)) * 12,
                                    Convert.ToInt32(sundayOnStr.Substring(4, 2)), 0);
                                 }
-                               
+
                                 SundayTempUpDown.Value = Convert.ToInt32(rdr["SundayTemp"].ToString());
 
                                 if (Convert.ToInt32(mondayOffStr.Substring(2, 2)) + SetMorningEveningToInt(mondayOffStr.Substring(0, 2)) * 12 == 24)
@@ -702,7 +706,7 @@ namespace GrixControler
                                    Convert.ToInt32(mondayOffStr.Substring(2, 2)) + SetMorningEveningToInt(mondayOffStr.Substring(0, 2)) * 12,
                                    Convert.ToInt32(mondayOffStr.Substring(4, 2)), 0);
                                 }
-                                
+
 
                                 if (Convert.ToInt32(tuesdayOffStr.Substring(2, 2)) + SetMorningEveningToInt(tuesdayOffStr.Substring(0, 2)) * 12 == 24)
                                 {
@@ -725,7 +729,7 @@ namespace GrixControler
                                     Convert.ToInt32(wednesdayOffStr.Substring(2, 2)) + SetMorningEveningToInt(wednesdayOffStr.Substring(0, 2)) * 12,
                                     Convert.ToInt32(wednesdayOffStr.Substring(4, 2)), 0);
                                 }
-                                
+
                                 if (Convert.ToInt32(thursdayOffStr.Substring(2, 2)) + SetMorningEveningToInt(thursdayOffStr.Substring(0, 2)) * 12 == 24)
                                 {
                                     SetTimeIfHourOverflow(ThursdayEndTimePicker);
@@ -736,7 +740,7 @@ namespace GrixControler
                                     Convert.ToInt32(thursdayOffStr.Substring(2, 2)) + SetMorningEveningToInt(thursdayOffStr.Substring(0, 2)) * 12,
                                     Convert.ToInt32(thursdayOffStr.Substring(4, 2)), 0);
                                 }
-                                
+
                                 if (Convert.ToInt32(fridayOffStr.Substring(2, 2)) + SetMorningEveningToInt(fridayOffStr.Substring(0, 2)) * 12 == 24)
                                 {
                                     SetTimeIfHourOverflow(FridayEndTimePicker);
@@ -747,7 +751,7 @@ namespace GrixControler
                                    Convert.ToInt32(fridayOffStr.Substring(2, 2)) + SetMorningEveningToInt(fridayOffStr.Substring(0, 2)) * 12,
                                    Convert.ToInt32(fridayOffStr.Substring(4, 2)), 0);
                                 }
-                               
+
                                 if (Convert.ToInt32(saturdayOffStr.Substring(2, 2)) + SetMorningEveningToInt(saturdayOffStr.Substring(0, 2)) * 12 == 24)
                                 {
                                     SetTimeIfHourOverflow(SaturdayEndTimePicker);
@@ -758,8 +762,8 @@ namespace GrixControler
                                     Convert.ToInt32(saturdayOffStr.Substring(2, 2)) + SetMorningEveningToInt(saturdayOffStr.Substring(0, 2)) * 12,
                                     Convert.ToInt32(saturdayOffStr.Substring(4, 2)), 0);
                                 }
-                                
-                                if (Convert.ToInt32(sundayOffStr.Substring(2, 2)) + SetMorningEveningToInt(sundayOffStr.Substring(0, 2)) * 12  == 24)
+
+                                if (Convert.ToInt32(sundayOffStr.Substring(2, 2)) + SetMorningEveningToInt(sundayOffStr.Substring(0, 2)) * 12 == 24)
                                 {
                                     SetTimeIfHourOverflow(SundayEndTimePicker);
                                 }
@@ -769,7 +773,7 @@ namespace GrixControler
                                     Convert.ToInt32(sundayOffStr.Substring(2, 2)) + SetMorningEveningToInt(sundayOffStr.Substring(0, 2)) * 12,
                                     Convert.ToInt32(sundayOffStr.Substring(4, 2)), 0);
                                 }
-                                
+
 
                                 startDay = SeperateDay(rdr["ReservationStartDay"].ToString());
                                 endDay = SeperateDay(rdr["ReservationEndDay"].ToString());
@@ -810,12 +814,37 @@ namespace GrixControler
 
         private void RoomList_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
+            SetListViewConnectCheckBoxFocused();
             Show_RoomReservationInfo();
+
+        }
+
+        private void SetListViewConnectCheckBoxFocused()
+        {
+            if (RoomList.SelectedItems.Count > 0)
+            {
+                if (RoomList.Items.Count > 0)
+                {
+                    for (int i = 0; i <= RoomList.Items.Count - 1; i++)
+                    {
+                        ListViewItem item = RoomList.Items[i];
+                        if (RoomList.Items[i].Focused == true)
+                        {
+                            RoomList.Items[i].Checked = true;
+                        }
+                    }
+                }
+            }
         }
 
         private void groupBox1_Enter_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void comfirm_Btn_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
         /*
 private void RadButtonCanOnOFF(RadioButton rad, bool radCheck)

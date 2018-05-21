@@ -129,7 +129,8 @@ namespace GrixControler
             System.Threading.Thread.Sleep(100);
             //setTempControl.Value
             this.Close();
-            
+
+
         }
 
         private void RoomSetting_FormClosed(object sender, FormClosedEventArgs e)

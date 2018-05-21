@@ -338,7 +338,10 @@ namespace GrixControler
              * */
 
             sp.Write(serialCommand, 0, serialCommand.Length);
+            
+
             //MessageBox.Show("setSerialPacket!!! " + sp.BytesToRead.ToString());
+
             ClearBuffer();
             System.Threading.Thread.Sleep(100);
             // sleep을 써줘야 데이터가 제데로 전송됨

@@ -52,38 +52,16 @@ namespace GrixControler
 
         private void confirmButton_click(object sender, EventArgs e)
         {
-
-
-            //SQL
-            if(main.TupleCount()!= roomGridView.RowCount-1)
+            /* 18.5.12
+           * 시리얼포트 수동연결 가능
+           * */
+            if (main.serialConnect.GetPortName() != portCombx.Text || !main.serialConnect.CheckPortOpen())
             {
-               
-                
+                main.serialConnect.PortClose();
+                main.serialConnect = new SerialConnect(portCombx.Text, main);
+                main.ResetAllVariable();
             }
-            row = roomGridView.RowCount;
 
-            int scalarNum;
-
-            SQLExcute("delete from idTable");
-            SQLExcute("update sqlite_sequence set seq = 0 where name = 'idTable'");
-
-            try
-            {
-                for (int i = 0; i < row - 1; i++)
-                {
-
-                    sql = "insert into idTable(roomID,roomNum) Values(\'" +
-                        roomGridView.Rows[i].Cells[1].FormattedValue.ToString() + "\',\'" +
-                        roomGridView.Rows[i].Cells[2].FormattedValue.ToString() + "\')";
-                    SQLExcute(sql);
-
-                }
-
-            }
-            catch (Exception er)
-            {
-                MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
-            }
 
             this.Close();
             
@@ -224,31 +202,51 @@ namespace GrixControler
              //MessageBox.Show(roomGridView.RowCount.ToString());
 
         }
-
-        private void apply_btn_Click(object sender, EventArgs e)
-        {
         
-        }
 
         private void ProgramSetting_FormClosed(object sender, FormClosedEventArgs e)
         {
 
 
-            /* 18.5.12
-             * 시리얼포트 수동연결 가능
-             * */
-            if (main.serialConnect.GetPortName() != portCombx.Text || !main.serialConnect.CheckPortOpen())
-            {
-                main.serialConnect.PortClose();
-                main.serialConnect = new SerialConnect(portCombx.Text, main);
-                main.ResetAllVariable();
-            }
 
             //MessageBox.Show(main.serialConnect.GetPortName());
             dbConn.Close();
             main.ThreadResume();
             
         }
+
+        private void apply_btn_Click_1(object sender, EventArgs e)
+        {
+            //SQL
+            row = roomGridView.RowCount;
+
+            int scalarNum;
+
+            SQLExcute("delete from idTable");
+            SQLExcute("update sqlite_sequence set seq = 0 where name = 'idTable'");
+
+            try
+            {
+                for (int i = 0; i < row - 1; i++)
+                {
+
+                    sql = "insert into idTable(roomID,roomNum) Values(\'" +
+                        roomGridView.Rows[i].Cells[1].FormattedValue.ToString() + "\',\'" +
+                        roomGridView.Rows[i].Cells[2].FormattedValue.ToString() + "\')";
+                    SQLExcute(sql);
+
+                }
+
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+            }
+
+            show_roomGridView();
+
+        }
+        
     }
 
 

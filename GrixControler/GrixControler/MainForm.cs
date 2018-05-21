@@ -303,6 +303,68 @@ namespace GrixControler
                             }
                             */
                             roomInfoList[nowCount].ID = Convert.ToInt32(roomID[nowCount]);
+
+
+                            MessageBox.Show(roomInfoList[nowCount].LockOn.ToString() + " " + hi.LockOn.ToString());
+
+                            if (roomInfoList[nowCount].LockOn == false && roomInfoList[nowCount].LockOn != hi.LockOn)
+                            {
+                                String[] eventArr
+                                    = { Time.GetHour().ToString() + " : " + Time.GetMin().ToString(),
+                                    roomInfoList[nowCount].ID.ToString(), "잠금 설정" };
+                                var listViewItem = new ListViewItem(eventArr);
+                                eventListView.Invoke((MethodInvoker)delegate ()
+                                {
+                                    eventListView.Items.Add(listViewItem);
+                                });
+                            }
+                            else if (roomInfoList[nowCount].LockOn == true && roomInfoList[nowCount].LockOn != hi.LockOn)
+                            {
+                                String[] eventArr
+                                   = { Time.GetHour().ToString() + " : " + Time.GetMin().ToString(),
+                                    roomInfoList[nowCount].ID.ToString(), "잠금 해제" };
+                                var listViewItem = new ListViewItem(eventArr);
+                                eventListView.Invoke((MethodInvoker)delegate ()
+                                {
+                                    eventListView.Items.Add(listViewItem);
+                                });
+                            }
+
+                            if (roomInfoList[nowCount].PowerOn == false && roomInfoList[nowCount].PowerOn != hi.PowerOn)
+                            {
+                                String[] eventArr
+                                    = { Time.GetHour().ToString() + " : " + Time.GetMin().ToString(),
+                                    roomInfoList[nowCount].ID.ToString(), "전원 켜짐" };
+                                var listViewItem = new ListViewItem(eventArr);
+                                eventListView.Invoke((MethodInvoker)delegate ()
+                                {
+                                    eventListView.Items.Add(listViewItem);
+                                });
+                            }
+                            else if (roomInfoList[nowCount].PowerOn == true && roomInfoList[nowCount].PowerOn != hi.PowerOn)
+                            {
+                                String[] eventArr
+                                   = { Time.GetHour().ToString() + " : " + Time.GetMin().ToString(),
+                                    roomInfoList[nowCount].ID.ToString(), "전원 꺼짐" };
+                                var listViewItem = new ListViewItem(eventArr);
+                                eventListView.Invoke((MethodInvoker)delegate ()
+                                {
+                                    eventListView.Items.Add(listViewItem);
+                                });
+                            }
+
+                            if (roomInfoList[nowCount].SetTemp != hi.SetTemp)
+                            {
+                                String[] eventArr
+                                    = { Time.GetHour().ToString() + " : " + Time.GetMin().ToString(),
+                                    roomInfoList[nowCount].ID.ToString(), "온도 설정" };
+                                var listViewItem = new ListViewItem(eventArr);
+                                eventListView.Invoke((MethodInvoker)delegate ()
+                                {
+                                    eventListView.Items.Add(listViewItem);
+                                });
+                            }
+
                             roomInfoList[nowCount].NowTemp = hi.NowTemp;
                             roomInfoList[nowCount].SetTemp = hi.SetTemp;
                             roomInfoList[nowCount].CheckSum = hi.CheckSum;
@@ -319,6 +381,7 @@ namespace GrixControler
 
                     CheckReservation_OFF(CheckReservationTuple_OFF());
                     CheckReservation_ON(CheckReservationTuple_ON());
+
                     ExecuteReservation(CheckReservationTuple_ON(), CheckReservationTuple_OFF());
                 }
 
@@ -546,7 +609,15 @@ namespace GrixControler
 
             Time.setNow();
             timeLabel.Text = Time.All;
+
+            eventListView.View = View.Details;
+            eventListView.GridLines = true;
+            eventListView.FullRowSelect = false;
+            
+
         }
+        
+
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -615,7 +686,7 @@ namespace GrixControler
             int count;
             try
             {
-                sql = "select count(*) from idTable where not ReservationStartDay = \'-\'";
+                sql = "select count(*) from idTable where not ReservationStartDay = \"\"";
 
                 command = new SQLiteCommand(sql, dbConn);
 
@@ -653,7 +724,7 @@ namespace GrixControler
             reservationTime_ON_ID = new String[count];
             reservationTime_ON_DAY = new String[count];
 
-            sql = "select * from idTable where not ReservationStartDay = \'-\'";
+            sql = "select * from idTable where not ReservationStartDay = \"\"";
 
             command = new SQLiteCommand(sql, dbConn);
 
@@ -693,7 +764,7 @@ namespace GrixControler
             int count;
             try
             {
-                sql = "select count(*) from idTable where not ReservationEndDay = \'-\'";
+                sql = "select count(*) from idTable where not ReservationEndDay = \"\"";
 
                 command = new SQLiteCommand(sql, dbConn);
 
@@ -724,7 +795,7 @@ namespace GrixControler
             reservationTime_OFF_ID = new String[count];
             reservationTime_OFF_DAY = new String[count];
 
-            sql = "select * from idTable where not ReservationEndDay = \'-\'";
+            sql = "select * from idTable where not ReservationEndDay = \"\"";
 
             command = new SQLiteCommand(sql, dbConn);
 
@@ -757,23 +828,27 @@ namespace GrixControler
 
         private string[] ReservationEachDay_ON_Time(String day)
         {
-            if (day == "Monday")
+            if (day == "월")
             {
                 return reservationTime_Mon_ON;
             }
-            else if (day == "Tuesday")
+            else if (day == "화")
             {
                 return reservationTime_Tues_ON;
             }
-            else if (day == "Wednesday")
+            else if (day == "수")
             {
                 return reservationTime_Wednes_ON;
             }
-            else if (day == "Thursday")
+            else if (day == "목")
             {
                 return reservationTime_Thurs_ON;
             }
-            else if (day == "Saturday")
+            else if (day == "금")
+            {
+                return reservationTime_Fri_ON;
+            }
+            else if (day == "토")
             {
                 return reservationTime_Satur_ON;
             }
@@ -784,23 +859,27 @@ namespace GrixControler
 
         private string[] ReservationEachDay_OFF_Time(String day)
         {
-            if (day == "Monday")
+            if (day == "월")
             {
                 return reservationTime_Mon_OFF;
             }
-            else if (day == "Tuesday")
+            else if (day == "화")
             {
                 return reservationTime_Tues_OFF;
             }
-            else if (day == "Wednesday")
+            else if (day == "수")
             {
                 return reservationTime_Wednes_OFF;
             }
-            else if (day == "Thursday")
+            else if (day == "목")
             {
                 return reservationTime_Thurs_OFF;
             }
-            else if (day == "Saturday")
+            else if (day == "금")
+            {
+                return reservationTime_Fri_OFF;
+            }
+            else if (day == "토")
             {
                 return reservationTime_Satur_OFF;
             }
@@ -811,29 +890,64 @@ namespace GrixControler
 
         private int[] ReservationEachDay_ON_Temp(String day)
         {
-            if (day == "Monday")
+            if (day == "월")
             {
                 return reservationTime_Mon_TEMP;
             }
-            else if (day == "Tuesday")
+            else if (day == "화")
             {
                 return reservationTime_Tues_TEMP;
             }
-            else if (day == "Wednesday")
+            else if (day == "수")
             {
                 return reservationTime_Wednes_TEMP;
             }
-            else if (day == "Thursday")
+            else if (day == "목")
             {
                 return reservationTime_Thurs_TEMP;
             }
-            else if (day == "Saturday")
+            else if (day == "금")
+            {
+                return reservationTime_Fri_TEMP;
+            }
+            else if (day == "토")
             {
                 return reservationTime_Satur_TEMP;
             }
             else
                 return reservationTime_Sun_TEMP;
 
+        }
+        
+        private String KorDayToEng(String day)
+        {
+            if (day == "월")
+            {
+                return "Monday";
+            }else if(day == "화")
+            {
+                return "Tuesday";
+            }
+            else if (day == "수")
+            {
+                return "Wednesday";
+            }
+            else if (day == "목")
+            {
+                return "Thursday";
+            }
+            else if (day == "금")
+            {
+                return "Firday";
+            }
+            else if (day == "토")
+            {
+                return "Saturday";
+            }
+            else 
+            {
+                return "Sunday";
+            }
         }
 
         private void ExecuteEachDay_ON(String day, String time, int temp, int roomIDIndex)
@@ -842,15 +956,16 @@ namespace GrixControler
             int min = 0;
             String tt;
             int ttToInt = 0;
-            
+            String engDay;
 
+            engDay = KorDayToEng(day);
             tt = time.Substring(0, 2);
             if (tt == "오전") { }
                 else ttToInt = 1;
             hour = Convert.ToInt32(time.Substring(2, 2));
             min = Convert.ToInt32(time.Substring(4, 2));
 
-            if (CheckDayOfWeek == day && CheckHour == hour+ttToInt*12 && CheckMin == min && reserveCheck_A == 0)
+            if (CheckDayOfWeek == engDay && CheckHour == hour+ttToInt*12 && CheckMin == min)
                 {
                     if (reservationTime_ON_ID[roomIDIndex].Length == 4)
                     {
@@ -883,6 +998,9 @@ namespace GrixControler
             int min = 0;
             String tt;
             int ttToInt = 0;
+            String engDay;
+
+            engDay = KorDayToEng(day);
 
             tt = time.Substring(0, 2);
             if (tt == "오전") { }
@@ -891,7 +1009,7 @@ namespace GrixControler
             hour = Convert.ToInt32(time.Substring(2, 2));
             min = Convert.ToInt32(time.Substring(4, 2));
 
-            if (CheckDayOfWeek == day && CheckHour == hour + ttToInt * 12 && CheckMin == min && reserveCheck_B == 0)
+            if (CheckDayOfWeek == engDay && CheckHour == hour + ttToInt * 12 && CheckMin == min)
             {
                 if (reservationTime_OFF_ID[roomIDIndex].Length == 4)
                 {
@@ -914,6 +1032,12 @@ namespace GrixControler
                 Thread.Sleep(50);
             }
             
+        }
+
+        private void eventListView_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
+        {
+            e.NewWidth = eventListView.Columns[e.ColumnIndex].Width;
+            e.Cancel = true;
         }
 
         private void ExecuteReservation(int onCount, int OffCount)
@@ -954,6 +1078,7 @@ namespace GrixControler
 
                 for (int k = 0; k < eachDay.Length; k++)
                 {
+                    //여기서 문제 생김
                     string[] onTimeEachDay = ReservationEachDay_OFF_Time(eachDay[k]);
                     ExecuteEachDay_OFF(eachDay[k], onTimeEachDay[i], i); //여기는 오전0800이 들어감
                 }

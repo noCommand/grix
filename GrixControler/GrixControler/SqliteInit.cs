@@ -40,7 +40,7 @@ namespace GrixControler
                 " FridayStartTime string Default \'오전0800\', FridayEndTime string Default \'오후0800\', FridayTemp string default 25," +
                 " SaturdayStartTime string Default \'오전0800\', SaturdayEndTime string Default \'오후0800\', SaturdayTemp string default 25," +
                 " SundayStartTime string Default \'오전0800\', SundayEndTime string Default \'오후0800\', SundayTemp string default 25," +
-                " ReservationStartDay string Default \'-\' , ReservationEndDay string Default \'-\'" +
+                " ReservationStartDay string Default \"\" , ReservationEndDay string Default \"\"" +
                 ")";
 
             command = new SQLiteCommand(sql, dbConn);

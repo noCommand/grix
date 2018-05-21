@@ -115,16 +115,17 @@
             // 
             // comfirm_Btn
             // 
-            this.comfirm_Btn.Location = new System.Drawing.Point(323, 361);
+            this.comfirm_Btn.Location = new System.Drawing.Point(275, 361);
             this.comfirm_Btn.Name = "comfirm_Btn";
-            this.comfirm_Btn.Size = new System.Drawing.Size(98, 23);
+            this.comfirm_Btn.Size = new System.Drawing.Size(156, 27);
             this.comfirm_Btn.TabIndex = 12;
-            this.comfirm_Btn.Text = "확인";
+            this.comfirm_Btn.Text = "나가기";
             this.comfirm_Btn.UseVisualStyleBackColor = true;
+            this.comfirm_Btn.Click += new System.EventHandler(this.comfirm_Btn_Click);
             // 
             // apply_Btn
             // 
-            this.apply_Btn.Location = new System.Drawing.Point(265, 332);
+            this.apply_Btn.Location = new System.Drawing.Point(275, 326);
             this.apply_Btn.Name = "apply_Btn";
             this.apply_Btn.Size = new System.Drawing.Size(75, 23);
             this.apply_Btn.TabIndex = 10;
@@ -153,7 +154,7 @@
             // 
             // delete_btn
             // 
-            this.delete_btn.Location = new System.Drawing.Point(346, 332);
+            this.delete_btn.Location = new System.Drawing.Point(356, 326);
             this.delete_btn.Name = "delete_btn";
             this.delete_btn.Size = new System.Drawing.Size(75, 23);
             this.delete_btn.TabIndex = 16;
@@ -714,7 +715,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(42, 23);
+            this.label10.Location = new System.Drawing.Point(39, 23);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(41, 12);
             this.label10.TabIndex = 89;
@@ -752,7 +753,7 @@
             this.MaximumSize = new System.Drawing.Size(472, 438);
             this.MinimumSize = new System.Drawing.Size(472, 438);
             this.Name = "ReservationSetting";
-            this.Text = " 예약설정";
+            this.Text = " [예약설정]";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ReservationSetting_FormClosed);
             this.Load += new System.EventHandler(this.ReservationSetting_Load);
             ((System.ComponentModel.ISupportInitialize)(this.MondayTempUpDown)).EndInit();

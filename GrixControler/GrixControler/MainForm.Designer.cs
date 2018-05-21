@@ -33,7 +33,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.eventListView = new System.Windows.Forms.ListView();
             this.시간 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.호실 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.상태 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -43,21 +43,20 @@
             this.timeLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.customButton2 = new GrixControler.CustomButton();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.testButton = new System.Windows.Forms.Button();
             this.AdminSet = new System.Windows.Forms.Button();
             this.Help = new System.Windows.Forms.Button();
             this.Setting = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.ViewPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.testButton = new System.Windows.Forms.Button();
+            this.customButton2 = new GrixControler.CustomButton();
             this.panel4.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -80,7 +79,7 @@
             // 
             // panel7
             // 
-            this.panel7.Controls.Add(this.listView1);
+            this.panel7.Controls.Add(this.eventListView);
             this.panel7.Controls.Add(this.panel6);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel7.Location = new System.Drawing.Point(0, 0);
@@ -88,20 +87,21 @@
             this.panel7.Size = new System.Drawing.Size(185, 687);
             this.panel7.TabIndex = 8;
             // 
-            // listView1
+            // eventListView
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.eventListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.시간,
             this.호실,
             this.상태});
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listView1.Location = new System.Drawing.Point(0, 26);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(185, 661);
-            this.listView1.TabIndex = 3;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.eventListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.eventListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.eventListView.Location = new System.Drawing.Point(0, 26);
+            this.eventListView.Name = "eventListView";
+            this.eventListView.Size = new System.Drawing.Size(185, 661);
+            this.eventListView.TabIndex = 3;
+            this.eventListView.UseCompatibleStateImageBehavior = false;
+            this.eventListView.View = System.Windows.Forms.View.Details;
+            this.eventListView.ColumnWidthChanging += new System.Windows.Forms.ColumnWidthChangingEventHandler(this.eventListView_ColumnWidthChanging);
             // 
             // 시간
             // 
@@ -182,23 +182,15 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.testButton);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(454, 27);
             this.panel3.TabIndex = 5;
             // 
-            // customButton2
-            // 
-            this.customButton2.BackColor = System.Drawing.Color.White;
-            this.customButton2.Location = new System.Drawing.Point(3, 2);
-            this.customButton2.Name = "customButton2";
-            this.customButton2.Size = new System.Drawing.Size(61, 22);
-            this.customButton2.TabIndex = 0;
-            // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.testButton);
             this.panel2.Controls.Add(this.AdminSet);
             this.panel2.Controls.Add(this.Help);
             this.panel2.Controls.Add(this.Setting);
@@ -208,13 +200,22 @@
             this.panel2.Size = new System.Drawing.Size(383, 27);
             this.panel2.TabIndex = 4;
             // 
+            // testButton
+            // 
+            this.testButton.Location = new System.Drawing.Point(295, 2);
+            this.testButton.Name = "testButton";
+            this.testButton.Size = new System.Drawing.Size(75, 23);
+            this.testButton.TabIndex = 1;
+            this.testButton.Text = "도움말";
+            this.testButton.UseVisualStyleBackColor = true;
+            // 
             // AdminSet
             // 
-            this.AdminSet.Location = new System.Drawing.Point(154, 2);
+            this.AdminSet.Location = new System.Drawing.Point(135, 2);
             this.AdminSet.Name = "AdminSet";
             this.AdminSet.Size = new System.Drawing.Size(75, 23);
             this.AdminSet.TabIndex = 1;
-            this.AdminSet.Text = "관리자설정";
+            this.AdminSet.Text = "예약설정";
             this.AdminSet.UseVisualStyleBackColor = true;
             this.AdminSet.Click += new System.EventHandler(this.AdminSet_Click);
             // 
@@ -230,7 +231,7 @@
             // 
             // Setting
             // 
-            this.Setting.Location = new System.Drawing.Point(235, 2);
+            this.Setting.Location = new System.Drawing.Point(216, 2);
             this.Setting.Name = "Setting";
             this.Setting.Size = new System.Drawing.Size(75, 23);
             this.Setting.TabIndex = 2;
@@ -279,14 +280,13 @@
             this.ViewPanel.Size = new System.Drawing.Size(837, 714);
             this.ViewPanel.TabIndex = 7;
             // 
-            // testButton
+            // customButton2
             // 
-            this.testButton.Location = new System.Drawing.Point(185, 1);
-            this.testButton.Name = "testButton";
-            this.testButton.Size = new System.Drawing.Size(75, 23);
-            this.testButton.TabIndex = 1;
-            this.testButton.Text = "button1";
-            this.testButton.UseVisualStyleBackColor = true;
+            this.customButton2.BackColor = System.Drawing.Color.White;
+            this.customButton2.Location = new System.Drawing.Point(3, 2);
+            this.customButton2.Name = "customButton2";
+            this.customButton2.Size = new System.Drawing.Size(61, 22);
+            this.customButton2.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -307,7 +307,6 @@
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel1.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -320,7 +319,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader 시간;
         private System.Windows.Forms.ColumnHeader 호실;
         private System.Windows.Forms.ColumnHeader 상태;
@@ -338,6 +336,7 @@
         private System.Windows.Forms.FlowLayoutPanel ViewPanel;
         private CustomButton customButton2;
         private System.Windows.Forms.Button testButton;
+        public System.Windows.Forms.ListView eventListView;
     }
 }
 
