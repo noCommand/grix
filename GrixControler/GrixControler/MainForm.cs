@@ -480,6 +480,8 @@ namespace GrixControler
                 int Hour = now.Hour;
                 int Min = now.Minute;
                 int Sec = now.Second;
+                String day = now.DayOfWeek.ToString();
+
                 All = Year + "-" + Month + "-" + Day + "    " + Hour + ":" + Min + ":" + Sec;
             }
 
@@ -823,7 +825,25 @@ namespace GrixControler
                 });
             }
         }
+
+
+
+        private String[] SeperateDay(String str)
+        {
+            String[] strArray = new String[str.Length];
+            for (int i = 0; i < str.Length; i++)
+            {
+                strArray[i] = str.Substring(i, 1);
+            }
+            return strArray;
+        }
+
+
     }
+
+
+
+
 
     /** 18.5.10
      * 중복되는 코드가 많음 리펙토링 필수
