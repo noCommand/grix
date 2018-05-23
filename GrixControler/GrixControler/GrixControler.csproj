@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventInfo.cs" />
+    <Compile Include="GroupRoomInfo.cs" />
     <Compile Include="GroupSetting.cs">
       <SubType>Form</SubType>
     </Compile>

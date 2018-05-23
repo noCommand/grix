@@ -47,7 +47,7 @@
             this.powerOnBtn = new System.Windows.Forms.RadioButton();
             this.label10 = new System.Windows.Forms.Label();
             this.all_button = new System.Windows.Forms.Button();
-            this.RoomList = new System.Windows.Forms.ListView();
+            this.GroupRoomList = new System.Windows.Forms.ListView();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.setTempControl)).BeginInit();
             this.panel2.SuspendLayout();
@@ -239,13 +239,13 @@
             this.all_button.UseVisualStyleBackColor = true;
             this.all_button.Click += new System.EventHandler(this.all_button_Click);
             // 
-            // RoomList
+            // GroupRoomList
             // 
-            this.RoomList.Location = new System.Drawing.Point(25, 39);
-            this.RoomList.Name = "RoomList";
-            this.RoomList.Size = new System.Drawing.Size(74, 228);
-            this.RoomList.TabIndex = 90;
-            this.RoomList.UseCompatibleStateImageBehavior = false;
+            this.GroupRoomList.Location = new System.Drawing.Point(25, 39);
+            this.GroupRoomList.Name = "GroupRoomList";
+            this.GroupRoomList.Size = new System.Drawing.Size(74, 228);
+            this.GroupRoomList.TabIndex = 90;
+            this.GroupRoomList.UseCompatibleStateImageBehavior = false;
             // 
             // GroupSetting
             // 
@@ -254,7 +254,7 @@
             this.ClientSize = new System.Drawing.Size(378, 333);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.all_button);
-            this.Controls.Add(this.RoomList);
+            this.Controls.Add(this.GroupRoomList);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.ConfirmBtn);
             this.Controls.Add(this.panel1);
@@ -299,6 +299,6 @@
         private System.Windows.Forms.RadioButton powerOnBtn;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button all_button;
-        private System.Windows.Forms.ListView RoomList;
+        private System.Windows.Forms.ListView GroupRoomList;
     }
 }

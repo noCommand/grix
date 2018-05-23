@@ -32,8 +32,7 @@ namespace GrixControler
 
         public Thread thread_Serial;
         public Thread thread_UI;
-        public Thread thread_Main;
-
+        public Thread thread_GroupInfoSetting;
 
         RoomView[] roomView;
 
@@ -97,8 +96,8 @@ namespace GrixControler
         int CheckMin;
 
         String CheckDayOfWeek;
-        
 
+        int checkFirstThread = 0;
 
         Excel.Application excelApp = null;
         Excel.Workbook wb = null;
@@ -107,7 +106,9 @@ namespace GrixControler
         int excelIndex;
 
         private ScrollPanelMessageFilter filter;
-        
+
+        public List<String> groupID = new List<String>();
+        public GroupRoomInfo groupGetInfo = new GroupRoomInfo();
 
         public MainForm()
         {
@@ -135,6 +136,17 @@ namespace GrixControler
 
             ExcelInit();
 
+            excelApp = new Excel.Application();
+            excelApp.DisplayAlerts = false;
+            wb = excelApp.Workbooks.Open(Application.StartupPath + @"\GrixDB" + @"\eventlog.xls");
+            ws = wb.Worksheets.get_Item(1) as Excel.Worksheet;
+
+            if (GetCOMInfo() != "COM")
+            {
+                serialConnect = new SerialConnect(GetCOMInfo(), this);
+            }
+
+
             ri = new RoomInfo();
 
             defaultCount = TupleCount();
@@ -142,14 +154,7 @@ namespace GrixControler
             SetRoomIDString(defaultCount);
 
             SetRoomView(defaultCount, ri);
-            
 
-            /*
-            thread_Main = new Thread(MainThread);
-            thread_Main.IsBackground = true;
-            thread_Main.Start();
-            */
-            
 
             thread_Serial = new Thread(SerialThread);
             thread_UI = new Thread(UIThread);
@@ -160,7 +165,7 @@ namespace GrixControler
             thread_Serial.Start();
             thread_UI.Start();
 
-            
+
         }
 
         public void ThreadPause()
@@ -175,12 +180,12 @@ namespace GrixControler
             _pauseEvent.Set();
             roominfoControl = 1;
         }
-       
+
         private void ExcelInit()
         {
             try
             {
-                if(!File.Exists(Application.StartupPath + @"\GrixDB" + @"\eventlog.xls"))
+                if (!File.Exists(Application.StartupPath + @"\GrixDB" + @"\eventlog.xls"))
                 {
                     // Excel 첫번째 워크시트 가져오기                
                     excelApp = new Excel.Application();
@@ -191,9 +196,10 @@ namespace GrixControler
                     ws.Cells[1, 2] = "호실";
                     ws.Cells[1, 3] = "내용";
                     ws.Cells[1, 4] = 2;
+                    ws.Cells[1, 5] = "COM";
 
                     // 엑셀파일 저장
-                    wb.SaveAs(Application.StartupPath + @"\GrixDB" + @"\eventlog.xls", Excel.XlFileFormat.xlWorkbookNormal);
+                    wb.SaveAs(Application.StartupPath + @"\GrixDB" + @"\eventlog.xls", Excel.XlFileFormat.xlWorkbookNormal, ReadOnlyRecommended: false);
                     wb.Close(true);
                     excelApp.Quit();
                 }
@@ -266,17 +272,52 @@ namespace GrixControler
                     }
                     catch (Exception e)
                     {
+
                         MessageBox.Show(e.ToString());
                     }
                 }
             }
         }
 
+        public void GroupSettingThreadStart()
+        {
+            thread_GroupInfoSetting = new Thread(GroupConfirmThread);
+            thread_GroupInfoSetting.IsBackground = true;
+            thread_GroupInfoSetting.Start();
+        }
+
+        private void GroupConfirmThread()
+        {
+
+            Byte[] seperateID = new Byte[2];
+
+            GroupSetting groupForCalculate = new GroupSetting(this, 0);
+
+            for (int j = 0; j < roomInfoList.Count; j++)
+            {
+                for (int i = 0; i < groupID.Count; i++)
+                {
+                    if (roomInfoList[j].ID.ToString() == groupID[i])
+                    {
+
+                        if (roomInfoList[i].PowerOn != groupGetInfo.PowerOn ||
+                            roomInfoList[i].LockOn != groupGetInfo.LockOn || roomInfoList[i].SetTemp != groupGetInfo.SetTemp)
+                        {
+                            seperateID = groupForCalculate.IDStringToByte(groupID[i]);
+                            groupForCalculate.GroupingRoomSettinComfirm(seperateID, groupGetInfo.PowerOn, groupGetInfo.LockOn, groupGetInfo.SetTemp);
+                        }
+
+                    }
+                }
+            }
+            UpdateGroupResult(defaultCount);
+            ThreadResume();
+            //seperateID = IDStringToByte(GroupRoomList.Items[i].SubItems[0].Text);
+            //GroupingRoomSettinComfirm(seperateID);
+        }
+
         private void SerialThread()
         {
-            excelApp = new Excel.Application();
-            wb = excelApp.Workbooks.Open(Application.StartupPath + @"\GrixDB" + @"\eventlog.xls");
-            ws = wb.Worksheets.get_Item(1) as Excel.Worksheet;
 
             while (_pauseEvent.WaitOne())
             {
@@ -285,7 +326,7 @@ namespace GrixControler
                     //MessageBox.Show(thread_UI.IsAlive.ToString());
                     compareCount = TupleCount();
                     SetRoomIDString(compareCount);
-                    
+
                     if (defaultCount == compareCount && CheckRoomIDChange(compareCount))
                     {
                         currentCount = defaultCount;
@@ -371,7 +412,7 @@ namespace GrixControler
 
                             RoomInfo hi = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
                             //MessageBox.Show(roomID[nowCount].ToString() + " " + hi.ConnectOn);
-                            
+
                             /*
                             if(hi.ConnectOn==false)
                             {
@@ -392,25 +433,26 @@ namespace GrixControler
                              *  디버깅시 add됨
                              * */
 
-                            if (roomInfoList[nowCount].LockOn == false && roomInfoList[nowCount].LockOn != hi.LockOn)
+                            if (roomInfoList[nowCount].LockOn == false && roomInfoList[nowCount].LockOn != hi.LockOn && checkFirstThread == 1)
                             {
                                 String[] eventArr
                                     = { Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
                                     roomInfoList[nowCount].ID.ToString(), "잠금 설정" };
-                                UpdateEventLog(Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                UpdateEventLog(Time.GetYear() + "." + Time.GetMonth() + "." + Time.GetDay() + " " + Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
                                     roomInfoList[nowCount].ID.ToString(), "잠금 설정");
                                 var listViewItem = new ListViewItem(eventArr);
                                 eventListView.Invoke((MethodInvoker)delegate ()
                                 {
                                     eventListView.Items.Add(listViewItem);
-                                }); 
+                                });
                             }
-                            else if (roomInfoList[nowCount].LockOn == true && roomInfoList[nowCount].LockOn != hi.LockOn)
+
+                            else if (roomInfoList[nowCount].LockOn == true && roomInfoList[nowCount].LockOn != hi.LockOn && checkFirstThread == 1)
                             {
                                 String[] eventArr
-                                   = { Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                   = {Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
                                     roomInfoList[nowCount].ID.ToString(), "잠금 해제" };
-                                UpdateEventLog(Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                UpdateEventLog(Time.GetYear() + "." + Time.GetMonth() + "." + Time.GetDay() + " " + Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
                                     roomInfoList[nowCount].ID.ToString(), "잠금 해제");
                                 var listViewItem = new ListViewItem(eventArr);
                                 eventListView.Invoke((MethodInvoker)delegate ()
@@ -420,25 +462,25 @@ namespace GrixControler
                                 });
                             }
 
-                            if (roomInfoList[nowCount].PowerOn == false && roomInfoList[nowCount].PowerOn != hi.PowerOn)
+                            if (roomInfoList[nowCount].PowerOn == false && roomInfoList[nowCount].PowerOn != hi.PowerOn && checkFirstThread == 1)
                             {
                                 String[] eventArr
                                     = { Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
                                     roomInfoList[nowCount].ID.ToString(), "전원 켜짐" };
-                                UpdateEventLog(Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                UpdateEventLog(Time.GetYear() + "." + Time.GetMonth() + "." + Time.GetDay() + " " + Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
                                     roomInfoList[nowCount].ID.ToString(), "전원 켜짐");
-                                 var listViewItem = new ListViewItem(eventArr);
+                                var listViewItem = new ListViewItem(eventArr);
                                 eventListView.Invoke((MethodInvoker)delegate ()
                                 {
                                     eventListView.Items.Add(listViewItem);
                                 });
                             }
-                            else if (roomInfoList[nowCount].PowerOn == true && roomInfoList[nowCount].PowerOn != hi.PowerOn)
+                            else if (roomInfoList[nowCount].PowerOn == true && roomInfoList[nowCount].PowerOn != hi.PowerOn && checkFirstThread == 1)
                             {
                                 String[] eventArr
                                    = { Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
                                     roomInfoList[nowCount].ID.ToString(), "전원 꺼짐" };
-                                UpdateEventLog(Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                UpdateEventLog(Time.GetYear() + "." + Time.GetMonth() + "." + Time.GetDay() + " " + Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
                                     roomInfoList[nowCount].ID.ToString(), "전원 꺼짐");
                                 var listViewItem = new ListViewItem(eventArr);
                                 eventListView.Invoke((MethodInvoker)delegate ()
@@ -447,12 +489,12 @@ namespace GrixControler
                                 });
                             }
 
-                            if (roomInfoList[nowCount].SetTemp != hi.SetTemp)
+                            if (roomInfoList[nowCount].SetTemp != hi.SetTemp && checkFirstThread == 1)
                             {
                                 String[] eventArr
                                     = { Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
                                     roomInfoList[nowCount].ID.ToString(), "온도 설정" };
-                                UpdateEventLog(Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                UpdateEventLog(Time.GetYear() + "." + Time.GetMonth() + "." + Time.GetDay() + " " + Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
                                     roomInfoList[nowCount].ID.ToString(), "온도 설정");
                                 var listViewItem = new ListViewItem(eventArr);
                                 eventListView.Invoke((MethodInvoker)delegate ()
@@ -469,7 +511,7 @@ namespace GrixControler
                             roomInfoList[nowCount].PowerOn = hi.PowerOn;
                             roomInfoList[nowCount].ConnectOn = hi.ConnectOn;
 
-
+                            checkFirstThread = 1;
                             Thread.Sleep(50);
                         }
                     }
@@ -551,6 +593,80 @@ namespace GrixControler
             {
                 MessageBox.Show(e.ToString());
             }
+
+        }
+
+        public void UpdateGroupResult(int count)
+        {
+            try
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    //MessageBox.Show("viewhandle " + view_Handle.ToString());
+                    if (view_Handle)
+                    {
+                        /*
+                        MessageBox.Show("if문 " + (roomView[i].roomName.Text == roomInfoList[j].ID.ToString()).ToString() + " " 
+                        + roomView[i].roomName.Text + " " + roomInfoList[j].ID.ToString());
+                        */
+
+                        for (int k = 0; k < groupID.Count; k++)
+                        {
+
+                            if (roomView[i].roomName.Text == groupID[k])
+                            {
+                                if (roomInfoList[i].PowerOn == true)
+                                {
+                                    roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
+                                    {
+                                            //MessageBox.Show(roomInfoList[j].NowTemp.ToString() + "UIThread");
+                                            roomView[i].current_Temp.Text = roomInfoList[i].NowTemp.ToString();
+                                    });
+                                    roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        roomView[i].desired_Temp.Text = roomInfoList[i].SetTemp.ToString();
+                                    });
+                                    roomView[i].picture_Lock.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        roomView[i].picture_Lock.Visible = roomInfoList[i].LockOn;
+                                    });
+                                    roomView[i].picture_Heat.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        roomView[i].picture_Heat.Visible = roomInfoList[i].HeaterOn;
+                                    });
+                                }
+                                else
+                                {
+                                    roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
+                                    {
+                                            //MessageBox.Show(roomInfoList[j].NowTemp.ToString() + "UIThread - poweroff");
+                                            roomView[i].current_Temp.Text = "0";
+                                    });
+                                    roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        roomView[i].desired_Temp.Text = "0";
+                                    });
+                                    roomView[i].picture_Lock.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        roomView[i].picture_Lock.Visible = false;
+                                    });
+                                    roomView[i].picture_Heat.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        roomView[i].picture_Heat.Visible = false;
+                                    });
+                                }
+                            }
+
+
+                        }
+                    }
+                }
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+
 
         }
 
@@ -668,6 +784,19 @@ namespace GrixControler
                 All = Year + "-" + Month + "-" + Day + "    " + Hour + ":" + Min + ":" + Sec;
             }
 
+            public static int GetYear()
+            {
+                return now.Year;
+            }
+            public static int GetMonth()
+            {
+                return now.Month;
+            }
+            public static int GetDay()
+            {
+                return now.Day;
+            }
+
             public static int GetHour()
             {
                 return now.Hour;
@@ -709,15 +838,15 @@ namespace GrixControler
             eventListView.View = View.Details;
             eventListView.GridLines = true;
             eventListView.FullRowSelect = false;
-            
+
 
         }
-        
+
 
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-
+            wb.Save();
             wb.Close(true);
             excelApp.Quit();
 
@@ -809,14 +938,14 @@ namespace GrixControler
 
         private void CheckReservation_ON(int count)
         {
-             reservationTime_Mon_ON = new String[count];
-             reservationTime_Tues_ON = new String[count];
-             reservationTime_Wednes_ON = new String[count];
-             reservationTime_Thurs_ON = new String[count];
-             reservationTime_Fri_ON = new String[count];
-             reservationTime_Satur_ON = new String[count];
-             reservationTime_Sun_ON = new String[count];
-            
+            reservationTime_Mon_ON = new String[count];
+            reservationTime_Tues_ON = new String[count];
+            reservationTime_Wednes_ON = new String[count];
+            reservationTime_Thurs_ON = new String[count];
+            reservationTime_Fri_ON = new String[count];
+            reservationTime_Satur_ON = new String[count];
+            reservationTime_Sun_ON = new String[count];
+
             reservationTime_Mon_TEMP = new int[count];
             reservationTime_Tues_TEMP = new int[count];
             reservationTime_Wednes_TEMP = new int[count];
@@ -887,15 +1016,15 @@ namespace GrixControler
 
         private void CheckReservation_OFF(int count)
         {
-            
-             reservationTime_Mon_OFF = new String[count];
-             reservationTime_Tues_OFF = new String[count];
-             reservationTime_Wednes_OFF = new String[count];
-             reservationTime_Thurs_OFF = new String[count];
-             reservationTime_Fri_OFF = new String[count];
-             reservationTime_Satur_OFF = new String[count];
-             reservationTime_Sun_OFF = new String[count];
-            
+
+            reservationTime_Mon_OFF = new String[count];
+            reservationTime_Tues_OFF = new String[count];
+            reservationTime_Wednes_OFF = new String[count];
+            reservationTime_Thurs_OFF = new String[count];
+            reservationTime_Fri_OFF = new String[count];
+            reservationTime_Satur_OFF = new String[count];
+            reservationTime_Sun_OFF = new String[count];
+
             reservationTime_OFF_ID = new String[count];
             reservationTime_OFF_DAY = new String[count];
 
@@ -958,7 +1087,7 @@ namespace GrixControler
             }
             else
                 return reservationTime_Sun_ON;
-            
+
         }
 
         private string[] ReservationEachDay_OFF_Time(String day)
@@ -1022,13 +1151,14 @@ namespace GrixControler
                 return reservationTime_Sun_TEMP;
 
         }
-        
+
         private String KorDayToEng(String day)
         {
             if (day == "월")
             {
                 return "Monday";
-            }else if(day == "화")
+            }
+            else if (day == "화")
             {
                 return "Tuesday";
             }
@@ -1048,7 +1178,7 @@ namespace GrixControler
             {
                 return "Saturday";
             }
-            else 
+            else
             {
                 return "Sunday";
             }
@@ -1065,33 +1195,33 @@ namespace GrixControler
             engDay = KorDayToEng(day);
             tt = time.Substring(0, 2);
             if (tt == "오전") { }
-                else ttToInt = 1;
+            else ttToInt = 1;
             hour = Convert.ToInt32(time.Substring(2, 2));
             min = Convert.ToInt32(time.Substring(4, 2));
 
-            if (CheckDayOfWeek == engDay && CheckHour == hour+ttToInt*12 && CheckMin == min)
+            if (CheckDayOfWeek == engDay && CheckHour == hour + ttToInt * 12 && CheckMin == min)
+            {
+                if (reservationTime_ON_ID[roomIDIndex].Length == 4)
                 {
-                    if (reservationTime_ON_ID[roomIDIndex].Length == 4)
-                    {
-                        id_H = reservationTime_ON_ID[roomIDIndex].Substring(0, 2);
-                        id_L = reservationTime_ON_ID[roomIDIndex].Substring(2, 2);
-                    }
-                    else if (reservationTime_ON_ID[roomIDIndex].Length == 3)
-                    {
-                        id_H = reservationTime_ON_ID[roomIDIndex].Substring(0, 1);
-                        id_L = reservationTime_ON_ID[roomIDIndex].Substring(1, 2);
-                    }
-                    else
-                    {
-                        id_H = "0";
-                        id_L = reservationTime_ON_ID[roomIDIndex];
-                    }
-
-                    serialConnect.GetSerialPacket(serialConnect.powerOnCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
-                    Thread.Sleep(50);
-                    serialConnect.GetSerialPacket(serialConnect.setTempCmd((Byte)temp), (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
-                    reserveCheck_A = 1;
+                    id_H = reservationTime_ON_ID[roomIDIndex].Substring(0, 2);
+                    id_L = reservationTime_ON_ID[roomIDIndex].Substring(2, 2);
                 }
+                else if (reservationTime_ON_ID[roomIDIndex].Length == 3)
+                {
+                    id_H = reservationTime_ON_ID[roomIDIndex].Substring(0, 1);
+                    id_L = reservationTime_ON_ID[roomIDIndex].Substring(1, 2);
+                }
+                else
+                {
+                    id_H = "0";
+                    id_L = reservationTime_ON_ID[roomIDIndex];
+                }
+
+                serialConnect.GetSerialPacket(serialConnect.powerOnCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                Thread.Sleep(50);
+                serialConnect.GetSerialPacket(serialConnect.setTempCmd((Byte)temp), (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                reserveCheck_A = 1;
+            }
 
         }
 
@@ -1109,7 +1239,7 @@ namespace GrixControler
             tt = time.Substring(0, 2);
             if (tt == "오전") { }
             else ttToInt = 1;
-            
+
             hour = Convert.ToInt32(time.Substring(2, 2));
             min = Convert.ToInt32(time.Substring(4, 2));
 
@@ -1126,7 +1256,7 @@ namespace GrixControler
                     id_L = reservationTime_OFF_ID[roomIDIndex].Substring(1, 2);
                 }
                 else
-                { 
+                {
                     id_H = "0";
                     id_L = reservationTime_OFF_ID[roomIDIndex];
                 }
@@ -1135,7 +1265,7 @@ namespace GrixControler
                 reserveCheck_B = 1;
                 Thread.Sleep(50);
             }
-            
+
         }
 
         private void eventListView_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
@@ -1146,7 +1276,7 @@ namespace GrixControler
 
         private void ExecuteReservation(int onCount, int OffCount)
         {
-            
+
 
             String id_H;
             String id_L;
@@ -1162,11 +1292,11 @@ namespace GrixControler
                  * i번째에 해당하는 time을 추출하면 끝
                  * */
 
-                for(int k = 0; k < eachDay.Length; k++)
+                for (int k = 0; k < eachDay.Length; k++)
                 {
                     string[] onTimeEachDay = ReservationEachDay_ON_Time(eachDay[k]);
                     int[] tempEachDay = ReservationEachDay_ON_Temp(eachDay[k]);
-                    ExecuteEachDay_ON(eachDay[k],onTimeEachDay[i], tempEachDay[i], i); //여기는 오전0800이 들어감
+                    ExecuteEachDay_ON(eachDay[k], onTimeEachDay[i], tempEachDay[i], i); //여기는 오전0800이 들어감
                 }
             }
 
@@ -1189,7 +1319,7 @@ namespace GrixControler
             }
 
 
-           
+
 
         }
 
@@ -1208,7 +1338,7 @@ namespace GrixControler
         {
             filter = new ScrollPanelMessageFilter(ViewPanel);
             Application.AddMessageFilter(filter);
-            
+
         }
 
         private void MainForm_Deactivate(object sender, EventArgs e)
@@ -1225,7 +1355,7 @@ namespace GrixControler
             reserveCheck_B = 0;
             roomInfoList.Clear();
 
-            for(int i = 0; i < roomView.Length; i++)
+            for (int i = 0; i < roomView.Length; i++)
             {
                 roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
                 {
@@ -1262,9 +1392,7 @@ namespace GrixControler
         {
             try
             {
-                
                 // Excel 첫번째 워크시트 가져오기                
-               
 
                 Excel.Range range = ws.Cells[1, 4];
                 excelIndex = (int)range.Value;
@@ -1280,8 +1408,27 @@ namespace GrixControler
             finally
             {
                 // Clean up
-             
+
             }
+        }
+
+        public void SetCOMInfo(string com)
+        {
+            try
+            {
+                ws.Cells[1, 5] = com;
+            }
+            finally { }
+        }
+
+        public String GetCOMInfo()
+        {
+            String com;
+            Excel.Range range = ws.Cells[1, 5];
+            com = range.Value.ToString();
+            if (com != "COM")
+                return com;
+            return "COM";
         }
 
     }

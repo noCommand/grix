@@ -38,7 +38,7 @@ namespace GrixControler
             {
                 portCombx.Items.Add(portNumber);
             }
-            portCombx.Text = main.serialConnect.GetPortName();
+            portCombx.Text = main.GetCOMInfo();
 
             this.main = main;
         }

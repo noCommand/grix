@@ -29,6 +29,7 @@ namespace GrixControler
         MainForm main;
 
         SerialPort sp = new SerialPort();
+        SerialPort ssp = new SerialPort();
 
 
         public SerialConnect(MainForm main)
@@ -40,7 +41,6 @@ namespace GrixControler
         {
             this.main = main;
             sp.PortName = pttx;
-
             /** 18.5.11 sp.bandrate에 따라 보내는 속성이 달라진다. 
              * 
              * */
@@ -49,12 +49,8 @@ namespace GrixControler
             try
             {
                 sp.Open();
-                /*
                 if (sp.IsOpen)
-                    MessageBox.Show(sp.IsOpen.ToString());
-                else
-                    MessageBox.Show(sp.IsOpen.ToString());
-                    */
+                    main.SetCOMInfo(pttx);
             }
             catch (Exception exc)
             {
