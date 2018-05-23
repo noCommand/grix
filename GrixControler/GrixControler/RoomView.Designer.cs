@@ -118,6 +118,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(3, 5, 3, 6);
             this.Name = "RoomView";
             this.Size = new System.Drawing.Size(76, 103);
             this.Load += new System.EventHandler(this.RoomView_Load);

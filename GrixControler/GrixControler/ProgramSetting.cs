@@ -2,6 +2,7 @@
 using System.Data.SQLite;
 using System.IO.Ports;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace GrixControler
 {
@@ -20,7 +21,10 @@ namespace GrixControler
         int result;
 
         int row;
-        
+
+        public Thread thread_Serial;
+
+
         public ProgramSetting(MainForm main)
         {
             main.ThreadPause();
@@ -126,8 +130,9 @@ namespace GrixControler
             
         }
 
-        public void SQLExcute(String sql)
+        public void SQLExcute(String sql, SQLiteTransaction tr)
         {
+            command.Transaction = tr;
             command = new SQLiteCommand(sql, dbConn);
             result = command.ExecuteNonQuery();
         }
@@ -215,38 +220,60 @@ namespace GrixControler
             
         }
 
+
+
         private void apply_btn_Click_1(object sender, EventArgs e)
+        {
+            SetRoomID();
+        }
+
+        private void SetRoomID()
         {
             //SQL
             row = roomGridView.RowCount;
 
             int scalarNum;
-
-            SQLExcute("delete from idTable");
-            SQLExcute("update sqlite_sequence set seq = 0 where name = 'idTable'");
-
-            try
+            using (SQLiteTransaction tr = dbConn.BeginTransaction())
             {
-                for (int i = 0; i < row - 1; i++)
+                /** 18.5.23 
+                 *  sqlitetransaction을 사용해야 insert연산이 빨라진다. 
+                 *  
+                 *  이유는..? 
+                 *  
+                 * */
+
+                SQLExcute("delete from idTable", tr);
+                SQLExcute("update sqlite_sequence set seq = 0 where name = 'idTable'", tr);
+
+                try
                 {
 
-                    sql = "insert into idTable(roomID,roomNum) Values(\'" +
-                        roomGridView.Rows[i].Cells[1].FormattedValue.ToString() + "\',\'" +
-                        roomGridView.Rows[i].Cells[2].FormattedValue.ToString() + "\')";
-                    SQLExcute(sql);
+                    for (int i = 0; i < row - 1; i++)
+                    {
+
+                        sql = "insert into idTable(roomID,roomNum) Values(\'" +
+                            roomGridView.Rows[i].Cells[1].FormattedValue.ToString() + "\',\'" +
+                            roomGridView.Rows[i].Cells[2].FormattedValue.ToString() + "\')";
+                        SQLExcute(sql, tr);
+
+                    }
+
 
                 }
-
-            }
-            catch (Exception er)
-            {
-                MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+                catch (Exception er)
+                {
+                    MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+                }
+                tr.Commit();
             }
 
             show_roomGridView();
+        }
+
+        private void roomGridView_KeyDown(object sender, KeyEventArgs e)
+        {
 
         }
-        
     }
 
 

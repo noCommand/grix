@@ -84,6 +84,13 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventInfo.cs" />
+    <Compile Include="GroupSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GroupSetting.Designer.cs">
+      <DependentUpon>GroupSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProgramSetting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +109,7 @@
     <Compile Include="RoomView.Designer.cs">
       <DependentUpon>RoomView.cs</DependentUpon>
     </Compile>
+    <Compile Include="ScrollPanelMessageFilter.cs" />
     <Compile Include="SerialConnect.cs" />
     <Compile Include="RoomSetting.cs">
       <SubType>Form</SubType>
@@ -127,6 +135,9 @@
     <Compile Include="SqliteInit.cs" />
     <EmbeddedResource Include="CustomButton.resx">
       <DependentUpon>CustomButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GroupSetting.resx">
+      <DependentUpon>GroupSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgramSetting.resx">
       <DependentUpon>ProgramSetting.cs</DependentUpon>
@@ -187,6 +198,44 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Lock.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="FileSystemObject">
+      <Guid>{01794C07-E60E-11D2-97E9-008029670F87}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

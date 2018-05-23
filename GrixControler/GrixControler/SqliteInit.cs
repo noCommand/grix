@@ -32,7 +32,7 @@ namespace GrixControler
 
 
             sql = "create table if not exists idTable(groupNum integer primary key autoincrement," +
-                " roomID string default \'X\', roomNum string," +
+                " roomID string default \'X\', roomNum string," + 
                 " MondayStartTime string Default \'오전0800\', MondayEndTime string Default '오후0800', MondayTemp string default 25," +
                 " TuesdayStartTime string Default \'오전0800\', TuesdayEndTime string Default \'오후0800\', TuesdayTemp string default 25," +
                 " WednesdayStartTime string Default \'오전0800\', WednesdayEndTime string Default \'오후0800\', WednesdayTemp string default 25," +

@@ -42,22 +42,18 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.timeLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.testButton = new System.Windows.Forms.Button();
+            this.SetGroupButton = new System.Windows.Forms.Button();
             this.AdminSet = new System.Windows.Forms.Button();
-            this.Help = new System.Windows.Forms.Button();
+            this.testButton = new System.Windows.Forms.Button();
             this.Setting = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.ViewPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.customButton2 = new GrixControler.CustomButton();
             this.panel4.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -71,10 +67,10 @@
             this.panel4.Controls.Add(this.panel7);
             this.panel4.Controls.Add(this.panel5);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(0, 27);
+            this.panel4.Location = new System.Drawing.Point(0, 50);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(185, 714);
+            this.panel4.Size = new System.Drawing.Size(185, 691);
             this.panel4.TabIndex = 2;
             // 
             // panel7
@@ -84,7 +80,7 @@
             this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel7.Location = new System.Drawing.Point(0, 0);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(185, 687);
+            this.panel7.Size = new System.Drawing.Size(185, 664);
             this.panel7.TabIndex = 8;
             // 
             // eventListView
@@ -97,7 +93,7 @@
             this.eventListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.eventListView.Location = new System.Drawing.Point(0, 26);
             this.eventListView.Name = "eventListView";
-            this.eventListView.Size = new System.Drawing.Size(185, 661);
+            this.eventListView.Size = new System.Drawing.Size(185, 638);
             this.eventListView.TabIndex = 3;
             this.eventListView.UseCompatibleStateImageBehavior = false;
             this.eventListView.View = System.Windows.Forms.View.Details;
@@ -150,7 +146,7 @@
             this.panel5.BackgroundImage = global::GrixControler.Properties.Resources.Time_Background;
             this.panel5.Controls.Add(this.timeLabel);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel5.Location = new System.Drawing.Point(0, 687);
+            this.panel5.Location = new System.Drawing.Point(0, 664);
             this.panel5.Margin = new System.Windows.Forms.Padding(0);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(185, 27);
@@ -170,71 +166,58 @@
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.panel3);
-            this.panel1.Controls.Add(this.panel2);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.SetGroupButton);
+            this.panel1.Controls.Add(this.AdminSet);
+            this.panel1.Controls.Add(this.testButton);
+            this.panel1.Controls.Add(this.Setting);
             this.panel1.Location = new System.Drawing.Point(185, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(837, 27);
+            this.panel1.Size = new System.Drawing.Size(837, 50);
             this.panel1.TabIndex = 1;
             // 
-            // panel3
+            // SetGroupButton
             // 
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(454, 27);
-            this.panel3.TabIndex = 5;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.testButton);
-            this.panel2.Controls.Add(this.AdminSet);
-            this.panel2.Controls.Add(this.Help);
-            this.panel2.Controls.Add(this.Setting);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(454, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(383, 27);
-            this.panel2.TabIndex = 4;
-            // 
-            // testButton
-            // 
-            this.testButton.Location = new System.Drawing.Point(295, 2);
-            this.testButton.Name = "testButton";
-            this.testButton.Size = new System.Drawing.Size(75, 23);
-            this.testButton.TabIndex = 1;
-            this.testButton.Text = "도움말";
-            this.testButton.UseVisualStyleBackColor = true;
+            this.SetGroupButton.BackColor = System.Drawing.Color.Navy;
+            this.SetGroupButton.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SetGroupButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.SetGroupButton.Location = new System.Drawing.Point(437, 12);
+            this.SetGroupButton.Margin = new System.Windows.Forms.Padding(0);
+            this.SetGroupButton.Name = "SetGroupButton";
+            this.SetGroupButton.Size = new System.Drawing.Size(98, 28);
+            this.SetGroupButton.TabIndex = 0;
+            this.SetGroupButton.Text = "그룹";
+            this.SetGroupButton.UseVisualStyleBackColor = false;
+            this.SetGroupButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // AdminSet
             // 
-            this.AdminSet.Location = new System.Drawing.Point(135, 2);
+            this.AdminSet.Location = new System.Drawing.Point(588, 14);
             this.AdminSet.Name = "AdminSet";
             this.AdminSet.Size = new System.Drawing.Size(75, 23);
-            this.AdminSet.TabIndex = 1;
+            this.AdminSet.TabIndex = 7;
             this.AdminSet.Text = "예약설정";
             this.AdminSet.UseVisualStyleBackColor = true;
             this.AdminSet.Click += new System.EventHandler(this.AdminSet_Click);
             // 
-            // Help
+            // testButton
             // 
-            this.Help.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Help.Location = new System.Drawing.Point(86, -70);
-            this.Help.Name = "Help";
-            this.Help.Size = new System.Drawing.Size(75, 23);
-            this.Help.TabIndex = 3;
-            this.Help.Text = "도움말";
-            this.Help.UseVisualStyleBackColor = true;
+            this.testButton.Location = new System.Drawing.Point(750, 14);
+            this.testButton.Name = "testButton";
+            this.testButton.Size = new System.Drawing.Size(75, 23);
+            this.testButton.TabIndex = 8;
+            this.testButton.Text = "도움말";
+            this.testButton.UseVisualStyleBackColor = true;
             // 
             // Setting
             // 
-            this.Setting.Location = new System.Drawing.Point(216, 2);
+            this.Setting.Location = new System.Drawing.Point(669, 14);
             this.Setting.Name = "Setting";
             this.Setting.Size = new System.Drawing.Size(75, 23);
-            this.Setting.TabIndex = 2;
+            this.Setting.TabIndex = 9;
             this.Setting.Text = "환경설정";
             this.Setting.UseVisualStyleBackColor = true;
             this.Setting.Click += new System.EventHandler(this.button2_Click);
@@ -253,7 +236,7 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1022, 741);
             this.tableLayoutPanel1.TabIndex = 0;
@@ -266,27 +249,21 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(185, 27);
+            this.pictureBox1.Size = new System.Drawing.Size(185, 50);
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
             // ViewPanel
             // 
+            this.ViewPanel.AutoScroll = true;
             this.ViewPanel.BackColor = System.Drawing.Color.Thistle;
             this.ViewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ViewPanel.Location = new System.Drawing.Point(185, 27);
+            this.ViewPanel.Location = new System.Drawing.Point(185, 50);
             this.ViewPanel.Margin = new System.Windows.Forms.Padding(0);
             this.ViewPanel.Name = "ViewPanel";
-            this.ViewPanel.Size = new System.Drawing.Size(837, 714);
+            this.ViewPanel.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.ViewPanel.Size = new System.Drawing.Size(837, 691);
             this.ViewPanel.TabIndex = 7;
-            // 
-            // customButton2
-            // 
-            this.customButton2.BackColor = System.Drawing.Color.White;
-            this.customButton2.Location = new System.Drawing.Point(3, 2);
-            this.customButton2.Name = "customButton2";
-            this.customButton2.Size = new System.Drawing.Size(61, 22);
-            this.customButton2.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -298,6 +275,8 @@
             this.MinimumSize = new System.Drawing.Size(1038, 779);
             this.Name = "MainForm";
             this.Text = "온도조절 시스템 PC제어 프로그램";
+            this.Activated += new System.EventHandler(this.MainForm_Activated);
+            this.Deactivate += new System.EventHandler(this.MainForm_Deactivate);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.panel4.ResumeLayout(false);
@@ -307,7 +286,6 @@
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -327,16 +305,14 @@
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label timeLabel;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button AdminSet;
-        private System.Windows.Forms.Button Help;
-        private System.Windows.Forms.Button Setting;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel ViewPanel;
         private CustomButton customButton2;
-        private System.Windows.Forms.Button testButton;
         public System.Windows.Forms.ListView eventListView;
+        private System.Windows.Forms.Button SetGroupButton;
+        private System.Windows.Forms.Button AdminSet;
+        private System.Windows.Forms.Button testButton;
+        private System.Windows.Forms.Button Setting;
     }
 }
 

@@ -131,6 +131,7 @@
             this.roomGridView.TabIndex = 0;
             this.roomGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.roomGridView_CellContentClick);
             this.roomGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.roomGridView_CellValueChanged);
+            this.roomGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.roomGridView_KeyDown);
             this.roomGridView.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.roomGridView_KeyPress);
             // 
             // setNo
