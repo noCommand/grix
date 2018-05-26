@@ -86,6 +86,8 @@ namespace GrixControler
             main.groupGetInfo = GetGroupRoomInfo();
             main.groupID = GetGroupID();
             main.GroupSettingThreadStart();
+            
+            main.ThreadResume();
             this.Close();
         }
 

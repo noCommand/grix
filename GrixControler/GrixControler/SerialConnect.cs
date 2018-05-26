@@ -148,7 +148,7 @@ namespace GrixControler
         public RoomInfo GetSerialPacket(byte[] serialRead, byte id_H, byte id_L)
         {
 
-            ClearBuffer();
+            ClearReceiveBuffer();
 
             int originTemp;
             int compareTemp;
@@ -271,7 +271,7 @@ namespace GrixControler
                     roominfo.CheckSum = sp.ReadByte();
                     roominfo.ConnectOn = true;
                     sp.ReadByte();
-                    ClearBuffer();
+                    ClearReceiveBuffer();
                     return roominfo;
                 }
                 else
@@ -284,7 +284,7 @@ namespace GrixControler
                         }
                     }
                     roominfo.ConnectOn = false;
-                    ClearBuffer();
+                    ClearReceiveBuffer();
                     return roominfo;
                     //MessageBox.Show("serialconnection "+sp.BytesToRead.ToString());
                     /** 18.5.5
@@ -314,7 +314,7 @@ namespace GrixControler
 
         public void setSerialPacket(byte[] serialCommand, byte id_H, byte id_L)
         {
-            ClearBuffer();
+            //ClearReceiveBuffer();
 
             serialCommand[1] = id_H;
             serialCommand[2] = id_L;
@@ -338,7 +338,7 @@ namespace GrixControler
 
             //MessageBox.Show("setSerialPacket!!! " + sp.BytesToRead.ToString());
 
-            ClearBuffer();
+            ClearReceiveBuffer();
             System.Threading.Thread.Sleep(100);
             // sleep을 써줘야 데이터가 제데로 전송됨
 
@@ -354,11 +354,23 @@ namespace GrixControler
             return checksum;
         }
 
-        public void ClearBuffer()
+        public void ClearReceiveBuffer()
         {
             try
             {
                 sp.DiscardInBuffer();
+            }
+            catch (InvalidOperationException e)
+            {
+
+            }
+        }
+
+        public void ClearSendBuffer()
+        {
+            try
+            {
+                sp.DiscardOutBuffer();
             }
             catch (InvalidOperationException e)
             {

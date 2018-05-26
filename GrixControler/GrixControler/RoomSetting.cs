@@ -60,7 +60,7 @@ namespace GrixControler
                     powerOnBtn.Checked = true;
                 }
             }
-            main.serialConnect.ClearBuffer();
+            main.serialConnect.ClearReceiveBuffer();
 
         }
 

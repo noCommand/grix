@@ -281,9 +281,10 @@ namespace GrixControler
 
         public void GroupSettingThreadStart()
         {
-            thread_GroupInfoSetting = new Thread(GroupConfirmThread);
-            thread_GroupInfoSetting.IsBackground = true;
-            thread_GroupInfoSetting.Start();
+            GroupConfirmThread();
+            //thread_GroupInfoSetting = new Thread(GroupConfirmThread);
+            //thread_GroupInfoSetting.IsBackground = true;
+            //thread_GroupInfoSetting.Start();
         }
 
         private void GroupConfirmThread()
@@ -293,24 +294,14 @@ namespace GrixControler
 
             GroupSetting groupForCalculate = new GroupSetting(this, 0);
 
-            for (int j = 0; j < roomInfoList.Count; j++)
+            serialConnect.ClearSendBuffer();
+
+            for (int i = 0; i < groupID.Count; i++)
             {
-                for (int i = 0; i < groupID.Count; i++)
-                {
-                    if (roomInfoList[j].ID.ToString() == groupID[i])
-                    {
+                seperateID = groupForCalculate.IDStringToByte(groupID[i]);
+                groupForCalculate.GroupingRoomSettinComfirm(seperateID, groupGetInfo.PowerOn, groupGetInfo.LockOn, groupGetInfo.SetTemp);
 
-                        if (roomInfoList[i].PowerOn != groupGetInfo.PowerOn ||
-                            roomInfoList[i].LockOn != groupGetInfo.LockOn || roomInfoList[i].SetTemp != groupGetInfo.SetTemp)
-                        {
-                            seperateID = groupForCalculate.IDStringToByte(groupID[i]);
-                            groupForCalculate.GroupingRoomSettinComfirm(seperateID, groupGetInfo.PowerOn, groupGetInfo.LockOn, groupGetInfo.SetTemp);
-                        }
-
-                    }
-                }
             }
-            UpdateGroupResult(defaultCount);
             ThreadResume();
             //seperateID = IDStringToByte(GroupRoomList.Items[i].SubItems[0].Text);
             //GroupingRoomSettinComfirm(seperateID);
@@ -595,81 +586,6 @@ namespace GrixControler
             }
 
         }
-
-        public void UpdateGroupResult(int count)
-        {
-            try
-            {
-                for (int i = 0; i < count; i++)
-                {
-                    //MessageBox.Show("viewhandle " + view_Handle.ToString());
-                    if (view_Handle)
-                    {
-                        /*
-                        MessageBox.Show("if문 " + (roomView[i].roomName.Text == roomInfoList[j].ID.ToString()).ToString() + " " 
-                        + roomView[i].roomName.Text + " " + roomInfoList[j].ID.ToString());
-                        */
-
-                        for (int k = 0; k < groupID.Count; k++)
-                        {
-
-                            if (roomView[i].roomName.Text == groupID[k])
-                            {
-                                if (roomInfoList[i].PowerOn == true)
-                                {
-                                    roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
-                                    {
-                                            //MessageBox.Show(roomInfoList[j].NowTemp.ToString() + "UIThread");
-                                            roomView[i].current_Temp.Text = roomInfoList[i].NowTemp.ToString();
-                                    });
-                                    roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
-                                    {
-                                        roomView[i].desired_Temp.Text = roomInfoList[i].SetTemp.ToString();
-                                    });
-                                    roomView[i].picture_Lock.Invoke((MethodInvoker)delegate ()
-                                    {
-                                        roomView[i].picture_Lock.Visible = roomInfoList[i].LockOn;
-                                    });
-                                    roomView[i].picture_Heat.Invoke((MethodInvoker)delegate ()
-                                    {
-                                        roomView[i].picture_Heat.Visible = roomInfoList[i].HeaterOn;
-                                    });
-                                }
-                                else
-                                {
-                                    roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
-                                    {
-                                            //MessageBox.Show(roomInfoList[j].NowTemp.ToString() + "UIThread - poweroff");
-                                            roomView[i].current_Temp.Text = "0";
-                                    });
-                                    roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
-                                    {
-                                        roomView[i].desired_Temp.Text = "0";
-                                    });
-                                    roomView[i].picture_Lock.Invoke((MethodInvoker)delegate ()
-                                    {
-                                        roomView[i].picture_Lock.Visible = false;
-                                    });
-                                    roomView[i].picture_Heat.Invoke((MethodInvoker)delegate ()
-                                    {
-                                        roomView[i].picture_Heat.Visible = false;
-                                    });
-                                }
-                            }
-
-
-                        }
-                    }
-                }
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-
-
-        }
-
 
         public void SetRoomView(int count, RoomInfo roomInfo)
         {
