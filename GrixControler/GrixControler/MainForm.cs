@@ -47,8 +47,7 @@ namespace GrixControler
         String[] reservationTime_Fri_ON;
         String[] reservationTime_Satur_ON;
         String[] reservationTime_Sun_ON;
-
-
+        
         String[] reservationTime_ON_DAY;
 
         String[] reservationTime_ON_ID;
@@ -290,11 +289,11 @@ namespace GrixControler
         private void GroupConfirmThread()
         {
 
+            /*
             Byte[] seperateID = new Byte[2];
 
             GroupSetting groupForCalculate = new GroupSetting(this, 0);
-
-            serialConnect.ClearSendBuffer();
+            
 
             for (int i = 0; i < groupID.Count; i++)
             {
@@ -302,7 +301,7 @@ namespace GrixControler
                 groupForCalculate.GroupingRoomSettinComfirm(seperateID, groupGetInfo.PowerOn, groupGetInfo.LockOn, groupGetInfo.SetTemp);
 
             }
-            ThreadResume();
+            */
             //seperateID = IDStringToByte(GroupRoomList.Items[i].SubItems[0].Text);
             //GroupingRoomSettinComfirm(seperateID);
         }
@@ -400,8 +399,28 @@ namespace GrixControler
 
                             //MessageBox.Show(roomID[nowCount].ToString());
                             //MessageBox.Show(id_H.ToString() + " " + id_L.ToString());
+                            RoomInfo hi;
 
-                            RoomInfo hi = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                            if (groupID != null)
+                            {
+                                Byte[] seperateID = new Byte[2];
+
+                                GroupSetting groupForCalculate = new GroupSetting(this, 0);
+                                
+                                for (int i = 0; i < groupID.Count; i++)
+                                {
+                                    if (groupID[i] == roomID[nowCount])
+                                    {
+                                        seperateID = groupForCalculate.IDStringToByte(groupID[i]);
+                                        groupForCalculate.GroupingRoomSettinComfirm(seperateID, groupGetInfo.PowerOn, groupGetInfo.LockOn, groupGetInfo.SetTemp);
+                                    }
+                                }
+                                hi = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                            }
+                            else
+                            {
+                                hi = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                            }
                             //MessageBox.Show(roomID[nowCount].ToString() + " " + hi.ConnectOn);
 
                             /*

@@ -389,6 +389,7 @@ namespace GrixControler
             {
                 return "COM1";
             }
+
             else
             {
                 return sp.PortName;
