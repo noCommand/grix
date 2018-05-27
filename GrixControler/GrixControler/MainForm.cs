@@ -109,6 +109,10 @@ namespace GrixControler
         public List<String> groupID = new List<String>();
         public GroupRoomInfo groupGetInfo = new GroupRoomInfo();
 
+        public int viewStartCount = 0;
+        public bool roomSet = false;
+        public RoomInfo roomInfoSet;
+
         public MainForm()
         {
             InitializeComponent();
@@ -277,34 +281,8 @@ namespace GrixControler
                 }
             }
         }
-
-        public void GroupSettingThreadStart()
-        {
-            GroupConfirmThread();
-            //thread_GroupInfoSetting = new Thread(GroupConfirmThread);
-            //thread_GroupInfoSetting.IsBackground = true;
-            //thread_GroupInfoSetting.Start();
-        }
-
-        private void GroupConfirmThread()
-        {
-
-            /*
-            Byte[] seperateID = new Byte[2];
-
-            GroupSetting groupForCalculate = new GroupSetting(this, 0);
-            
-
-            for (int i = 0; i < groupID.Count; i++)
-            {
-                seperateID = groupForCalculate.IDStringToByte(groupID[i]);
-                groupForCalculate.GroupingRoomSettinComfirm(seperateID, groupGetInfo.PowerOn, groupGetInfo.LockOn, groupGetInfo.SetTemp);
-
-            }
-            */
-            //seperateID = IDStringToByte(GroupRoomList.Items[i].SubItems[0].Text);
-            //GroupingRoomSettinComfirm(seperateID);
-        }
+        
+      
 
         private void SerialThread()
         {
@@ -362,7 +340,7 @@ namespace GrixControler
                     else
                     {
 
-                        for (int nowCount = 0; nowCount < currentCount; nowCount++)
+                        for (int nowCount = viewStartCount ; nowCount < currentCount; nowCount++)
                         {
 
                             if (roomID[nowCount].Length == 4)
@@ -404,6 +382,7 @@ namespace GrixControler
                             if (groupID != null)
                             {
                                 Byte[] seperateID = new Byte[2];
+                                bool isExist = false;
 
                                 GroupSetting groupForCalculate = new GroupSetting(this, 0);
                                 
@@ -412,10 +391,22 @@ namespace GrixControler
                                     if (groupID[i] == roomID[nowCount])
                                     {
                                         seperateID = groupForCalculate.IDStringToByte(groupID[i]);
-                                        groupForCalculate.GroupingRoomSettinComfirm(seperateID, groupGetInfo.PowerOn, groupGetInfo.LockOn, groupGetInfo.SetTemp);
+                                        isExist = true;
+                                        break;
                                     }
                                 }
-                                hi = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                                if (isExist)
+                                {
+                                    hi = groupForCalculate.GroupingRoomSettinComfirm(seperateID, groupGetInfo.PowerOn, groupGetInfo.LockOn, groupGetInfo.SetTemp);
+                                }
+                                else
+                                    hi = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+
+                            }
+                            else if(roomSet)
+                            {
+                                hi = roomInfoSet;
+                                roomSet = false;
                             }
                             else
                             {
@@ -532,11 +523,11 @@ namespace GrixControler
 
                     ExecuteReservation(CheckReservationTuple_ON(), CheckReservationTuple_OFF());
                 }
-
-
+                viewStartCount = 0;
+                groupID = null;
             }
         }
-
+        
         public void UpdateRoomView(int count)
         {
             try

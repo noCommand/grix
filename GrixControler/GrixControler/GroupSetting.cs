@@ -85,18 +85,29 @@ namespace GrixControler
         {
             main.groupGetInfo = GetGroupRoomInfo();
             main.groupID = GetGroupID();
+            main.viewStartCount = FindIndexFromID();
             main.ThreadResume();
             this.Close();
-
-            main.GroupSettingThreadStart();
             
+        }
+
+        private int FindIndexFromID()
+        {
+            int i = 0;
+            List<String> forFirstIndex = GetGroupID();
+            for (i = 0; i < main.roomID.Length; i++)
+            {
+                if (main.roomID[i] == forFirstIndex[0])
+                    break;
+            }
+            return i;
         }
 
         private List<String> GetGroupID()
         {
             //Byte[] seperateID = new Byte[2];
 
-            List<String> hi = new List<String>();
+            List<String> roomStringID = new List<String>();
             
             if (GroupRoomList.Items.Count > 0)
             {
@@ -104,14 +115,14 @@ namespace GrixControler
                 {
                     if (GroupRoomList.Items[i].Checked == true)
                     {
-                        hi.Add(GroupRoomList.Items[i].SubItems[0].Text);
+                        roomStringID.Add(GroupRoomList.Items[i].SubItems[0].Text);
                         
                         //seperateID = IDStringToByte(GroupRoomList.Items[i].SubItems[0].Text);
                         //GroupingRoomSettinComfirm(seperateID);
                     }
                 }
             }
-            return hi;
+            return roomStringID;
         }
 
         private GroupRoomInfo GetGroupRoomInfo()
@@ -141,28 +152,35 @@ namespace GrixControler
         }
 
 
-        public void GroupingRoomSettinComfirm(Byte[] id,bool powerOn, bool lockOn, int setTemp)
+        public RoomInfo GroupingRoomSettinComfirm(Byte[] id,bool powerOn, bool lockOn, int setTemp)
         {
+            RoomInfo ri;
+
+            int cmdResult = 0;
+
             if (powerOn)
             {
-                main.serialConnect.setSerialPacket(main.serialConnect.powerOnCmd, id[0], id[1]);
+                cmdResult = FindIntFromByteIndex(4) + FindIntFromByteIndex(0);
             }
             else if (!powerOn)
             {
-                main.serialConnect.setSerialPacket(main.serialConnect.powerOffCmd, id[0], id[1]);
+                cmdResult = FindIntFromByteIndex(4);
             }
 
             if (lockOn)
             {
-                main.serialConnect.setSerialPacket(main.serialConnect.lockOnCmd, id[0], id[1]);
+                cmdResult += FindIntFromByteIndex(6) + FindIntFromByteIndex(2);
             }
             else if (!lockOn)
             {
-                main.serialConnect.setSerialPacket(main.serialConnect.lockOffCmd, id[0], id[1]);
+                cmdResult += FindIntFromByteIndex(6);
             }
             //MessageBox.Show(setTempControl.Value.ToString() +  idValue[0] + idValue[1]);
-            main.serialConnect.setSerialPacket(main.serialConnect.setTempCmd((Byte)setTemp), id[0], id[1]);
-            System.Threading.Thread.Sleep(100);
+            cmdResult += FindIntFromByteIndex(5);
+
+            ri = main.serialConnect.GetGroupSerialPacket(main.serialConnect.Cmd, (Byte)cmdResult, (Byte)setTemp, id[0], id[1]);
+            
+            return ri;
         }
 
         private void RoomSetting_FormClosed(object sender, FormClosedEventArgs e)
@@ -251,6 +269,17 @@ namespace GrixControler
                     GroupRoomList.Items[i].Checked = false;
                 }
             }
+        }
+        
+
+        private int FindIntFromByteIndex(int index)
+        {
+            int result = 1;
+            for(int i = 0; i < index; i++)
+            {
+                result *= 2;
+            }
+            return result;
         }
     }
 }

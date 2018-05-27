@@ -57,7 +57,9 @@ namespace GrixControler
                     setTempControl.Value = info.SetTemp;
                     if (info.LockOn) LockOnBtn.Checked = true;
                     else lockOffBtn.Checked = true;
-                    powerOnBtn.Checked = true;
+                    if(info.PowerOn) powerOnBtn.Checked = true;
+                    else powerOffBtn.Checked = true;
+
                 }
             }
             main.serialConnect.ClearReceiveBuffer();
@@ -97,9 +99,11 @@ namespace GrixControler
         }
         private void ConfirmBtn_Click(object sender, EventArgs e)
         {
+            int cmdResult = 0;
+
             if (powerOnBtn.Checked)
             {
-                main.serialConnect.setSerialPacket(main.serialConnect.powerOnCmd, idValue[0], idValue[1]);
+                cmdResult = FindIntFromByteIndex(4) + FindIntFromByteIndex(0);
                 //-> 위 코드 실행하면 main thread가 동작하지 않는 현상??
                 //  이 버튼을 누르면 3번 room에 1번의 정보가 잠깐 들어감
                 /** 18.5.2
@@ -113,24 +117,49 @@ namespace GrixControler
             }
             else if (powerOffBtn.Checked)
             {
-                main.serialConnect.setSerialPacket(main.serialConnect.powerOffCmd, idValue[0], idValue[1]);
+                cmdResult = FindIntFromByteIndex(4);
             }
 
             if (LockOnBtn.Checked)
             {
-                main.serialConnect.setSerialPacket(main.serialConnect.lockOnCmd, idValue[0], idValue[1]);
+                cmdResult += FindIntFromByteIndex(6) + FindIntFromByteIndex(2);
             }
             else if (lockOffBtn.Checked)
             {
-                main.serialConnect.setSerialPacket(main.serialConnect.lockOffCmd, idValue[0], idValue[1]);
+                cmdResult += FindIntFromByteIndex(6);
             }
             //MessageBox.Show(setTempControl.Value.ToString() +  idValue[0] + idValue[1]);
-            main.serialConnect.setSerialPacket(main.serialConnect.setTempCmd((Byte)setTempControl.Value), idValue[0], idValue[1]);
-            System.Threading.Thread.Sleep(100);
+            cmdResult += FindIntFromByteIndex(5);
+
+            main.roomInfoSet = main.serialConnect.GetSerialPacketForResult(main.serialConnect.Cmd, (Byte)cmdResult, (Byte)setTempControl.Value, idValue[0], idValue[1]);
+            main.roomSet = true;
+
+            main.viewStartCount = FindIndexFromID();
             //setTempControl.Value
             this.Close();
 
 
+        }
+
+        private int FindIntFromByteIndex(int index)
+        {
+            int result = 1;
+            for (int i = 0; i < index; i++)
+            {
+                result *= 2;
+            }
+            return result;
+        }
+
+        private int FindIndexFromID()
+        {
+            int i = 0;
+            for (i = 0; i < main.roomID.Length; i++)
+            {
+                if (main.roomID[i] == roomID)
+                    break;
+            }
+            return i;
         }
 
         private void RoomSetting_FormClosed(object sender, FormClosedEventArgs e)
