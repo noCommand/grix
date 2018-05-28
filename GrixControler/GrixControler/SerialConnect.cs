@@ -141,6 +141,123 @@ namespace GrixControler
         }
 
 
+        public RoomInfo GetFirstSerialPacket(byte[] serialRead, byte id_H, byte id_L)
+        {
+
+            ClearReceiveBuffer();
+
+            int originTemp;
+            int compareTemp;
+            int environment;
+
+            int a, b, c, d, e, f, g, h;
+
+            RoomInfo roominfo = new RoomInfo();
+
+            string test;
+
+            serialRead[1] = id_H;
+            serialRead[2] = id_L;
+
+            serialRead[16] = FindCheckSum(serialRead);
+
+            
+
+            try
+            {
+                sp.Write(serialRead, 0, serialRead.Length);
+
+                System.Threading.Thread.Sleep(300);
+                if (sp.BytesToRead == 18)
+                {
+                    a = sp.ReadByte();
+                    b = sp.ReadByte();
+                    c = sp.ReadByte();
+                    roominfo.ID = b * 100 + c;
+                    d = sp.ReadByte();
+                    environment = sp.ReadByte();
+
+                    if ((environment & 0x04) == 0x04)
+                    {
+                        roominfo.LockOn = true;
+                    }
+                    else roominfo.LockOn = false;
+
+                    if ((environment & 0x01) == 0x01)
+                    {
+                        roominfo.PowerOn = true;
+                    }
+                    else roominfo.PowerOn = false;
+
+                    //
+                    if ((environment & 0x02) == 0x02)
+                    {
+                        roominfo.HeaterOn = true;
+                    }
+                    else roominfo.HeaterOn = false;
+
+
+                    if ((environment & 0x08) == 0x08)
+                    {
+                        roominfo.StepOn = true;
+                    }
+                    else roominfo.StepOn = false;
+
+
+                    originTemp = sp.ReadByte();
+                    compareTemp = sp.ReadByte();
+
+                    roominfo.NowTemp = originTemp.ToString();
+                    roominfo.SetTemp = compareTemp.ToString();
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        sp.ReadByte();
+                    }
+                    roominfo.TempStep = sp.ReadByte();
+
+                    roominfo.PeriodStep = sp.ReadByte();
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        sp.ReadByte();
+                    }
+
+                    roominfo.CheckSum = sp.ReadByte();
+                    roominfo.ConnectOn = true;
+
+                    sp.ReadByte();
+                    ClearReceiveBuffer();
+                    roominfo.Count = 0;
+
+                    return roominfo;
+                }
+                else
+                {
+                    foreach (RoomInfo info in main.roomInfoList)
+                    {
+                        if (info.ID == id_H * 100 + id_L)
+                        {
+                            roominfo = info;
+                        }
+                    }
+                    roominfo.ID = id_H * 100 + id_L;
+                    roominfo.SetTemp = " ";
+                    roominfo.NowTemp = "X";
+                    roominfo.DisConnectCount = 3;
+                    roominfo.ConnectOn = false;
+                    ClearReceiveBuffer();
+                    return roominfo;
+
+
+                }
+            }
+            catch (InvalidOperationException ioe)
+            {
+                return roominfo;
+                //프로그램 종료시에만 발생
+            }
+        }
 
 
         public RoomInfo GetSerialPacket(byte[] serialRead, byte id_H, byte id_L)
@@ -218,6 +335,7 @@ namespace GrixControler
                 );
                 */
                 sp.Write(serialRead, 0, serialRead.Length);
+
                 System.Threading.Thread.Sleep(300);
                 if (sp.BytesToRead == 18)
                 {
@@ -240,36 +358,47 @@ namespace GrixControler
                     }
                     else roominfo.PowerOn = false;
 
-                    originTemp = sp.ReadByte();
-                    compareTemp = sp.ReadByte();
-                    roominfo.NowTemp = originTemp;
-                    roominfo.SetTemp = compareTemp;
-
-                    if (compareTemp > originTemp)
+                    //
+                    if ((environment & 0x02) == 0x02)
                     {
                         roominfo.HeaterOn = true;
                     }
-                    else
-                    {
-                        roominfo.HeaterOn = false;
-                    }
-                    /*
-                    MessageBox.Show(" 테스트" + 
-                        a + " " + b + " " + c + " " + d + " " + islock + " " + originTemp + " " + compareTemp + " "
-                        + sp.ReadByte() + " " 
-                        + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " 
-                        + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " + sp.ReadByte() + " " 
-                        + sp.ReadByte() + " " + sp.ReadByte() + " " );
-                     */
+                    else roominfo.HeaterOn = false;
 
-                    for (int i = 0; i < 9; i++)
+
+                    if ((environment & 0x08) == 0x08)
+                    {
+                        roominfo.StepOn = true;
+                    }
+                    else roominfo.StepOn = false;
+                    
+
+                    originTemp = sp.ReadByte();
+                    compareTemp = sp.ReadByte();
+
+                    roominfo.NowTemp = originTemp.ToString();
+                    roominfo.SetTemp = compareTemp.ToString();
+
+                    for (int i = 0; i < 4; i++)
                     {
                         sp.ReadByte();
                     }
+                    roominfo.TempStep = sp.ReadByte();
+
+                    roominfo.PeriodStep = sp.ReadByte();
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        sp.ReadByte();
+                    }
+
                     roominfo.CheckSum = sp.ReadByte();
                     roominfo.ConnectOn = true;
+
                     sp.ReadByte();
                     ClearReceiveBuffer();
+                    roominfo.Count = 0;
+
                     return roominfo;
                 }
                 else
@@ -281,6 +410,7 @@ namespace GrixControler
                             roominfo = info;
                         }
                     }
+                    roominfo.Count = 1;
                     roominfo.ConnectOn = false;
                     ClearReceiveBuffer();
                     return roominfo;
@@ -309,7 +439,7 @@ namespace GrixControler
             }
         }
 
-        public RoomInfo GetSerialPacketForResult(byte[] serialCommand, byte cmd, byte setTemp, byte id_H, byte id_L)
+        public RoomInfo GetSerialPacketForResult(byte[] serialCommand, byte cmd, byte setTemp, byte setStep, byte id_H, byte id_L)
         {
 
             ClearReceiveBuffer();
@@ -327,6 +457,7 @@ namespace GrixControler
             serialCommand[2] = id_L;
             serialCommand[3] = cmd;
             serialCommand[6] = setTemp;
+            serialCommand[11] = setStep;
 
             serialCommand[16] = FindCheckSum(serialCommand);
 
@@ -355,25 +486,43 @@ namespace GrixControler
                     }
                     else roominfo.PowerOn = false;
 
-                    originTemp = sp.ReadByte();
-                    compareTemp = sp.ReadByte();
-                    roominfo.NowTemp = originTemp;
-                    roominfo.SetTemp = compareTemp;
-
-                    if (compareTemp > originTemp)
+                    //
+                    if ((environment & 0x02) == 0x02)
                     {
                         roominfo.HeaterOn = true;
                     }
-                    else
+                    else roominfo.HeaterOn = false;
+
+
+                    if ((environment & 0x08) == 0x08)
                     {
-                        roominfo.HeaterOn = false;
+                        roominfo.StepOn = true;
                     }
-                    for (int i = 0; i < 9; i++)
+                    else roominfo.StepOn = false;
+
+
+                    originTemp = sp.ReadByte();
+                    compareTemp = sp.ReadByte();
+
+                    roominfo.NowTemp = originTemp.ToString();
+                    roominfo.SetTemp = compareTemp.ToString();
+
+                    for (int i = 0; i < 4; i++)
                     {
                         sp.ReadByte();
                     }
+                    roominfo.TempStep = sp.ReadByte();
+
+                    roominfo.PeriodStep = sp.ReadByte();
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        sp.ReadByte();
+                    }
+
                     roominfo.CheckSum = sp.ReadByte();
                     roominfo.ConnectOn = true;
+
                     sp.ReadByte();
                     ClearReceiveBuffer();
                     return roominfo;
@@ -446,23 +595,38 @@ namespace GrixControler
                     }
                     else roominfo.PowerOn = false;
 
-                    originTemp = sp.ReadByte();
-                    compareTemp = sp.ReadByte();
-                    roominfo.NowTemp = originTemp;
-                    roominfo.SetTemp = compareTemp;
-
-                    if (compareTemp > originTemp)
+                    //
+                    if ((environment & 0x02) == 0x02)
                     {
                         roominfo.HeaterOn = true;
                     }
-                    else
+                    else roominfo.HeaterOn = false;
+
+
+                    if ((environment & 0x08) == 0x08)
                     {
-                        roominfo.HeaterOn = false;
+                        roominfo.StepOn = true;
                     }
-                    for (int i = 0; i < 9; i++)
+                    else roominfo.StepOn = false;
+
+                    originTemp = sp.ReadByte();
+                    compareTemp = sp.ReadByte();
+                    roominfo.NowTemp = originTemp.ToString();
+                    roominfo.SetTemp = compareTemp.ToString();
+
+                    for (int i = 0; i < 4; i++)
                     {
                         sp.ReadByte();
                     }
+                    roominfo.TempStep = sp.ReadByte();
+
+                    roominfo.PeriodStep = sp.ReadByte();
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        sp.ReadByte();
+                    }
+
                     roominfo.CheckSum = sp.ReadByte();
                     roominfo.ConnectOn = true;
                     sp.ReadByte();

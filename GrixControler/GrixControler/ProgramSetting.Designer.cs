@@ -182,6 +182,8 @@
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.confirmButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(343, 455);
+            this.MinimumSize = new System.Drawing.Size(343, 455);
             this.Name = "ProgramSetting";
             this.Text = " [환경설정]";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ProgramSetting_FormClosed);

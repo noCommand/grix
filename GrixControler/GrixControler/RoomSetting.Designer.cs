@@ -37,9 +37,9 @@
             this.lockOffBtn = new System.Windows.Forms.RadioButton();
             this.LockOnBtn = new System.Windows.Forms.RadioButton();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.setStepControl = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.setStepControl = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.setTempControl = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
@@ -50,6 +50,7 @@
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.setStepControl)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.setTempControl)).BeginInit();
             this.SuspendLayout();
@@ -131,13 +132,25 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.setStepControl);
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.label4);
-            this.panel2.Controls.Add(this.setStepControl);
             this.panel2.Location = new System.Drawing.Point(21, 207);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(234, 40);
             this.panel2.TabIndex = 8;
+            // 
+            // setStepControl
+            // 
+            this.setStepControl.Location = new System.Drawing.Point(113, 10);
+            this.setStepControl.Maximum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.setStepControl.Name = "setStepControl";
+            this.setStepControl.Size = new System.Drawing.Size(76, 21);
+            this.setStepControl.TabIndex = 9;
             // 
             // label3
             // 
@@ -156,13 +169,6 @@
             this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 6;
             this.label4.Text = "설정단계";
-            // 
-            // setStepControl
-            // 
-            this.setStepControl.Location = new System.Drawing.Point(113, 10);
-            this.setStepControl.Name = "setStepControl";
-            this.setStepControl.Size = new System.Drawing.Size(76, 21);
-            this.setStepControl.TabIndex = 5;
             // 
             // panel1
             // 
@@ -222,6 +228,7 @@
             this.cancelBtn.TabIndex = 11;
             this.cancelBtn.Text = "취소";
             this.cancelBtn.UseVisualStyleBackColor = true;
+            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
             // label5
             // 
@@ -237,7 +244,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(274, 314);
+            this.ClientSize = new System.Drawing.Size(274, 310);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.ConfirmBtn);
@@ -247,6 +254,8 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button3);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(290, 348);
+            this.MinimumSize = new System.Drawing.Size(290, 348);
             this.Name = "RoomSetting";
             this.Text = "[정보변경]";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.RoomSetting_FormClosed);
@@ -257,6 +266,7 @@
             this.groupBox2.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.setStepControl)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.setTempControl)).EndInit();
@@ -275,7 +285,6 @@
         private System.Windows.Forms.RadioButton LockOnBtn;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox setStepControl;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
@@ -284,5 +293,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown setTempControl;
+        private System.Windows.Forms.NumericUpDown setStepControl;
     }
 }

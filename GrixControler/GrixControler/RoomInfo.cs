@@ -32,11 +32,17 @@ namespace GrixControler
 
         bool _PowerOn;
 
-        int _NowTemp;
+        String _NowTemp;
 
-        int _SetTemp;
+        String _SetTemp;
 
         int _TempStep;
+
+        int _PeriodStep;
+
+        int _DisConnectCount;
+
+        int _Count;
 
         int _CheckSum;
 
@@ -80,6 +86,24 @@ namespace GrixControler
             }
         }
 
+        public int DisConnectCount
+        {
+            get { return _DisConnectCount; }
+            set
+            {
+                _DisConnectCount = value;
+            }
+        }
+
+        public int Count
+        {
+            get { return _Count; }
+            set
+            {
+                _Count = value;
+            }
+        }
+
         public string Group
         {
             get { return _Group; }
@@ -115,6 +139,8 @@ namespace GrixControler
                 _HeaterOn = value;
             }
         }
+        
+        
 
         public bool LockOn
         {
@@ -134,7 +160,7 @@ namespace GrixControler
             }
         }
 
-        public int NowTemp
+        public String NowTemp
         {
             get { return _NowTemp; }
             set
@@ -143,7 +169,7 @@ namespace GrixControler
             }
         }
 
-        public int SetTemp
+        public String SetTemp
         {
             get { return _SetTemp; }
             set
@@ -158,6 +184,15 @@ namespace GrixControler
             set
             {
                 _TempStep = value;
+            }
+        }
+
+        public int PeriodStep
+        {
+            get { return _PeriodStep; }
+            set
+            {
+                _PeriodStep = value;
             }
         }
 

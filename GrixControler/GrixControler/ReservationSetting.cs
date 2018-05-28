@@ -846,19 +846,5 @@ namespace GrixControler
         {
             this.Close();
         }
-        /*
-private void RadButtonCanOnOFF(RadioButton rad, bool radCheck)
-{
-if (radCheck)
-{
-rad.Checked = false;
-radCheck = false;
-}
-else
-{
-radCheck = rad.Checked;
-}
-} 
-*/// 이걸 사용할 수 있는 방법은 무엇이있을까 radCheck가 SundayDendlsChecked에 매핑되진 않는다. C 처럼포인터값을 가져올까?
     }
 }

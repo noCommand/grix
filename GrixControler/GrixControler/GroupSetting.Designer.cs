@@ -36,9 +36,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.setStepControl = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.setStepControl = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lockOffBtn = new System.Windows.Forms.RadioButton();
             this.LockOnBtn = new System.Windows.Forms.RadioButton();
@@ -51,22 +51,24 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.setTempControl)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.setStepControl)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // cancelBtn
             // 
-            this.cancelBtn.Location = new System.Drawing.Point(259, 290);
+            this.cancelBtn.Location = new System.Drawing.Point(269, 260);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
             this.cancelBtn.TabIndex = 19;
             this.cancelBtn.Text = "취소";
             this.cancelBtn.UseVisualStyleBackColor = true;
+            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
             // ConfirmBtn
             // 
-            this.ConfirmBtn.Location = new System.Drawing.Point(160, 290);
+            this.ConfirmBtn.Location = new System.Drawing.Point(177, 260);
             this.ConfirmBtn.Name = "ConfirmBtn";
             this.ConfirmBtn.Size = new System.Drawing.Size(75, 23);
             this.ConfirmBtn.TabIndex = 18;
@@ -79,7 +81,7 @@
             this.panel1.Controls.Add(this.setTempControl);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.label2);
-            this.panel1.Location = new System.Drawing.Point(121, 181);
+            this.panel1.Location = new System.Drawing.Point(120, 151);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(234, 40);
             this.panel1.TabIndex = 17;
@@ -121,13 +123,30 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.setStepControl);
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.label4);
-            this.panel2.Controls.Add(this.setStepControl);
-            this.panel2.Location = new System.Drawing.Point(121, 227);
+            this.panel2.Location = new System.Drawing.Point(120, 197);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(234, 40);
             this.panel2.TabIndex = 16;
+            // 
+            // setStepControl
+            // 
+            this.setStepControl.Location = new System.Drawing.Point(113, 10);
+            this.setStepControl.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.setStepControl.Name = "setStepControl";
+            this.setStepControl.Size = new System.Drawing.Size(76, 21);
+            this.setStepControl.TabIndex = 9;
+            this.setStepControl.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             // 
             // label3
             // 
@@ -147,18 +166,11 @@
             this.label4.TabIndex = 6;
             this.label4.Text = "설정단계";
             // 
-            // setStepControl
-            // 
-            this.setStepControl.Location = new System.Drawing.Point(113, 10);
-            this.setStepControl.Name = "setStepControl";
-            this.setStepControl.Size = new System.Drawing.Size(76, 21);
-            this.setStepControl.TabIndex = 5;
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.lockOffBtn);
             this.groupBox2.Controls.Add(this.LockOnBtn);
-            this.groupBox2.Location = new System.Drawing.Point(121, 126);
+            this.groupBox2.Location = new System.Drawing.Point(120, 96);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(234, 49);
             this.groupBox2.TabIndex = 15;
@@ -191,7 +203,7 @@
             // 
             this.groupBox1.Controls.Add(this.powerOffBtn);
             this.groupBox1.Controls.Add(this.powerOnBtn);
-            this.groupBox1.Location = new System.Drawing.Point(121, 71);
+            this.groupBox1.Location = new System.Drawing.Point(120, 41);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(234, 49);
             this.groupBox1.TabIndex = 14;
@@ -246,12 +258,13 @@
             this.GroupRoomList.Size = new System.Drawing.Size(74, 228);
             this.GroupRoomList.TabIndex = 90;
             this.GroupRoomList.UseCompatibleStateImageBehavior = false;
+            this.GroupRoomList.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.GroupRoomList_ItemChecked);
             // 
             // GroupSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 333);
+            this.ClientSize = new System.Drawing.Size(375, 314);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.all_button);
             this.Controls.Add(this.GroupRoomList);
@@ -262,6 +275,8 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(391, 352);
+            this.MinimumSize = new System.Drawing.Size(391, 352);
             this.Name = "GroupSetting";
             this.Text = " [그룹 설정]";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GroupSetting_FormClosed);
@@ -271,6 +286,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.setTempControl)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.setStepControl)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -290,7 +306,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox setStepControl;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton lockOffBtn;
         private System.Windows.Forms.RadioButton LockOnBtn;
@@ -300,5 +315,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button all_button;
         private System.Windows.Forms.ListView GroupRoomList;
+        private System.Windows.Forms.NumericUpDown setStepControl;
     }
 }

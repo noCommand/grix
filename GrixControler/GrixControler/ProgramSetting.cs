@@ -125,7 +125,7 @@ namespace GrixControler
 
         private void cancelButton_click(object sender, EventArgs e)
         {
-
+            this.Close();
             //dbConn.Close();
             
         }

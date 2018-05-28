@@ -46,18 +46,17 @@
             this.desired_Temp.Name = "desired_Temp";
             this.desired_Temp.Size = new System.Drawing.Size(56, 23);
             this.desired_Temp.TabIndex = 27;
-            this.desired_Temp.Text = "0";
             this.desired_Temp.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.desired_Temp.Click += new System.EventHandler(this.label3_Click);
             // 
             // current_Temp
             // 
             this.current_Temp.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.current_Temp.Location = new System.Drawing.Point(3, 50);
+            this.current_Temp.Location = new System.Drawing.Point(3, 51);
             this.current_Temp.Name = "current_Temp";
             this.current_Temp.Size = new System.Drawing.Size(76, 23);
             this.current_Temp.TabIndex = 26;
-            this.current_Temp.Text = "0";
+            this.current_Temp.Text = "X";
             this.current_Temp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.current_Temp.Click += new System.EventHandler(this.label2_Click);
             // 

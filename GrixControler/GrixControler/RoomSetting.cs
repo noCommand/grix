@@ -54,7 +54,25 @@ namespace GrixControler
             {
                 if (roomID == info.ID.ToString())
                 {
-                    setTempControl.Value = info.SetTemp;
+                    if (info.StepOn)
+                    {
+                        setTempControl.Enabled = false;
+                        setStepControl.Value = info.TempStep;
+                    }
+
+                    else
+                    {
+                        setStepControl.Enabled = false;
+                        if (info.SetTemp == " ")
+                        {
+                            setTempControl.Value = 0;
+                        }
+                        else
+                        {
+                            setTempControl.Value = Convert.ToInt32(info.SetTemp);
+                        }
+                    }
+
                     if (info.LockOn) LockOnBtn.Checked = true;
                     else lockOffBtn.Checked = true;
                     if(info.PowerOn) powerOnBtn.Checked = true;
@@ -129,9 +147,10 @@ namespace GrixControler
                 cmdResult += FindIntFromByteIndex(6);
             }
             //MessageBox.Show(setTempControl.Value.ToString() +  idValue[0] + idValue[1]);
-            cmdResult += FindIntFromByteIndex(5);
 
-            main.roomInfoSet = main.serialConnect.GetSerialPacketForResult(main.serialConnect.Cmd, (Byte)cmdResult, (Byte)setTempControl.Value, idValue[0], idValue[1]);
+            cmdResult += FindIntFromByteIndex(5);
+            main.roomInfoSet = main.serialConnect.GetSerialPacketForResult(main.serialConnect.Cmd, (Byte)cmdResult, (Byte)setTempControl.Value,(Byte)setStepControl.Value, idValue[0], idValue[1]);
+           
             main.roomSet = true;
 
             main.viewStartCount = FindIndexFromID();
@@ -165,6 +184,11 @@ namespace GrixControler
         private void RoomSetting_FormClosed(object sender, FormClosedEventArgs e)
         {
             main.ThreadResume();
+        }
+
+        private void cancelBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

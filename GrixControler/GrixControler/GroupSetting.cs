@@ -88,7 +88,7 @@ namespace GrixControler
             main.viewStartCount = FindIndexFromID();
             main.ThreadResume();
             this.Close();
-            
+
         }
 
         private int FindIndexFromID()
@@ -108,7 +108,7 @@ namespace GrixControler
             //Byte[] seperateID = new Byte[2];
 
             List<String> roomStringID = new List<String>();
-            
+
             if (GroupRoomList.Items.Count > 0)
             {
                 for (int i = 0; i <= GroupRoomList.Items.Count - 1; i++)
@@ -116,7 +116,7 @@ namespace GrixControler
                     if (GroupRoomList.Items[i].Checked == true)
                     {
                         roomStringID.Add(GroupRoomList.Items[i].SubItems[0].Text);
-                        
+
                         //seperateID = IDStringToByte(GroupRoomList.Items[i].SubItems[0].Text);
                         //GroupingRoomSettinComfirm(seperateID);
                     }
@@ -152,7 +152,7 @@ namespace GrixControler
         }
 
 
-        public RoomInfo GroupingRoomSettinComfirm(Byte[] id,bool powerOn, bool lockOn, int setTemp)
+        public RoomInfo GroupingRoomSettinComfirm(Byte[] id, bool powerOn, bool lockOn, int setTemp)
         {
             RoomInfo ri;
 
@@ -179,7 +179,7 @@ namespace GrixControler
             cmdResult += FindIntFromByteIndex(5);
 
             ri = main.serialConnect.GetGroupSerialPacket(main.serialConnect.Cmd, (Byte)cmdResult, (Byte)setTemp, id[0], id[1]);
-            
+
             return ri;
         }
 
@@ -270,16 +270,58 @@ namespace GrixControler
                 }
             }
         }
-        
+
 
         private int FindIntFromByteIndex(int index)
         {
             int result = 1;
-            for(int i = 0; i < index; i++)
+            for (int i = 0; i < index; i++)
             {
                 result *= 2;
             }
             return result;
+        }
+
+        private void GroupRoomList_ItemChecked(object sender, System.Windows.Forms.ItemCheckedEventArgs e)
+        {
+            if (e.Item.Checked)
+            {
+                foreach (RoomInfo info in main.roomInfoList)
+                {
+
+                    if (GroupRoomList.Items[e.Item.Index].SubItems[0].Text == info.ID.ToString())
+                    {
+                        if (info.StepOn)
+                        {
+                            setTempControl.Enabled = false;
+                            setStepControl.Value = info.TempStep;
+                            setStepControl.Enabled = true;
+                        }
+
+                        else
+                        {
+                            setStepControl.Enabled = false;
+                            if(info.SetTemp == " ")
+                            {
+                                setTempControl.Value = 0;
+                            }else
+                            {
+                                setTempControl.Value = Convert.ToInt32(info.SetTemp);
+                            }
+                            setTempControl.Enabled = true;
+                        }
+                        
+                    }
+                }
+            }
+
+
+        }
+
+        private void cancelBtn_Click(object sender, EventArgs e)
+        {
+            main.ThreadResume();
+            this.Close();
         }
     }
 }
