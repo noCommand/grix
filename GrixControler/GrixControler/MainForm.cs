@@ -94,6 +94,8 @@ namespace GrixControler
 
         int CheckMin;
 
+        int CheckAllRoomPowerCount = 0;
+
         String CheckDayOfWeek;
 
         int checkFirstThread = 0;
@@ -108,10 +110,17 @@ namespace GrixControler
 
         public List<String> groupID = new List<String>();
         public GroupRoomInfo groupGetInfo = new GroupRoomInfo();
+        public AdminInfo adminInfo = new AdminInfo();
 
         public int viewStartCount = 0;
         public bool roomSet = false;
         public RoomInfo roomInfoSet;
+
+        public bool isGroup = false;
+
+        public bool specificFunctionExist = false;
+        public bool SFExist;
+        
 
         public MainForm()
         {
@@ -122,6 +131,24 @@ namespace GrixControler
             SetGroupButton.FlatStyle = FlatStyle.Flat;
 
             SetGroupButton.FlatAppearance.BorderSize = 0;
+
+            SetAllButton.TabStop = false;
+
+            SetAllButton.FlatStyle = FlatStyle.Flat;
+
+            SetAllButton.FlatAppearance.BorderSize = 0;
+
+            SetReservationButton.TabStop = false;
+
+            SetReservationButton.FlatStyle = FlatStyle.Flat;
+
+            SetReservationButton.FlatAppearance.BorderSize = 0;
+
+            SetAdminButton.TabStop = false;
+
+            SetAdminButton.FlatStyle = FlatStyle.Flat;
+
+            SetAdminButton.FlatAppearance.BorderSize = 0;
 
             serialConnect = new SerialConnect(this);
             //serialConnect.AutoConnect();
@@ -149,6 +176,7 @@ namespace GrixControler
                 serialConnect = new SerialConnect(GetCOMInfo(), this);
             }
 
+            SFExist = isSpecificFunctionExistInDB();
 
             ri = new RoomInfo();
 
@@ -289,6 +317,8 @@ namespace GrixControler
 
             while (_pauseEvent.WaitOne())
             {
+                bool isAllRoomPowerOn = false;
+
                 if (serialConnect.CheckPortOpen())
                 {
                     //MessageBox.Show(thread_UI.IsAlive.ToString());
@@ -311,7 +341,7 @@ namespace GrixControler
                         /** 포트 재설정할때 어떻게 add할껀지 생각해야함
                          * 
                          * */
-
+                        RoomInfo firstSpecificCheck = new RoomInfo();
 
                         for (int nowCount = 0; nowCount < currentCount; nowCount++)
                         {
@@ -330,10 +360,15 @@ namespace GrixControler
                                 id_H = "0";
                                 id_L = roomID[nowCount];
                             }
-
-
-                            roomInfoList.Add(serialConnect.GetFirstSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L)));
-                            
+                            if (!(id_H == "99" && id_L == "99"))
+                            {
+                                firstSpecificCheck = serialConnect.GetFirstSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                                roomInfoList.Add(firstSpecificCheck);
+                                if (firstSpecificCheck.DisConnectCount < 2)
+                                {
+                                    isAllRoomPowerOn |= firstSpecificCheck.PowerOn;
+                                }
+                            }
                         }
                         check = 1;
                     }
@@ -358,172 +393,190 @@ namespace GrixControler
                                 id_H = "0";
                                 id_L = roomID[nowCount];
                             }
-
-                            if (roomInfoList.Count < nowCount + 1)
+                            if (!(id_H == "99" && id_L == "99"))
                             {
-                                roomInfoList.Add(serialConnect.GetFirstSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L)));
-
-                            }
-
-                            if (roomView.Length < roomInfoList.Count)
-                            {
-                                roomInfoList.RemoveRange(roomView.Length, roomInfoList.Count - roomView.Length);
-                            }
-
-                            if (roominfoControl == 0)
-                            {
-                                break;
-                            }
-
-                            //MessageBox.Show(roomID[nowCount].ToString());
-                            //MessageBox.Show(id_H.ToString() + " " + id_L.ToString());
-                            RoomInfo hi;
-
-                            if (groupID != null)
-                            {
-                                Byte[] seperateID = new Byte[2];
-                                bool isExist = false;
-
-                                GroupSetting groupForCalculate = new GroupSetting(this, 0);
-                                
-                                for (int i = 0; i < groupID.Count; i++)
+                                if (roomInfoList.Count < nowCount + 1)
                                 {
-                                    if (groupID[i] == roomID[nowCount])
-                                    {
-                                        seperateID = groupForCalculate.IDStringToByte(groupID[i]);
-                                        isExist = true;
-                                        break;
-                                    }
+                                    roomInfoList.Add(serialConnect.GetFirstSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L)));
                                 }
-                                if (isExist)
+
+                                if (roomView.Length < roomInfoList.Count)
                                 {
-                                    hi = groupForCalculate.GroupingRoomSettinComfirm(seperateID, groupGetInfo.PowerOn, groupGetInfo.LockOn, groupGetInfo.SetTemp);
+                                    roomInfoList.RemoveRange(roomView.Length, roomInfoList.Count - roomView.Length);
+                                }
+
+                                if (roominfoControl == 0)
+                                {
+                                    break;
+                                }
+
+                                //MessageBox.Show(roomID[nowCount].ToString());
+                                //MessageBox.Show(id_H.ToString() + " " + id_L.ToString());
+                                RoomInfo hi;
+
+                                if (groupID != null)
+                                {
+                                    Byte[] seperateID = new Byte[2];
+                                    bool isExist = false;
+
+                                    GroupSetting groupForCalculate = new GroupSetting(this, 0);
+
+                                    AdminSetting adminForCalculate = new AdminSetting(this, 0);
+
+                                    for (int i = 0; i < groupID.Count; i++)
+                                    {
+                                        if (groupID[i] == roomID[nowCount])
+                                        {
+                                            seperateID = groupForCalculate.IDStringToByte(groupID[i]);
+                                            isExist = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (isExist)
+                                    {
+                                        if (isGroup == true)
+                                        {
+                                            hi = groupForCalculate.GroupingRoomSettinComfirm(seperateID, groupGetInfo.PowerOn, groupGetInfo.LockOn, groupGetInfo.SetTemp);
+                                            isGroup = false;
+                                        }
+                                        else
+                                        {
+                                            hi = adminForCalculate.AdminRoomSettinComfirm(seperateID, adminInfo.DF, adminInfo.UH, adminInfo.UL
+                                                , adminInfo.HT, adminInfo.PD, adminInfo.OD, adminInfo.TC);
+                                        }
+                                    }
+                                    else
+                                        hi = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+
+                                }
+                                else if (roomSet)
+                                {
+                                    hi = roomInfoSet;
+                                    roomSet = false;
                                 }
                                 else
+                                {
                                     hi = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                                }
+                                //MessageBox.Show(roomID[nowCount].ToString() + " " + hi.ConnectOn);
 
-                            }
-                            else if(roomSet)
-                            {
-                                hi = roomInfoSet;
-                                roomSet = false;
-                            }
-                            else
-                            {
-                                hi = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
-                            }
-                            //MessageBox.Show(roomID[nowCount].ToString() + " " + hi.ConnectOn);
+                                /*
+                                if(hi.ConnectOn==false)
+                                {
 
-                            /*
-                            if(hi.ConnectOn==false)
-                            {
-
-                                roomInfoList[nowCount].SetTemp = 100;
-                            }
-                            */
-                            roomInfoList[nowCount].ID = Convert.ToInt32(roomID[nowCount]);
+                                    roomInfoList[nowCount].SetTemp = 100;
+                                }
+                                */
+                                roomInfoList[nowCount].ID = Convert.ToInt32(roomID[nowCount]);
 
 
-                            //MessageBox.Show(roomInfoList[nowCount].LockOn.ToString() + " " + hi.LockOn.ToString());
+                                //MessageBox.Show(roomInfoList[nowCount].LockOn.ToString() + " " + hi.LockOn.ToString());
 
-                            /** 18.5.21 
-                             *  visual studio error
-                             *  중단점이 현재 적중되지 않습니다. 소스코드가 원래 버전과 다릅니다
-                             *  messagebox는  뜨지도않고 중단점설정도 안되고 
-                             *  아래 eventlistview 아이템 add하는 코드를 지워도
-                             *  디버깅시 add됨
-                             * */
+                                /** 18.5.21 
+                                 *  visual studio error
+                                 *  중단점이 현재 적중되지 않습니다. 소스코드가 원래 버전과 다릅니다
+                                 *  messagebox는  뜨지도않고 중단점설정도 안되고 
+                                 *  아래 eventlistview 아이템 add하는 코드를 지워도
+                                 *  디버깅시 add됨
+                                 * */
 
-                            if (roomInfoList[nowCount].LockOn == false && roomInfoList[nowCount].LockOn != hi.LockOn && checkFirstThread == 1)
-                            {
-                                String[] eventArr
-                                    = { Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                if (roomInfoList[nowCount].LockOn == false && roomInfoList[nowCount].LockOn != hi.LockOn && checkFirstThread == 1)
+                                {
+                                    String[] eventArr
+                                        = { Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
                                     roomInfoList[nowCount].ID.ToString(), "잠금 설정" };
-                                UpdateEventLog(Time.GetYear() + "." + Time.GetMonth() + "." + Time.GetDay() + " " + Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
-                                    roomInfoList[nowCount].ID.ToString(), "잠금 설정");
-                                var listViewItem = new ListViewItem(eventArr);
-                                eventListView.Invoke((MethodInvoker)delegate ()
-                                {
-                                    eventListView.Items.Add(listViewItem);
-                                });
-                            }
+                                    UpdateEventLog(Time.GetYear() + "." + Time.GetMonth() + "." + Time.GetDay() + " " + Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                        roomInfoList[nowCount].ID.ToString(), "잠금 설정");
+                                    var listViewItem = new ListViewItem(eventArr);
+                                    eventListView.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        eventListView.Items.Add(listViewItem);
+                                    });
+                                }
 
-                            else if (roomInfoList[nowCount].LockOn == true && roomInfoList[nowCount].LockOn != hi.LockOn && checkFirstThread == 1)
-                            {
-                                String[] eventArr
-                                   = {Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                else if (roomInfoList[nowCount].LockOn == true && roomInfoList[nowCount].LockOn != hi.LockOn && checkFirstThread == 1)
+                                {
+                                    String[] eventArr
+                                       = {Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
                                     roomInfoList[nowCount].ID.ToString(), "잠금 해제" };
-                                UpdateEventLog(Time.GetYear() + "." + Time.GetMonth() + "." + Time.GetDay() + " " + Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
-                                    roomInfoList[nowCount].ID.ToString(), "잠금 해제");
-                                var listViewItem = new ListViewItem(eventArr);
-                                eventListView.Invoke((MethodInvoker)delegate ()
+                                    UpdateEventLog(Time.GetYear() + "." + Time.GetMonth() + "." + Time.GetDay() + " " + Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                        roomInfoList[nowCount].ID.ToString(), "잠금 해제");
+                                    var listViewItem = new ListViewItem(eventArr);
+                                    eventListView.Invoke((MethodInvoker)delegate ()
+                                    {
+
+                                        eventListView.Items.Add(listViewItem);
+                                    });
+                                }
+
+                                if (roomInfoList[nowCount].PowerOn == false && roomInfoList[nowCount].PowerOn != hi.PowerOn && checkFirstThread == 1)
                                 {
-
-                                    eventListView.Items.Add(listViewItem);
-                                });
-                            }
-
-                            if (roomInfoList[nowCount].PowerOn == false && roomInfoList[nowCount].PowerOn != hi.PowerOn && checkFirstThread == 1)
-                            {
-                                String[] eventArr
-                                    = { Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                    String[] eventArr
+                                        = { Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
                                     roomInfoList[nowCount].ID.ToString(), "전원 켜짐" };
-                                UpdateEventLog(Time.GetYear() + "." + Time.GetMonth() + "." + Time.GetDay() + " " + Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
-                                    roomInfoList[nowCount].ID.ToString(), "전원 켜짐");
-                                var listViewItem = new ListViewItem(eventArr);
-                                eventListView.Invoke((MethodInvoker)delegate ()
+                                    UpdateEventLog(Time.GetYear() + "." + Time.GetMonth() + "." + Time.GetDay() + " " + Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                        roomInfoList[nowCount].ID.ToString(), "전원 켜짐");
+                                    var listViewItem = new ListViewItem(eventArr);
+                                    eventListView.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        eventListView.Items.Add(listViewItem);
+                                    });
+                                }
+                                else if (roomInfoList[nowCount].PowerOn == true && roomInfoList[nowCount].PowerOn != hi.PowerOn && checkFirstThread == 1)
                                 {
-                                    eventListView.Items.Add(listViewItem);
-                                });
-                            }
-                            else if (roomInfoList[nowCount].PowerOn == true && roomInfoList[nowCount].PowerOn != hi.PowerOn && checkFirstThread == 1)
-                            {
-                                String[] eventArr
-                                   = { Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                    String[] eventArr
+                                       = { Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
                                     roomInfoList[nowCount].ID.ToString(), "전원 꺼짐" };
-                                UpdateEventLog(Time.GetYear() + "." + Time.GetMonth() + "." + Time.GetDay() + " " + Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
-                                    roomInfoList[nowCount].ID.ToString(), "전원 꺼짐");
-                                var listViewItem = new ListViewItem(eventArr);
-                                eventListView.Invoke((MethodInvoker)delegate ()
-                                {
-                                    eventListView.Items.Add(listViewItem);
-                                });
-                            }
+                                    UpdateEventLog(Time.GetYear() + "." + Time.GetMonth() + "." + Time.GetDay() + " " + Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                        roomInfoList[nowCount].ID.ToString(), "전원 꺼짐");
+                                    var listViewItem = new ListViewItem(eventArr);
+                                    eventListView.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        eventListView.Items.Add(listViewItem);
+                                    });
+                                }
 
-                            if (roomInfoList[nowCount].SetTemp != hi.SetTemp && checkFirstThread == 1)
-                            {
-                                String[] eventArr
-                                    = { Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                if (roomInfoList[nowCount].SetTemp != hi.SetTemp && checkFirstThread == 1)
+                                {
+                                    String[] eventArr
+                                        = { Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
                                     roomInfoList[nowCount].ID.ToString(), "온도 설정" };
-                                UpdateEventLog(Time.GetYear() + "." + Time.GetMonth() + "." + Time.GetDay() + " " + Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
-                                    roomInfoList[nowCount].ID.ToString(), "온도 설정");
-                                var listViewItem = new ListViewItem(eventArr);
-                                eventListView.Invoke((MethodInvoker)delegate ()
+                                    UpdateEventLog(Time.GetYear() + "." + Time.GetMonth() + "." + Time.GetDay() + " " + Time.GetHour().ToString() + ":" + Time.GetMin().ToString(),
+                                        roomInfoList[nowCount].ID.ToString(), "온도 설정");
+                                    var listViewItem = new ListViewItem(eventArr);
+                                    eventListView.Invoke((MethodInvoker)delegate ()
+                                    {
+                                        eventListView.Items.Add(listViewItem);
+                                    });
+                                }
+
+                                roomInfoList[nowCount].NowTemp = hi.NowTemp;
+                                roomInfoList[nowCount].SetTemp = hi.SetTemp;
+                                roomInfoList[nowCount].CheckSum = hi.CheckSum;
+                                roomInfoList[nowCount].LockOn = hi.LockOn;
+                                roomInfoList[nowCount].HeaterOn = hi.HeaterOn;
+                                roomInfoList[nowCount].PowerOn = hi.PowerOn;
+                                roomInfoList[nowCount].StepOn = hi.StepOn;
+                                roomInfoList[nowCount].PeriodStep = hi.PeriodStep;
+                                roomInfoList[nowCount].TempStep = hi.TempStep;
+                                roomInfoList[nowCount].ConnectOn = hi.ConnectOn;
+                                
+                                roomInfoList[nowCount].DisConnectCount = roomInfoList[nowCount].DisConnectCount + hi.Count;
+                                if(roomInfoList[nowCount].DisConnectCount < 2)
                                 {
-                                    eventListView.Items.Add(listViewItem);
-                                });
+                                    isAllRoomPowerOn |= hi.PowerOn;
+                                }
+
+                                if (roomInfoList[nowCount].ConnectOn == true)
+                                {
+                                    roomInfoList[nowCount].DisConnectCount = 0;
+                                }
+
+                                checkFirstThread = 1;
+                                Thread.Sleep(50);
                             }
                             
-                            roomInfoList[nowCount].NowTemp = hi.NowTemp;
-                            roomInfoList[nowCount].SetTemp = hi.SetTemp;
-                            roomInfoList[nowCount].CheckSum = hi.CheckSum;
-                            roomInfoList[nowCount].LockOn = hi.LockOn;
-                            roomInfoList[nowCount].HeaterOn = hi.HeaterOn;
-                            roomInfoList[nowCount].PowerOn = hi.PowerOn;
-                            roomInfoList[nowCount].StepOn = hi.StepOn;
-                            roomInfoList[nowCount].PeriodStep = hi.PeriodStep;
-                            roomInfoList[nowCount].TempStep= hi.TempStep;
-                            roomInfoList[nowCount].ConnectOn = hi.ConnectOn;
-                            
-                            roomInfoList[nowCount].DisConnectCount = roomInfoList[nowCount].DisConnectCount + hi.Count;
-
-                            if (roomInfoList[nowCount].ConnectOn == true)
-                            {
-                                roomInfoList[nowCount].DisConnectCount = 0;
-                            }
-
-                            checkFirstThread = 1;
-                            Thread.Sleep(50);
                         }
                     }
                     defaultCount = currentCount;
@@ -533,6 +586,36 @@ namespace GrixControler
 
                     ExecuteReservation(CheckReservationTuple_ON(), CheckReservationTuple_OFF());
                 }
+                panel1.Invoke((MethodInvoker)delegate ()
+                {
+                    if (SFExist || specificFunctionExist)
+                    {
+                        
+                        specificFunctionPictureBox.Visible = true;
+                        RoomInfo specific = new RoomInfo();
+                        if (isAllRoomPowerOn)
+                        {
+                            specific = serialConnect.GetFirstSerialPacket(serialConnect.powerOnCmd, (byte)99, (byte)99);
+                            if (specific.PowerOn)
+                                specificFunctionPictureBox.Image = GrixControler.Properties.Resources.Running;
+                            else
+                                specificFunctionPictureBox.Visible = false;
+                        }
+                        else
+                        {
+                            specific = serialConnect.GetFirstSerialPacket(serialConnect.powerOffCmd, (byte)99, (byte)99);
+                            if (specific.PowerOn)
+                                specificFunctionPictureBox.Image = GrixControler.Properties.Resources.Running;
+                            else
+                                specificFunctionPictureBox.Visible = false;
+                        }
+                    }
+                    else
+                    {
+                        specificFunctionPictureBox.Visible = false;
+                    }
+                });
+                
                 viewStartCount = 0;
                 groupID = null;
             }
@@ -801,14 +884,7 @@ namespace GrixControler
             ProgramSetting pgset = new ProgramSetting(this);
             pgset.ShowDialog();
         }
-
-        private void AdminSet_Click(object sender, EventArgs e)
-        {
-
-            ReservationSetting reSet = new ReservationSetting(this);
-            reSet.ShowDialog();
-        }
-
+        
         private void MainForm_Load(object sender, EventArgs e)
         {
             timer1.Start();
@@ -857,7 +933,7 @@ namespace GrixControler
             int count;
             try
             {
-                sql = "select count(*) from idTable";
+                sql = "select count(*) from idTable where roomid not in (select roomid from idtable where roomid = \'9999\')";
 
                 command = new SQLiteCommand(sql, dbConn);
 
@@ -873,11 +949,36 @@ namespace GrixControler
             }
         }
 
+        public bool isSpecificFunctionExistInDB()
+        {
+
+            int count = 0;
+            try
+            {
+                sql = "select count(*) from idTable where roomid in (select roomid from idtable where roomid = \'9999\')";
+
+                command = new SQLiteCommand(sql, dbConn);
+
+                object scalarValue = command.ExecuteScalar();
+                count = Convert.ToInt32(scalarValue);
+                
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+            }
+            if (count == 1)
+            {
+                return true;
+            }
+            else return false;
+        }
+
         public void SetRoomIDString(int count)
         {
             roomID = new string[count];
 
-            sql = "select * from idTable";
+            sql = "select * from idTable where roomid not in (select roomid from idtable where roomid = \'9999\')";
 
             command = new SQLiteCommand(sql, dbConn);
 
@@ -1368,6 +1469,25 @@ namespace GrixControler
                 strArray[i] = str.Substring(i, 1);
             }
             return strArray;
+        }
+
+        private void SetReservationButton_Click(object sender, EventArgs e)
+        {
+
+            ReservationSetting reSet = new ReservationSetting(this);
+            reSet.ShowDialog();
+        }
+
+        private void SetAllButton_Click(object sender, EventArgs e)
+        {
+            GroupSetting grset = new GroupSetting(this);
+            grset.ShowDialog();
+        }
+
+        private void SetAdminButton_Click(object sender, EventArgs e)
+        {
+            AdminSetting adset = new AdminSetting(this);
+            adset.ShowDialog();
         }
 
         private void UpdateEventLog(string time, string id, string content)

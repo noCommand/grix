@@ -42,8 +42,11 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.timeLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.specificFunctionPictureBox = new System.Windows.Forms.PictureBox();
+            this.SetAdminButton = new System.Windows.Forms.Button();
+            this.SetAllButton = new System.Windows.Forms.Button();
+            this.SetReservationButton = new System.Windows.Forms.Button();
             this.SetGroupButton = new System.Windows.Forms.Button();
-            this.AdminSet = new System.Windows.Forms.Button();
             this.testButton = new System.Windows.Forms.Button();
             this.Setting = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -54,6 +57,7 @@
             this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.specificFunctionPictureBox)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -167,10 +171,13 @@
             // panel1
             // 
             this.panel1.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.specificFunctionPictureBox);
+            this.panel1.Controls.Add(this.SetAdminButton);
+            this.panel1.Controls.Add(this.SetAllButton);
+            this.panel1.Controls.Add(this.SetReservationButton);
             this.panel1.Controls.Add(this.SetGroupButton);
-            this.panel1.Controls.Add(this.AdminSet);
             this.panel1.Controls.Add(this.testButton);
             this.panel1.Controls.Add(this.Setting);
             this.panel1.Location = new System.Drawing.Point(185, 0);
@@ -179,12 +186,64 @@
             this.panel1.Size = new System.Drawing.Size(837, 50);
             this.panel1.TabIndex = 1;
             // 
+            // specificFunctionPictureBox
+            // 
+            this.specificFunctionPictureBox.ImageLocation = "";
+            this.specificFunctionPictureBox.Location = new System.Drawing.Point(644, 18);
+            this.specificFunctionPictureBox.Name = "specificFunctionPictureBox";
+            this.specificFunctionPictureBox.Size = new System.Drawing.Size(16, 19);
+            this.specificFunctionPictureBox.TabIndex = 13;
+            this.specificFunctionPictureBox.TabStop = false;
+            this.specificFunctionPictureBox.Visible = false;
+            // 
+            // SetAdminButton
+            // 
+            this.SetAdminButton.BackColor = System.Drawing.Color.Navy;
+            this.SetAdminButton.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SetAdminButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.SetAdminButton.Location = new System.Drawing.Point(368, 11);
+            this.SetAdminButton.Margin = new System.Windows.Forms.Padding(0);
+            this.SetAdminButton.Name = "SetAdminButton";
+            this.SetAdminButton.Size = new System.Drawing.Size(98, 28);
+            this.SetAdminButton.TabIndex = 12;
+            this.SetAdminButton.Text = "관리자";
+            this.SetAdminButton.UseVisualStyleBackColor = false;
+            this.SetAdminButton.Click += new System.EventHandler(this.SetAdminButton_Click);
+            // 
+            // SetAllButton
+            // 
+            this.SetAllButton.BackColor = System.Drawing.Color.Navy;
+            this.SetAllButton.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SetAllButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.SetAllButton.Location = new System.Drawing.Point(23, 11);
+            this.SetAllButton.Margin = new System.Windows.Forms.Padding(0);
+            this.SetAllButton.Name = "SetAllButton";
+            this.SetAllButton.Size = new System.Drawing.Size(98, 28);
+            this.SetAllButton.TabIndex = 11;
+            this.SetAllButton.Text = "전체";
+            this.SetAllButton.UseVisualStyleBackColor = false;
+            this.SetAllButton.Click += new System.EventHandler(this.SetAllButton_Click);
+            // 
+            // SetReservationButton
+            // 
+            this.SetReservationButton.BackColor = System.Drawing.Color.Navy;
+            this.SetReservationButton.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SetReservationButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.SetReservationButton.Location = new System.Drawing.Point(256, 11);
+            this.SetReservationButton.Margin = new System.Windows.Forms.Padding(0);
+            this.SetReservationButton.Name = "SetReservationButton";
+            this.SetReservationButton.Size = new System.Drawing.Size(98, 28);
+            this.SetReservationButton.TabIndex = 10;
+            this.SetReservationButton.Text = "예약";
+            this.SetReservationButton.UseVisualStyleBackColor = false;
+            this.SetReservationButton.Click += new System.EventHandler(this.SetReservationButton_Click);
+            // 
             // SetGroupButton
             // 
             this.SetGroupButton.BackColor = System.Drawing.Color.Navy;
             this.SetGroupButton.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.SetGroupButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.SetGroupButton.Location = new System.Drawing.Point(437, 12);
+            this.SetGroupButton.Location = new System.Drawing.Point(141, 11);
             this.SetGroupButton.Margin = new System.Windows.Forms.Padding(0);
             this.SetGroupButton.Name = "SetGroupButton";
             this.SetGroupButton.Size = new System.Drawing.Size(98, 28);
@@ -192,16 +251,6 @@
             this.SetGroupButton.Text = "그룹";
             this.SetGroupButton.UseVisualStyleBackColor = false;
             this.SetGroupButton.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // AdminSet
-            // 
-            this.AdminSet.Location = new System.Drawing.Point(588, 14);
-            this.AdminSet.Name = "AdminSet";
-            this.AdminSet.Size = new System.Drawing.Size(75, 23);
-            this.AdminSet.TabIndex = 7;
-            this.AdminSet.Text = "예약설정";
-            this.AdminSet.UseVisualStyleBackColor = true;
-            this.AdminSet.Click += new System.EventHandler(this.AdminSet_Click);
             // 
             // testButton
             // 
@@ -286,6 +335,7 @@
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.specificFunctionPictureBox)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -310,9 +360,12 @@
         private CustomButton customButton2;
         public System.Windows.Forms.ListView eventListView;
         private System.Windows.Forms.Button SetGroupButton;
-        private System.Windows.Forms.Button AdminSet;
         private System.Windows.Forms.Button testButton;
         private System.Windows.Forms.Button Setting;
+        private System.Windows.Forms.Button SetReservationButton;
+        private System.Windows.Forms.Button SetAllButton;
+        private System.Windows.Forms.Button SetAdminButton;
+        private System.Windows.Forms.PictureBox specificFunctionPictureBox;
     }
 }
 

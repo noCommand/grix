@@ -122,16 +122,6 @@ namespace GrixControler
             if (powerOnBtn.Checked)
             {
                 cmdResult = FindIntFromByteIndex(4) + FindIntFromByteIndex(0);
-                //-> 위 코드 실행하면 main thread가 동작하지 않는 현상??
-                //  이 버튼을 누르면 3번 room에 1번의 정보가 잠깐 들어감
-                /** 18.5.2
-                 *  이 버튼을 누르면 갑자기 main의 updateview의 컨트롤 invoke 함수로 들어감.... 다 거르고 if문 안으로 들어가서 무한루프..
-                 *  
-                 *  해결 --> 디버깅 모드로 돌릴때 자식 폼에 들어갔다가 나오면 f11로 넘겨도 한줄씩 넘기지않고 몇몇코드를 생략하고 보여줌 
-                 *  invoke문제가 아닌 serialconnection getserialpacket에서 readtobyte -> 18 일때 readbyte하고 수신패킷 비우게해놨는데
-                 *  자식폼에서 패킷 송신시 중첩, 수신패킷 2배 36으로 받아서 비워지지않고 계속 쌓였음 54 72 .... 이래서 UI 갱신이 안된거였음
-                 *  DiscardInBuffer  if문 밖으로 빼놓음
-                 * */
             }
             else if (powerOffBtn.Checked)
             {
@@ -146,7 +136,6 @@ namespace GrixControler
             {
                 cmdResult += FindIntFromByteIndex(6);
             }
-            //MessageBox.Show(setTempControl.Value.ToString() +  idValue[0] + idValue[1]);
 
             cmdResult += FindIntFromByteIndex(5);
             main.roomInfoSet = main.serialConnect.GetSerialPacketForResult(main.serialConnect.Cmd, (Byte)cmdResult, (Byte)setTempControl.Value,(Byte)setStepControl.Value, idValue[0], idValue[1]);
@@ -154,7 +143,6 @@ namespace GrixControler
             main.roomSet = true;
 
             main.viewStartCount = FindIndexFromID();
-            //setTempControl.Value
             this.Close();
 
 

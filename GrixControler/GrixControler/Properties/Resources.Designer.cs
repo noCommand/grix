@@ -123,6 +123,16 @@ namespace GrixControler.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap Running {
+            get {
+                object obj = ResourceManager.GetObject("Running", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap Time_Background {
             get {
                 object obj = ResourceManager.GetObject("Time-Background", resourceCulture);

@@ -653,7 +653,118 @@ namespace GrixControler
                 //프로그램 종료시에만 발생
             }
         }
-        
+
+        public RoomInfo GetAdminSerialPacket(byte[] serialCommand,byte df,byte uh,byte ul,byte ht, byte pd,byte od,byte tc, byte id_H, byte id_L)
+        {
+
+            ClearReceiveBuffer();
+
+            int originTemp;
+            int compareTemp;
+            int environment;
+
+            int a, b, c, d, e, f, g, h;
+
+            RoomInfo roominfo = new RoomInfo();
+
+
+            serialCommand[1] = id_H;
+            serialCommand[2] = id_L;
+            serialCommand[4] = 0x20;
+            serialCommand[7] = df;
+            serialCommand[8] = uh;
+            serialCommand[9] = ul;
+            serialCommand[10] = ht;
+            serialCommand[12] = pd;
+            serialCommand[13] = od;
+            serialCommand[14] = tc;
+            
+            serialCommand[16] = FindCheckSum(serialCommand);
+
+            try
+            {
+                sp.Write(serialCommand, 0, serialCommand.Length);
+                System.Threading.Thread.Sleep(300);
+                if (sp.BytesToRead == 18)
+                {
+                    a = sp.ReadByte();
+                    b = sp.ReadByte();
+                    c = sp.ReadByte();
+                    roominfo.ID = b * 100 + c;
+                    d = sp.ReadByte();
+                    environment = sp.ReadByte();
+
+                    if ((environment & 0x04) == 0x04)
+                    {
+                        roominfo.LockOn = true;
+                    }
+                    else roominfo.LockOn = false;
+
+                    if ((environment & 0x01) == 0x01)
+                    {
+                        roominfo.PowerOn = true;
+                    }
+                    else roominfo.PowerOn = false;
+
+                    //
+                    if ((environment & 0x02) == 0x02)
+                    {
+                        roominfo.HeaterOn = true;
+                    }
+                    else roominfo.HeaterOn = false;
+
+
+                    if ((environment & 0x08) == 0x08)
+                    {
+                        roominfo.StepOn = true;
+                    }
+                    else roominfo.StepOn = false;
+
+                    originTemp = sp.ReadByte();
+                    compareTemp = sp.ReadByte();
+                    roominfo.NowTemp = originTemp.ToString();
+                    roominfo.SetTemp = compareTemp.ToString();
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        sp.ReadByte();
+                    }
+                    roominfo.TempStep = sp.ReadByte();
+
+                    roominfo.PeriodStep = sp.ReadByte();
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        sp.ReadByte();
+                    }
+
+                    roominfo.CheckSum = sp.ReadByte();
+                    roominfo.ConnectOn = true;
+                    sp.ReadByte();
+                    ClearReceiveBuffer();
+                    return roominfo;
+                }
+                else
+                {
+                    foreach (RoomInfo info in main.roomInfoList)
+                    {
+                        if (info.ID == id_H * 100 + id_L)
+                        {
+                            roominfo = info;
+                        }
+                    }
+                    roominfo.ConnectOn = false;
+                    ClearReceiveBuffer();
+                    return roominfo;
+                }
+            }
+            catch (InvalidOperationException ioe)
+            {
+                return roominfo;
+                //프로그램 종료시에만 발생
+            }
+        }
+
 
         public void setSerialPacket(byte[] serialCommand, byte id_H, byte id_L)
         {

@@ -29,7 +29,7 @@ namespace GrixControler
         {
             main.ThreadPause();
             InitializeComponent();
-
+            
             roomGridView.RowHeadersWidth = 20;
 
             string[] portsArray = SerialPort.GetPortNames();
@@ -40,13 +40,17 @@ namespace GrixControler
             }
             portCombx.Text = main.GetCOMInfo();
 
+            if (main.SFExist)
+            {
+                specialFunctionCheckBox.Checked = true;
+            }
+
             this.main = main;
         }
         
 
         private void ProgramSetting_Load(object sender, EventArgs e)
         {
-
             dbConn.Open();
 
             show_roomGridView();
@@ -56,6 +60,18 @@ namespace GrixControler
 
         private void confirmButton_click(object sender, EventArgs e)
         {
+            if(specialFunctionCheckBox.Checked == true && !main.specificFunctionExist)
+            {
+                insertSpecificFunction();
+                main.specificFunctionExist = true;
+            }
+            else if(specialFunctionCheckBox.Checked == false)
+            {
+                deleteSpecificFunction();
+                main.specificFunctionExist = false;
+                main.SFExist = main.isSpecificFunctionExistInDB();
+            }
+
             /* 18.5.12
            * 시리얼포트 수동연결 가능
            * */
@@ -187,7 +203,7 @@ namespace GrixControler
 
             try
             {
-                sql = "select * from idTable";
+                sql = "select * from idTable where roomid not in(select roomid from idtable where roomid = \'9999\')";
 
                 command = new SQLiteCommand(sql, dbConn);
 
@@ -224,6 +240,7 @@ namespace GrixControler
 
         private void apply_btn_Click_1(object sender, EventArgs e)
         {
+            
             SetRoomID();
         }
 
@@ -270,7 +287,50 @@ namespace GrixControler
             show_roomGridView();
         }
 
+        private void insertSpecificFunction()
+        {
+            int scalarNum;
+
+            using (SQLiteTransaction tr = dbConn.BeginTransaction())
+            {
+                try
+                {
+                        sql = "insert into idTable(roomID,roomNum) Values(\'9999\',\'9999\')";
+                        SQLExcute(sql, tr);
+                }
+                catch (Exception er)
+                {
+                    MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+                }
+                tr.Commit();
+            }
+        }
+
+        private void deleteSpecificFunction()
+        {
+            int scalarNum;
+
+            using (SQLiteTransaction tr = dbConn.BeginTransaction())
+            {
+                try
+                {
+                    sql = "delete from idTable where roomID in (select roomid from idtable where roomid = \'9999\')";
+                    SQLExcute(sql, tr);
+                }
+                catch (Exception er)
+                {
+                    MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+                }
+                tr.Commit();
+            }
+        }
+
         private void roomGridView_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void reSetButton_Click(object sender, EventArgs e)
         {
 
         }

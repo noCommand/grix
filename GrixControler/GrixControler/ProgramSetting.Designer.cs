@@ -41,6 +41,8 @@
             this.setID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.setRoomName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.reSetButton = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.specialFunctionCheckBox = new System.Windows.Forms.CheckBox();
             this.portGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.roomGridView)).BeginInit();
@@ -65,7 +67,7 @@
             // 
             // confirmButton
             // 
-            this.confirmButton.Location = new System.Drawing.Point(148, 386);
+            this.confirmButton.Location = new System.Drawing.Point(141, 416);
             this.confirmButton.Name = "confirmButton";
             this.confirmButton.Size = new System.Drawing.Size(75, 23);
             this.confirmButton.TabIndex = 2;
@@ -75,7 +77,7 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(229, 386);
+            this.cancelButton.Location = new System.Drawing.Point(222, 416);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 3;
@@ -88,7 +90,7 @@
             this.portGroupBox.Controls.Add(this.portCombx);
             this.portGroupBox.Controls.Add(this.label1);
             this.portGroupBox.Font = new System.Drawing.Font("돋움체", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.portGroupBox.Location = new System.Drawing.Point(24, 12);
+            this.portGroupBox.Location = new System.Drawing.Point(24, 15);
             this.portGroupBox.Name = "portGroupBox";
             this.portGroupBox.Size = new System.Drawing.Size(280, 48);
             this.portGroupBox.TabIndex = 4;
@@ -99,7 +101,7 @@
             // 
             this.groupBox1.Controls.Add(this.roomApplyButton);
             this.groupBox1.Controls.Add(this.roomGridView);
-            this.groupBox1.Location = new System.Drawing.Point(24, 76);
+            this.groupBox1.Location = new System.Drawing.Point(24, 79);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(280, 300);
             this.groupBox1.TabIndex = 6;
@@ -164,26 +166,47 @@
             // 
             // reSetButton
             // 
-            this.reSetButton.Location = new System.Drawing.Point(24, 386);
+            this.reSetButton.Location = new System.Drawing.Point(33, 416);
             this.reSetButton.Name = "reSetButton";
             this.reSetButton.Size = new System.Drawing.Size(75, 23);
             this.reSetButton.TabIndex = 8;
             this.reSetButton.Text = "초기화";
             this.reSetButton.UseVisualStyleBackColor = true;
+            this.reSetButton.Click += new System.EventHandler(this.reSetButton_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(36, 390);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(61, 12);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "특수기능 :";
+            // 
+            // specialFunctionCheckBox
+            // 
+            this.specialFunctionCheckBox.AutoSize = true;
+            this.specialFunctionCheckBox.Location = new System.Drawing.Point(100, 389);
+            this.specialFunctionCheckBox.Name = "specialFunctionCheckBox";
+            this.specialFunctionCheckBox.Size = new System.Drawing.Size(15, 14);
+            this.specialFunctionCheckBox.TabIndex = 9;
+            this.specialFunctionCheckBox.UseVisualStyleBackColor = true;
             // 
             // ProgramSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(327, 417);
+            this.ClientSize = new System.Drawing.Size(327, 455);
+            this.Controls.Add(this.specialFunctionCheckBox);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.reSetButton);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.portGroupBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.confirmButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(343, 455);
-            this.MinimumSize = new System.Drawing.Size(343, 455);
+            this.MaximumSize = new System.Drawing.Size(343, 493);
+            this.MinimumSize = new System.Drawing.Size(343, 493);
             this.Name = "ProgramSetting";
             this.Text = " [환경설정]";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ProgramSetting_FormClosed);
@@ -193,6 +216,7 @@
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.roomGridView)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -210,5 +234,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn setRoomName;
         private System.Windows.Forms.Button roomApplyButton;
         private System.Windows.Forms.Button reSetButton;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox specialFunctionCheckBox;
     }
 }

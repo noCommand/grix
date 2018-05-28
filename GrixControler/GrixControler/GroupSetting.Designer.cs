@@ -243,7 +243,7 @@
             // 
             // all_button
             // 
-            this.all_button.Location = new System.Drawing.Point(25, 273);
+            this.all_button.Location = new System.Drawing.Point(25, 275);
             this.all_button.Name = "all_button";
             this.all_button.Size = new System.Drawing.Size(75, 23);
             this.all_button.TabIndex = 92;

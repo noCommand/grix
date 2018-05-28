@@ -83,6 +83,7 @@ namespace GrixControler
 
         private void ConfirmBtn_Click(object sender, EventArgs e)
         {
+            main.isGroup = true;
             main.groupGetInfo = GetGroupRoomInfo();
             main.groupID = GetGroupID();
             main.viewStartCount = FindIndexFromID();
@@ -223,7 +224,7 @@ namespace GrixControler
 
             }
 
-            sql = "select * from idTable";
+            sql = "select * from idTable where roomid not in(select roomid from idtable where roomid = \'9999\')";
 
             command = new SQLiteCommand(sql, dbConn);
 
@@ -269,6 +270,9 @@ namespace GrixControler
                     GroupRoomList.Items[i].Checked = false;
                 }
             }
+
+            setTempControl.Value = 25;
+            setStepControl.Value = 3;
         }
 
 
