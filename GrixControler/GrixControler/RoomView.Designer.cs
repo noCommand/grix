@@ -32,8 +32,9 @@
             this.current_Temp = new System.Windows.Forms.Label();
             this.picture_Lock = new System.Windows.Forms.PictureBox();
             this.picture_Heat = new System.Windows.Forms.PictureBox();
-            this.roomName = new System.Windows.Forms.Label();
+            this.realRoomName = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.roomName = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picture_Lock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture_Heat)).BeginInit();
             this.panel1.SuspendLayout();
@@ -82,22 +83,23 @@
             this.picture_Heat.Visible = false;
             this.picture_Heat.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
-            // roomName
+            // realRoomName
             // 
-            this.roomName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(129)))), ((int)(((byte)(128)))));
-            this.roomName.ForeColor = System.Drawing.Color.White;
-            this.roomName.Location = new System.Drawing.Point(0, 0);
-            this.roomName.Margin = new System.Windows.Forms.Padding(0);
-            this.roomName.Name = "roomName";
-            this.roomName.Size = new System.Drawing.Size(76, 29);
-            this.roomName.TabIndex = 23;
-            this.roomName.Text = "0";
-            this.roomName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.roomName.Click += new System.EventHandler(this.roomName_Click);
+            this.realRoomName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(129)))), ((int)(((byte)(128)))));
+            this.realRoomName.ForeColor = System.Drawing.Color.White;
+            this.realRoomName.Location = new System.Drawing.Point(0, 0);
+            this.realRoomName.Margin = new System.Windows.Forms.Padding(0);
+            this.realRoomName.Name = "realRoomName";
+            this.realRoomName.Size = new System.Drawing.Size(76, 29);
+            this.realRoomName.TabIndex = 23;
+            this.realRoomName.Text = "0";
+            this.realRoomName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.realRoomName.Click += new System.EventHandler(this.roomName_Click);
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.roomName);
+            this.panel1.Controls.Add(this.realRoomName);
             this.panel1.Controls.Add(this.desired_Temp);
             this.panel1.Controls.Add(this.picture_Heat);
             this.panel1.Controls.Add(this.current_Temp);
@@ -110,6 +112,20 @@
             this.panel1.TabIndex = 28;
             this.panel1.Click += new System.EventHandler(this.panel1_Click);
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // roomName
+            // 
+            this.roomName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(129)))), ((int)(((byte)(128)))));
+            this.roomName.ForeColor = System.Drawing.Color.White;
+            this.roomName.Location = new System.Drawing.Point(0, 0);
+            this.roomName.Margin = new System.Windows.Forms.Padding(0);
+            this.roomName.Name = "roomName";
+            this.roomName.Size = new System.Drawing.Size(22, 16);
+            this.roomName.TabIndex = 28;
+            this.roomName.Text = "0";
+            this.roomName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.roomName.Visible = false;
+            this.roomName.Click += new System.EventHandler(this.roomName_Click_1);
             // 
             // RoomView
             // 
@@ -135,6 +151,7 @@
         public System.Windows.Forms.Label desired_Temp;
         public System.Windows.Forms.PictureBox picture_Lock;
         public System.Windows.Forms.PictureBox picture_Heat;
+        public System.Windows.Forms.Label realRoomName;
         public System.Windows.Forms.Label roomName;
     }
 }

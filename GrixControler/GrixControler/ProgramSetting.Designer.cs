@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgramSetting));
             this.portCombx = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -37,12 +38,12 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.roomApplyButton = new System.Windows.Forms.Button();
             this.roomGridView = new System.Windows.Forms.DataGridView();
-            this.setNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.setID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.setRoomName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.reSetButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.specialFunctionCheckBox = new System.Windows.Forms.CheckBox();
+            this.setNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.setID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.setRoomName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.portGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.roomGridView)).BeginInit();
@@ -116,53 +117,29 @@
             this.roomApplyButton.TabIndex = 7;
             this.roomApplyButton.Text = "적용";
             this.roomApplyButton.UseVisualStyleBackColor = true;
-            this.roomApplyButton.Click += new System.EventHandler(this.apply_btn_Click_1);
+            this.roomApplyButton.Click += new System.EventHandler(this.roomApplyButton_Click);
             // 
             // roomGridView
             // 
             this.roomGridView.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.roomGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.roomGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.roomGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.setNo,
             this.setID,
             this.setRoomName});
             this.roomGridView.Location = new System.Drawing.Point(19, 46);
             this.roomGridView.Name = "roomGridView";
+            this.roomGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.roomGridView.RowTemplate.Height = 23;
+            this.roomGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.roomGridView.Size = new System.Drawing.Size(244, 242);
             this.roomGridView.TabIndex = 0;
-            this.roomGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.roomGridView_CellContentClick);
+            this.roomGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.roomGridView_CellLeave);
+            this.roomGridView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.roomGridView_CellValidating);
             this.roomGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.roomGridView_CellValueChanged);
+            this.roomGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.roomGridView_EditingControlShowing);
+            this.roomGridView.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.roomGridView_RowsAdded);
             this.roomGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.roomGridView_KeyDown);
-            this.roomGridView.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.roomGridView_KeyPress);
-            // 
-            // setNo
-            // 
-            this.setNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.setNo.HeaderText = "No.";
-            this.setNo.MaxInputLength = 4;
-            this.setNo.Name = "setNo";
-            this.setNo.ReadOnly = true;
-            this.setNo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.setNo.Width = 63;
-            // 
-            // setID
-            // 
-            this.setID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.setID.HeaderText = "ID";
-            this.setID.MaxInputLength = 4;
-            this.setID.Name = "setID";
-            this.setID.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.setID.Width = 63;
-            // 
-            // setRoomName
-            // 
-            this.setRoomName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.setRoomName.HeaderText = "방이름";
-            this.setRoomName.MaxInputLength = 10;
-            this.setRoomName.Name = "setRoomName";
-            this.setRoomName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.setRoomName.Width = 84;
             // 
             // reSetButton
             // 
@@ -191,6 +168,39 @@
             this.specialFunctionCheckBox.Size = new System.Drawing.Size(15, 14);
             this.specialFunctionCheckBox.TabIndex = 9;
             this.specialFunctionCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // setNo
+            // 
+            this.setNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.setNo.HeaderText = "No.";
+            this.setNo.MaxInputLength = 4;
+            this.setNo.Name = "setNo";
+            this.setNo.ReadOnly = true;
+            this.setNo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.setNo.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.setNo.Width = 63;
+            // 
+            // setID
+            // 
+            this.setID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle1.Format = "N0";
+            dataGridViewCellStyle1.NullValue = null;
+            this.setID.DefaultCellStyle = dataGridViewCellStyle1;
+            this.setID.HeaderText = "ID";
+            this.setID.MaxInputLength = 4;
+            this.setID.Name = "setID";
+            this.setID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.setID.Width = 63;
+            // 
+            // setRoomName
+            // 
+            this.setRoomName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.setRoomName.HeaderText = "방이름";
+            this.setRoomName.MaxInputLength = 10;
+            this.setRoomName.Name = "setRoomName";
+            this.setRoomName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.setRoomName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.setRoomName.Width = 84;
             // 
             // ProgramSetting
             // 
@@ -229,12 +239,12 @@
         private System.Windows.Forms.GroupBox portGroupBox;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView roomGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn setNo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn setID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn setRoomName;
         private System.Windows.Forms.Button roomApplyButton;
         private System.Windows.Forms.Button reSetButton;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox specialFunctionCheckBox;
+        private System.Windows.Forms.DataGridViewTextBoxColumn setNo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn setID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn setRoomName;
     }
 }

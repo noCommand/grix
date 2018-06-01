@@ -134,7 +134,7 @@ namespace GrixControler
 
             }
 
-            sql = "select * from idTable";
+            sql = "select * from idTable where roomid not in(select roomid from idtable where roomid = \'9999\')";
 
             command = new SQLiteCommand(sql, dbConn);
 
@@ -177,6 +177,7 @@ namespace GrixControler
 
         private void ConfirmButton_Click(object sender, EventArgs e)
         {
+            main.isGroup = false;
             if(string.IsNullOrEmpty(setDFText.Text)|| string.IsNullOrEmpty(setUHText.Text)
                 || string.IsNullOrEmpty(setULText.Text) || string.IsNullOrEmpty(setHTText.Text)
                 || string.IsNullOrEmpty(setPDText.Text) || string.IsNullOrEmpty(setODText.Text)
@@ -242,6 +243,118 @@ namespace GrixControler
                     RoomList.Items[i].Checked = false;
                 }
             }
+        }
+        
+        private void inputOnlyInt(KeyPressEventArgs e)
+        {
+            if (!(Char.IsDigit(e.KeyChar)) && e.KeyChar != 8)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void setDFText_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            inputOnlyInt(e);
+            setTextBoxFocus(e, setUHText);
+        }
+
+        private void setUHText_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            inputOnlyInt(e);
+            setTextBoxFocus(e, setULText);
+        }
+
+        private void setULText_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            inputOnlyInt(e);
+            setTextBoxFocus(e, setHTText);
+        }
+
+        private void setHTText_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            inputOnlyInt(e);
+            setTextBoxFocus(e, setPDText);
+        }
+
+        private void setPDText_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            inputOnlyInt(e);
+            setTextBoxFocus(e, setODText);
+        }
+
+        private void setODText_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            inputOnlyInt(e);
+            setTextBoxFocus(e, setTCText);
+        }
+
+        private void setTCText_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            inputOnlyInt(e);
+        }
+
+        private void setDFText_Leave(object sender, EventArgs e)
+        {
+            setMinMaxCount(setDFText, 1, 10);
+        }
+
+
+        private void setUHText_Leave(object sender, EventArgs e)
+        {
+            setMinMaxCount(setUHText, 0, 80);
+        }
+
+        private void setULText_Leave(object sender, EventArgs e)
+        {
+            setMinMaxCount(setULText, 0, 0);
+        }
+
+        private void setHTText_Leave(object sender, EventArgs e)
+        {
+            setMinMaxCount(setHTText,Convert.ToInt32(setUHText.Text), 80);
+        }
+
+        private void setPDText_Leave(object sender, EventArgs e)
+        {
+            setMinMaxCount(setPDText, 1, 60);
+        }
+
+        private void setODText_Leave(object sender, EventArgs e)
+        {
+            setMinMaxCount(setODText, 1, 60);
+        }
+
+        private void setTCText_Leave(object sender, EventArgs e)
+        {
+            setMinMaxCount(setTCText, 0, 10);
+        }
+
+
+        private void setMinMaxCount(TextBox textBox, int minCount, int maxCount)
+        {
+            if (Convert.ToInt32(textBox.Text) > maxCount)
+            {
+                textBox.Text = maxCount.ToString();
+            }
+            if (Convert.ToInt32(textBox.Text) < minCount)
+            {
+                textBox.Text = minCount.ToString();
+            }
+        }
+
+
+        private void setTextBoxFocus(KeyPressEventArgs e, TextBox textBox)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                textBox.Focus();
+            }
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

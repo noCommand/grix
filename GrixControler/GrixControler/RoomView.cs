@@ -75,5 +75,10 @@ namespace GrixControler
         {
             
         }
+
+        private void roomName_Click_1(object sender, EventArgs e)
+        {
+            show_RoomSetting();
+        }
     }
 }

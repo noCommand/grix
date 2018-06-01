@@ -55,11 +55,13 @@
             this.setPDText = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // ConfirmButton
             // 
-            this.ConfirmButton.Location = new System.Drawing.Point(121, 265);
+            this.ConfirmButton.Location = new System.Drawing.Point(120, 289);
             this.ConfirmButton.Name = "ConfirmButton";
             this.ConfirmButton.Size = new System.Drawing.Size(75, 23);
             this.ConfirmButton.TabIndex = 14;
@@ -70,7 +72,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(40, 20);
+            this.label15.Location = new System.Drawing.Point(40, 79);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(41, 12);
             this.label15.TabIndex = 96;
@@ -78,7 +80,7 @@
             // 
             // all_button
             // 
-            this.all_button.Location = new System.Drawing.Point(24, 245);
+            this.all_button.Location = new System.Drawing.Point(25, 275);
             this.all_button.Name = "all_button";
             this.all_button.Size = new System.Drawing.Size(75, 23);
             this.all_button.TabIndex = 95;
@@ -88,15 +90,15 @@
             // 
             // RoomList
             // 
-            this.RoomList.Location = new System.Drawing.Point(25, 39);
+            this.RoomList.Location = new System.Drawing.Point(25, 98);
             this.RoomList.Name = "RoomList";
-            this.RoomList.Size = new System.Drawing.Size(74, 200);
+            this.RoomList.Size = new System.Drawing.Size(74, 171);
             this.RoomList.TabIndex = 94;
             this.RoomList.UseCompatibleStateImageBehavior = false;
             // 
             // CancelButton
             // 
-            this.CancelButton.Location = new System.Drawing.Point(202, 265);
+            this.CancelButton.Location = new System.Drawing.Point(201, 289);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(75, 23);
             this.CancelButton.TabIndex = 97;
@@ -106,15 +108,17 @@
             // 
             // setDFText
             // 
-            this.setDFText.Location = new System.Drawing.Point(198, 44);
+            this.setDFText.Location = new System.Drawing.Point(198, 77);
             this.setDFText.Name = "setDFText";
             this.setDFText.Size = new System.Drawing.Size(36, 21);
             this.setDFText.TabIndex = 100;
+            this.setDFText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.setDFText_KeyPress);
+            this.setDFText.Leave += new System.EventHandler(this.setDFText_Leave);
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(135, 48);
+            this.label16.Location = new System.Drawing.Point(135, 81);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(53, 12);
             this.label16.TabIndex = 98;
@@ -123,7 +127,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(236, 49);
+            this.label17.Location = new System.Drawing.Point(236, 82);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(18, 12);
             this.label17.TabIndex = 99;
@@ -131,15 +135,17 @@
             // 
             // setUHText
             // 
-            this.setUHText.Location = new System.Drawing.Point(198, 73);
+            this.setUHText.Location = new System.Drawing.Point(198, 106);
             this.setUHText.Name = "setUHText";
             this.setUHText.Size = new System.Drawing.Size(36, 21);
             this.setUHText.TabIndex = 103;
+            this.setUHText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.setUHText_KeyPress);
+            this.setUHText.Leave += new System.EventHandler(this.setUHText_Leave);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(135, 77);
+            this.label1.Location = new System.Drawing.Point(135, 110);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 101;
@@ -148,7 +154,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(236, 78);
+            this.label2.Location = new System.Drawing.Point(236, 111);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(18, 12);
             this.label2.TabIndex = 102;
@@ -156,15 +162,17 @@
             // 
             // setULText
             // 
-            this.setULText.Location = new System.Drawing.Point(198, 101);
+            this.setULText.Location = new System.Drawing.Point(198, 134);
             this.setULText.Name = "setULText";
             this.setULText.Size = new System.Drawing.Size(36, 21);
             this.setULText.TabIndex = 106;
+            this.setULText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.setULText_KeyPress);
+            this.setULText.Leave += new System.EventHandler(this.setULText_Leave);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(135, 105);
+            this.label3.Location = new System.Drawing.Point(135, 138);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 104;
@@ -173,7 +181,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(236, 106);
+            this.label4.Location = new System.Drawing.Point(236, 139);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(18, 12);
             this.label4.TabIndex = 105;
@@ -181,15 +189,17 @@
             // 
             // setHTText
             // 
-            this.setHTText.Location = new System.Drawing.Point(198, 128);
+            this.setHTText.Location = new System.Drawing.Point(198, 161);
             this.setHTText.Name = "setHTText";
             this.setHTText.Size = new System.Drawing.Size(36, 21);
             this.setHTText.TabIndex = 109;
+            this.setHTText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.setHTText_KeyPress);
+            this.setHTText.Leave += new System.EventHandler(this.setHTText_Leave);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(135, 132);
+            this.label5.Location = new System.Drawing.Point(135, 165);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 107;
@@ -198,7 +208,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(236, 133);
+            this.label6.Location = new System.Drawing.Point(236, 166);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(18, 12);
             this.label6.TabIndex = 108;
@@ -206,15 +216,17 @@
             // 
             // setTCText
             // 
-            this.setTCText.Location = new System.Drawing.Point(198, 215);
+            this.setTCText.Location = new System.Drawing.Point(198, 248);
             this.setTCText.Name = "setTCText";
             this.setTCText.Size = new System.Drawing.Size(36, 21);
             this.setTCText.TabIndex = 118;
+            this.setTCText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.setTCText_KeyPress);
+            this.setTCText.Leave += new System.EventHandler(this.setTCText_Leave);
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(135, 219);
+            this.label9.Location = new System.Drawing.Point(135, 252);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(57, 12);
             this.label9.TabIndex = 116;
@@ -223,7 +235,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(236, 220);
+            this.label10.Location = new System.Drawing.Point(236, 253);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(18, 12);
             this.label10.TabIndex = 117;
@@ -231,15 +243,17 @@
             // 
             // setODText
             // 
-            this.setODText.Location = new System.Drawing.Point(198, 186);
+            this.setODText.Location = new System.Drawing.Point(198, 219);
             this.setODText.Name = "setODText";
             this.setODText.Size = new System.Drawing.Size(36, 21);
             this.setODText.TabIndex = 115;
+            this.setODText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.setODText_KeyPress);
+            this.setODText.Leave += new System.EventHandler(this.setODText_Leave);
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(135, 190);
+            this.label11.Location = new System.Drawing.Point(135, 223);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(53, 12);
             this.label11.TabIndex = 113;
@@ -248,23 +262,25 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(236, 191);
+            this.label12.Location = new System.Drawing.Point(239, 224);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(18, 12);
+            this.label12.Size = new System.Drawing.Size(17, 12);
             this.label12.TabIndex = 114;
-            this.label12.Text = "\'C";
+            this.label12.Text = "초";
             // 
             // setPDText
             // 
-            this.setPDText.Location = new System.Drawing.Point(198, 157);
+            this.setPDText.Location = new System.Drawing.Point(198, 190);
             this.setPDText.Name = "setPDText";
             this.setPDText.Size = new System.Drawing.Size(36, 21);
             this.setPDText.TabIndex = 112;
+            this.setPDText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.setPDText_KeyPress);
+            this.setPDText.Leave += new System.EventHandler(this.setPDText_Leave);
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(135, 161);
+            this.label13.Location = new System.Drawing.Point(135, 194);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(53, 12);
             this.label13.TabIndex = 110;
@@ -273,17 +289,40 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(239, 162);
+            this.label14.Location = new System.Drawing.Point(239, 195);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(17, 12);
             this.label14.TabIndex = 111;
             this.label14.Text = "분";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label7.ForeColor = System.Drawing.Color.Red;
+            this.label7.Location = new System.Drawing.Point(118, 16);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(51, 13);
+            this.label7.TabIndex = 119;
+            this.label7.Text = "[주의]";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(20, 36);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(249, 12);
+            this.label8.TabIndex = 120;
+            this.label8.Text = "설정을 잘못할 경우 이상동작 할 수 있습니다.";
+            this.label8.Click += new System.EventHandler(this.label8_Click);
+            // 
             // AdminSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(289, 301);
+            this.ClientSize = new System.Drawing.Size(289, 324);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.setTCText);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label10);
@@ -346,5 +385,7 @@
         private System.Windows.Forms.TextBox setPDText;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
     }
 }

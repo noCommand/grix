@@ -72,10 +72,10 @@ namespace GrixControler
                             setTempControl.Value = Convert.ToInt32(info.SetTemp);
                         }
                     }
-
+                    setTempControl.Maximum = info.UH;
                     if (info.LockOn) LockOnBtn.Checked = true;
                     else lockOffBtn.Checked = true;
-                    if(info.PowerOn) powerOnBtn.Checked = true;
+                    if (info.PowerOn) powerOnBtn.Checked = true;
                     else powerOffBtn.Checked = true;
 
                 }
@@ -113,7 +113,7 @@ namespace GrixControler
 
         private void Form1_Load(object sender, EventArgs e)
         {
-           
+
         }
         private void ConfirmBtn_Click(object sender, EventArgs e)
         {
@@ -138,8 +138,8 @@ namespace GrixControler
             }
 
             cmdResult += FindIntFromByteIndex(5);
-            main.roomInfoSet = main.serialConnect.GetSerialPacketForResult(main.serialConnect.Cmd, (Byte)cmdResult, (Byte)setTempControl.Value,(Byte)setStepControl.Value, idValue[0], idValue[1]);
-           
+            main.roomInfoSet = main.serialConnect.GetSerialPacketForResult(main.serialConnect.Cmd, (Byte)cmdResult, (Byte)setTempControl.Value, (Byte)setStepControl.Value, idValue[0], idValue[1]);
+
             main.roomSet = true;
 
             main.viewStartCount = FindIndexFromID();
@@ -177,6 +177,26 @@ namespace GrixControler
         private void cancelBtn_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void setStepControl_ValueChanged(object sender, EventArgs e)
+        {
+            if (setStepControl.Value < 1)
+            {
+                setStepControl.Value = 1;
+            }
+            if (setStepControl.Value > 9)
+            {
+                setStepControl.Value = 9;
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            setStepControl.Value = 5;
+            setTempControl.Value = 25;
+            lockOffBtn.Checked = true;
+            powerOnBtn.Checked = true;
         }
     }
 }

@@ -170,7 +170,6 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.specificFunctionPictureBox);
@@ -180,6 +179,7 @@
             this.panel1.Controls.Add(this.SetGroupButton);
             this.panel1.Controls.Add(this.testButton);
             this.panel1.Controls.Add(this.Setting);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(185, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
@@ -188,6 +188,7 @@
             // 
             // specificFunctionPictureBox
             // 
+            this.specificFunctionPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.specificFunctionPictureBox.ImageLocation = "";
             this.specificFunctionPictureBox.Location = new System.Drawing.Point(644, 18);
             this.specificFunctionPictureBox.Name = "specificFunctionPictureBox";
@@ -198,7 +199,7 @@
             // 
             // SetAdminButton
             // 
-            this.SetAdminButton.BackColor = System.Drawing.Color.Navy;
+            this.SetAdminButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(84)))), ((int)(((byte)(166)))));
             this.SetAdminButton.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.SetAdminButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.SetAdminButton.Location = new System.Drawing.Point(368, 11);
@@ -212,7 +213,7 @@
             // 
             // SetAllButton
             // 
-            this.SetAllButton.BackColor = System.Drawing.Color.Navy;
+            this.SetAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(84)))), ((int)(((byte)(166)))));
             this.SetAllButton.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.SetAllButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.SetAllButton.Location = new System.Drawing.Point(23, 11);
@@ -226,7 +227,7 @@
             // 
             // SetReservationButton
             // 
-            this.SetReservationButton.BackColor = System.Drawing.Color.Navy;
+            this.SetReservationButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(84)))), ((int)(((byte)(166)))));
             this.SetReservationButton.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.SetReservationButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.SetReservationButton.Location = new System.Drawing.Point(256, 11);
@@ -240,7 +241,7 @@
             // 
             // SetGroupButton
             // 
-            this.SetGroupButton.BackColor = System.Drawing.Color.Navy;
+            this.SetGroupButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(84)))), ((int)(((byte)(166)))));
             this.SetGroupButton.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.SetGroupButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.SetGroupButton.Location = new System.Drawing.Point(141, 11);
@@ -254,6 +255,7 @@
             // 
             // testButton
             // 
+            this.testButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.testButton.Location = new System.Drawing.Point(750, 14);
             this.testButton.Name = "testButton";
             this.testButton.Size = new System.Drawing.Size(75, 23);
@@ -263,6 +265,7 @@
             // 
             // Setting
             // 
+            this.Setting.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.Setting.Location = new System.Drawing.Point(669, 14);
             this.Setting.Name = "Setting";
             this.Setting.Size = new System.Drawing.Size(75, 23);

@@ -90,7 +90,7 @@
             // 
             this.setTempControl.Location = new System.Drawing.Point(113, 10);
             this.setTempControl.Maximum = new decimal(new int[] {
-            60,
+            80,
             0,
             0,
             0});
@@ -135,7 +135,12 @@
             // 
             this.setStepControl.Location = new System.Drawing.Point(113, 10);
             this.setStepControl.Maximum = new decimal(new int[] {
-            60,
+            9,
+            0,
+            0,
+            0});
+            this.setStepControl.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});

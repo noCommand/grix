@@ -91,6 +91,12 @@
     <Compile Include="AdminSetting.Designer.cs">
       <DependentUpon>AdminSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="AllRoomSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AllRoomSetting.Designer.cs">
+      <DependentUpon>AllRoomSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="EventInfo.cs" />
     <Compile Include="GroupRoomInfo.cs" />
     <Compile Include="GroupSetting.cs">
@@ -143,6 +149,9 @@
     <Compile Include="SqliteInit.cs" />
     <EmbeddedResource Include="AdminSetting.resx">
       <DependentUpon>AdminSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AllRoomSetting.resx">
+      <DependentUpon>AllRoomSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomButton.resx">
       <DependentUpon>CustomButton.cs</DependentUpon>

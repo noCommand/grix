@@ -24,6 +24,9 @@ namespace GrixControler
 
         public Thread thread_Serial;
 
+        bool gridviewInitComplete = false;
+
+        bool gridviewValueChagne = true;
 
         public ProgramSetting(MainForm main)
         {
@@ -54,6 +57,7 @@ namespace GrixControler
             dbConn.Open();
 
             show_roomGridView();
+            gridviewInitComplete = true;
         }
         
 
@@ -152,54 +156,13 @@ namespace GrixControler
             command = new SQLiteCommand(sql, dbConn);
             result = command.ExecuteNonQuery();
         }
-
-        private void roomGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void roomGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void roomGridView_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            /*
-            Int32 selectedColumnCount = roomGridView.Columns.GetColumnCount(DataGridViewElementStates.Selected);
-
-            if (selectedColumnCount > 0)
-            {
-                System.Text.StringBuilder sb = new System.Text.StringBuilder();
-
-                for (int i = 0; i < selectedColumnCount; i++)
-                {
-                    sb.Append("Column: ");
-                    sb.Append(roomGridView.SelectedColumns[i].Index
-                        .ToString());
-                    sb.Append(Environment.NewLine);
-                }
-
-                sb.Append("Total: " + selectedColumnCount.ToString());
-                MessageBox.Show(sb.ToString(), "Selected Columns");
-            }
-        */    
-        }
+        
+    
 
         public void show_roomGridView()
         {
-           
-            if (roomGridView.RowCount > 1)
-            {
-                int count = roomGridView.RowCount;
 
-                for (int i = 1; i <= count - 1; i++)
-
-                {
-                    roomGridView.Rows.RemoveAt(0);
-                }
-
-            }
+            SetGridViewClear();
 
             try
             {
@@ -236,13 +199,7 @@ namespace GrixControler
             
         }
 
-
-
-        private void apply_btn_Click_1(object sender, EventArgs e)
-        {
-            
-            SetRoomID();
-        }
+        
 
         private void SetRoomID()
         {
@@ -285,6 +242,7 @@ namespace GrixControler
             }
 
             show_roomGridView();
+            gridviewInitComplete = true;
         }
 
         private void insertSpecificFunction()
@@ -331,6 +289,86 @@ namespace GrixControler
         }
 
         private void reSetButton_Click(object sender, EventArgs e)
+        {
+            SetGridViewClear();
+        }
+
+        private void SetGridViewClear()
+        {
+            if (roomGridView.RowCount > 1)
+            {
+                int count = roomGridView.RowCount;
+
+                for (int i = 1; i <= count - 1; i++)
+
+                {
+                    roomGridView.Rows.RemoveAt(0);
+                }
+
+            }
+        }
+
+        private void roomGridView_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            if (gridviewInitComplete)
+            {
+                try
+                {
+                    roomGridView.Rows[roomGridView.CurrentCell.RowIndex].Cells[0].Value
+                       = Convert.ToInt32(roomGridView.Rows[roomGridView.CurrentCell.RowIndex - 1].Cells[0].Value.ToString()) + 1;
+                }
+                catch (System.ArgumentOutOfRangeException ae)
+                {
+                    roomGridView.Rows[0].Cells[0].Value = 1;
+                }
+            }
+        }
+
+        private void roomGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (gridviewInitComplete)
+            {
+               
+                    if(roomGridView.CurrentCell.ColumnIndex==1)
+                    {
+                        roomGridView.Rows[roomGridView.CurrentCell.RowIndex].Cells[2].Value =
+                        roomGridView.Rows[roomGridView.CurrentCell.RowIndex].Cells[1].Value;
+                    }
+                
+            }
+        }
+
+        private void roomGridView_CellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+           
+        }
+
+        private void roomGridView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (e.ColumnIndex == 1) 
+            {
+                int i;
+                if (e.FormattedValue != "")
+                {
+                    if (!int.TryParse(Convert.ToString(e.FormattedValue), out i))
+                    {
+                        e.Cancel = true;
+                    }
+                    else
+                    {
+                    }
+                }
+            }
+        }
+
+        private void roomApplyButton_Click(object sender, EventArgs e)
+        {
+
+            gridviewInitComplete = false;
+            SetRoomID();
+        }
+
+        private void roomGridView_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
 
         }

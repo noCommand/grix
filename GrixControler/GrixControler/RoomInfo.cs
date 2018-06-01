@@ -46,9 +46,9 @@ namespace GrixControler
 
         int _CheckSum;
 
-        int _ReservationTime_H;
+        int _UH;
 
-        int _ReservationTime_M;
+        int _ST;
 
         bool _Exist;
         
@@ -205,21 +205,21 @@ namespace GrixControler
             }
         }
 
-        public int ReservationTime_H
+        public int UH
         {
-            get { return _ReservationTime_H; }
+            get { return _UH; }
             set
             {
-                _ReservationTime_H = value;
+                _UH = value;
             }
         }
 
-        public int ReservationTime_M
+        public int ST
         {
-            get { return _ReservationTime_M; }
+            get { return _ST; }
             set
             {
-                _ReservationTime_M = value;
+                _ST = value;
             }
         }
 

@@ -281,7 +281,7 @@ namespace GrixControler
 
             }
 
-            sql = "select * from idTable";
+            sql = "select * from idTable where roomid not in(select roomid from idtable where roomid = \'9999\')";
 
             command = new SQLiteCommand(sql, dbConn);
 

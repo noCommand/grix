@@ -46,7 +46,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.ConfirmBtn = new System.Windows.Forms.Button();
             this.cancelBtn = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -63,6 +62,7 @@
             this.button3.TabIndex = 2;
             this.button3.Text = "초기화";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // groupBox1
             // 
@@ -144,13 +144,19 @@
             // 
             this.setStepControl.Location = new System.Drawing.Point(113, 10);
             this.setStepControl.Maximum = new decimal(new int[] {
-            5,
+            9,
             0,
             0,
             0});
             this.setStepControl.Name = "setStepControl";
             this.setStepControl.Size = new System.Drawing.Size(76, 21);
             this.setStepControl.TabIndex = 9;
+            this.setStepControl.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.setStepControl.ValueChanged += new System.EventHandler(this.setStepControl_ValueChanged);
             // 
             // label3
             // 
@@ -184,7 +190,7 @@
             // 
             this.setTempControl.Location = new System.Drawing.Point(113, 10);
             this.setTempControl.Maximum = new decimal(new int[] {
-            60,
+            80,
             0,
             0,
             0});
@@ -230,22 +236,11 @@
             this.cancelBtn.UseVisualStyleBackColor = true;
             this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label5.Location = new System.Drawing.Point(21, 22);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(83, 12);
-            this.label5.TabIndex = 12;
-            this.label5.Text = "온도제어모드";
-            // 
             // RoomSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(274, 310);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.ConfirmBtn);
             this.Controls.Add(this.panel1);
@@ -271,7 +266,6 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.setTempControl)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -291,7 +285,6 @@
         private System.Windows.Forms.Button ConfirmBtn;
         private System.Windows.Forms.Button cancelBtn;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown setTempControl;
         private System.Windows.Forms.NumericUpDown setStepControl;
     }

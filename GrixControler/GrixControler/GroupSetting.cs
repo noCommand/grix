@@ -29,14 +29,19 @@ namespace GrixControler
         int all_check = 0;
 
         string sql;
-
+        
 
         public GroupSetting(MainForm main, int i)
         {
             this.main = main;
         }
 
-
+        public GroupSetting(MainForm main, int i, int allClick)
+        {
+            InitializeComponent();
+            this.main = main;
+        }
+        
         public GroupSetting(MainForm main)
         {
             InitializeComponent();
@@ -78,7 +83,7 @@ namespace GrixControler
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         private void ConfirmBtn_Click(object sender, EventArgs e)
@@ -246,11 +251,16 @@ namespace GrixControler
 
         private void GroupSetting_FormClosed(object sender, FormClosedEventArgs e)
         {
-
+            main.ThreadResume();
             dbConn.Close();
         }
 
         private void all_button_Click(object sender, EventArgs e)
+        {
+            SetAllClick();
+        }
+
+        private void SetAllClick()
         {
             if (all_check == 0 && GroupRoomList.Items.Count > 0)
             {
@@ -324,7 +334,6 @@ namespace GrixControler
 
         private void cancelBtn_Click(object sender, EventArgs e)
         {
-            main.ThreadResume();
             this.Close();
         }
     }

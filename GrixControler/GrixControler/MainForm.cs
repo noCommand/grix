@@ -39,6 +39,7 @@ namespace GrixControler
         RoomInfo ri;
 
         public String[] roomID;
+        public String[] roomName;
 
         String[] reservationTime_Mon_ON;
         String[] reservationTime_Tues_ON;
@@ -117,14 +118,19 @@ namespace GrixControler
         public RoomInfo roomInfoSet;
 
         public bool isGroup = false;
+        public bool isAdmin = false;
 
         public bool specificFunctionExist = false;
         public bool SFExist;
+
+        private bool isInit = false;
         
 
         public MainForm()
         {
             InitializeComponent();
+
+            isInit = true;
 
             SetGroupButton.TabStop = false;
 
@@ -364,7 +370,7 @@ namespace GrixControler
                             {
                                 firstSpecificCheck = serialConnect.GetFirstSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
                                 roomInfoList.Add(firstSpecificCheck);
-                                if (firstSpecificCheck.DisConnectCount < 2)
+                                if (firstSpecificCheck.DisConnectCount < 3)
                                 {
                                     isAllRoomPowerOn |= firstSpecificCheck.PowerOn;
                                 }
@@ -438,13 +444,12 @@ namespace GrixControler
                                         if (isGroup == true)
                                         {
                                             hi = groupForCalculate.GroupingRoomSettinComfirm(seperateID, groupGetInfo.PowerOn, groupGetInfo.LockOn, groupGetInfo.SetTemp);
-                                            isGroup = false;
+                                            
                                         }
-                                        else
-                                        {
+                                        else 
                                             hi = adminForCalculate.AdminRoomSettinComfirm(seperateID, adminInfo.DF, adminInfo.UH, adminInfo.UL
                                                 , adminInfo.HT, adminInfo.PD, adminInfo.OD, adminInfo.TC);
-                                        }
+                                        
                                     }
                                     else
                                         hi = serialConnect.GetSerialPacket(serialConnect.readCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
@@ -561,9 +566,10 @@ namespace GrixControler
                                 roomInfoList[nowCount].PeriodStep = hi.PeriodStep;
                                 roomInfoList[nowCount].TempStep = hi.TempStep;
                                 roomInfoList[nowCount].ConnectOn = hi.ConnectOn;
+                                roomInfoList[nowCount].UH = hi.UH;
                                 
                                 roomInfoList[nowCount].DisConnectCount = roomInfoList[nowCount].DisConnectCount + hi.Count;
-                                if(roomInfoList[nowCount].DisConnectCount < 2)
+                                if(roomInfoList[nowCount].DisConnectCount < 3)
                                 {
                                     isAllRoomPowerOn |= hi.PowerOn;
                                 }
@@ -578,43 +584,50 @@ namespace GrixControler
                             }
                             
                         }
+                        
                     }
                     defaultCount = currentCount;
-
+                    isGroup = false;
+                    isAdmin = false;
                     CheckReservation_OFF(CheckReservationTuple_OFF());
                     CheckReservation_ON(CheckReservationTuple_ON());
 
                     ExecuteReservation(CheckReservationTuple_ON(), CheckReservationTuple_OFF());
                 }
-                panel1.Invoke((MethodInvoker)delegate ()
+
+                if (isInit)
                 {
-                    if (SFExist || specificFunctionExist)
+                    panel1.Invoke((MethodInvoker)delegate ()
                     {
-                        
-                        specificFunctionPictureBox.Visible = true;
-                        RoomInfo specific = new RoomInfo();
-                        if (isAllRoomPowerOn)
+                        if (SFExist || specificFunctionExist)
                         {
-                            specific = serialConnect.GetFirstSerialPacket(serialConnect.powerOnCmd, (byte)99, (byte)99);
-                            if (specific.PowerOn)
-                                specificFunctionPictureBox.Image = GrixControler.Properties.Resources.Running;
+
+                            specificFunctionPictureBox.Visible = true;
+                            RoomInfo specific = new RoomInfo();
+                            if (isAllRoomPowerOn)
+                            {
+                                specific = serialConnect.GetFirstSerialPacket(serialConnect.powerOnCmd, (byte)99, (byte)99);
+                                if (specific.PowerOn)
+                                    specificFunctionPictureBox.Image = GrixControler.Properties.Resources.Running;
+                                else
+                                    specificFunctionPictureBox.Visible = false;
+                            }
                             else
-                                specificFunctionPictureBox.Visible = false;
+                            {
+                                specific = serialConnect.GetFirstSerialPacket(serialConnect.powerOffCmd, (byte)99, (byte)99);
+                                if (specific.PowerOn)
+                                    specificFunctionPictureBox.Image = GrixControler.Properties.Resources.Running;
+                                else
+                                    specificFunctionPictureBox.Visible = false;
+                            }
                         }
                         else
                         {
-                            specific = serialConnect.GetFirstSerialPacket(serialConnect.powerOffCmd, (byte)99, (byte)99);
-                            if (specific.PowerOn)
-                                specificFunctionPictureBox.Image = GrixControler.Properties.Resources.Running;
-                            else
-                                specificFunctionPictureBox.Visible = false;
+                            specificFunctionPictureBox.Visible = false;
                         }
-                    }
-                    else
-                    {
-                        specificFunctionPictureBox.Visible = false;
-                    }
-                });
+                    });
+                }
+                
                 
                 viewStartCount = 0;
                 groupID = null;
@@ -638,56 +651,83 @@ namespace GrixControler
                             */
                             if (roomView[i].roomName.Text == roomInfoList[j].ID.ToString())
                             {
-
-                                if(roomInfoList[j].DisConnectCount < 2)
+                                try
                                 {
-                                    if (roomInfoList[j].PowerOn == true)
+                                    roomView[i].realRoomName.Invoke((MethodInvoker)delegate ()
                                     {
-                                        if (roomInfoList[j].StepOn)
+                                        //MessageBox.Show(roomInfoList[j].NowTemp.ToString() + "UIThread");
+                                        roomView[i].realRoomName.Text = roomName[i];
+                                    });
+                                    if (roomInfoList[j].DisConnectCount < 3)
+                                    {
+                                        if (roomInfoList[j].PowerOn == true)
                                         {
-                                            roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
+                                            if (roomInfoList[j].StepOn)
                                             {
-                                                //MessageBox.Show(roomInfoList[j].NowTemp.ToString() + "UIThread");
-                                                roomView[i].current_Temp.Text = roomInfoList[j].TempStep.ToString();
-                                            });
-                                            roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
+                                                roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
+                                                {
+                                                    //MessageBox.Show(roomInfoList[j].NowTemp.ToString() + "UIThread");
+                                                    roomView[i].current_Temp.Text = roomInfoList[j].TempStep.ToString();
+                                                });
+                                                roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
+                                                {
+                                                    roomView[i].desired_Temp.Text = roomInfoList[j].PeriodStep.ToString();
+                                                });
+                                                roomView[i].picture_Heat.Invoke((MethodInvoker)delegate ()
+                                                {
+                                                    roomView[i].picture_Heat.Visible = roomInfoList[j].HeaterOn;
+                                                });
+                                            }
+                                            else
                                             {
-                                                roomView[i].desired_Temp.Text = roomInfoList[j].PeriodStep.ToString();
-                                            });
-                                            roomView[i].picture_Heat.Invoke((MethodInvoker)delegate ()
+                                                roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
+                                                {
+                                                    //MessageBox.Show(roomInfoList[j].NowTemp.ToString() + "UIThread");
+                                                    roomView[i].current_Temp.Text = roomInfoList[j].NowTemp.ToString();
+                                                });
+                                                roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
+                                                {
+                                                    roomView[i].desired_Temp.Text = roomInfoList[j].SetTemp.ToString();
+                                                });
+                                                roomView[i].picture_Heat.Invoke((MethodInvoker)delegate ()
+                                                {
+                                                    roomView[i].picture_Heat.Visible = roomInfoList[j].HeaterOn;
+                                                });
+                                            }
+
+                                            roomView[i].picture_Lock.Invoke((MethodInvoker)delegate ()
                                             {
-                                                roomView[i].picture_Heat.Visible = roomInfoList[j].HeaterOn;
+                                                roomView[i].picture_Lock.Visible = roomInfoList[j].LockOn;
                                             });
+
                                         }
                                         else
                                         {
                                             roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
                                             {
-                                                //MessageBox.Show(roomInfoList[j].NowTemp.ToString() + "UIThread");
-                                                roomView[i].current_Temp.Text = roomInfoList[j].NowTemp.ToString();
+                                                //MessageBox.Show(roomInfoList[j].NowTemp.ToString() + "UIThread - poweroff");
+                                                roomView[i].current_Temp.Text = "--";
                                             });
                                             roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
                                             {
-                                                roomView[i].desired_Temp.Text = roomInfoList[j].SetTemp.ToString();
+                                                roomView[i].desired_Temp.Text = " ";
+                                            });
+                                            roomView[i].picture_Lock.Invoke((MethodInvoker)delegate ()
+                                            {
+                                                roomView[i].picture_Lock.Visible = false;
                                             });
                                             roomView[i].picture_Heat.Invoke((MethodInvoker)delegate ()
                                             {
-                                                roomView[i].picture_Heat.Visible = roomInfoList[j].HeaterOn;
+                                                roomView[i].picture_Heat.Visible = false;
                                             });
                                         }
-
-                                        roomView[i].picture_Lock.Invoke((MethodInvoker)delegate ()
-                                        {
-                                            roomView[i].picture_Lock.Visible = roomInfoList[j].LockOn;
-                                        });
-
                                     }
                                     else
                                     {
                                         roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
                                         {
                                             //MessageBox.Show(roomInfoList[j].NowTemp.ToString() + "UIThread - poweroff");
-                                            roomView[i].current_Temp.Text = "--";
+                                            roomView[i].current_Temp.Text = "X";
                                         });
                                         roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
                                         {
@@ -703,27 +743,10 @@ namespace GrixControler
                                         });
                                     }
                                 }
-                                else
+                                catch (System.IndexOutOfRangeException ex)
                                 {
-                                    roomView[i].current_Temp.Invoke((MethodInvoker)delegate ()
-                                    {
-                                        //MessageBox.Show(roomInfoList[j].NowTemp.ToString() + "UIThread - poweroff");
-                                        roomView[i].current_Temp.Text = "X";
-                                    });
-                                    roomView[i].desired_Temp.Invoke((MethodInvoker)delegate ()
-                                    {
-                                        roomView[i].desired_Temp.Text = " ";
-                                    });
-                                    roomView[i].picture_Lock.Invoke((MethodInvoker)delegate ()
-                                    {
-                                        roomView[i].picture_Lock.Visible = false;
-                                    });
-                                    roomView[i].picture_Heat.Invoke((MethodInvoker)delegate ()
-                                    {
-                                        roomView[i].picture_Heat.Visible = false;
-                                    });
+
                                 }
-                                    
                             }
                         }
                     }
@@ -745,6 +768,7 @@ namespace GrixControler
 
                 roomView[i] = new RoomView(this);
                 roomView[i].roomName.Text = roomID[i];
+                roomView[i].realRoomName.Text = roomName[i];
 
                 ViewPanel.Controls.Add(roomView[i]);
             }
@@ -818,6 +842,7 @@ namespace GrixControler
                 roomView[i].Invoke((MethodInvoker)delegate ()
                 {
                     roomView[i].roomName.Text = roomID[i];
+                    roomView[i].realRoomName.Text = roomName[i];
                 });
 
             }
@@ -977,6 +1002,7 @@ namespace GrixControler
         public void SetRoomIDString(int count)
         {
             roomID = new string[count];
+            roomName = new string[count];
 
             sql = "select * from idTable where roomid not in (select roomid from idtable where roomid = \'9999\')";
 
@@ -985,12 +1011,12 @@ namespace GrixControler
             rdr = command.ExecuteReader();
 
             int i = 0;
-            object remRoomID;
 
             while (rdr.Read())
             {
 
                 roomID[i] = Convert.ToInt32(rdr["roomID"]).ToString();
+                roomName[i] = rdr["roomNum"].ToString();
 
                 i++;
             }
@@ -1480,8 +1506,8 @@ namespace GrixControler
 
         private void SetAllButton_Click(object sender, EventArgs e)
         {
-            GroupSetting grset = new GroupSetting(this);
-            grset.ShowDialog();
+            AllRoomSetting arset = new AllRoomSetting(this);
+            arset.ShowDialog();
         }
 
         private void SetAdminButton_Click(object sender, EventArgs e)
@@ -1505,6 +1531,9 @@ namespace GrixControler
 
                 excelIndex++;
                 ws.Cells[1, 4] = excelIndex;
+
+            }catch(System.Runtime.InteropServices.InvalidComObjectException excelException)
+            {
 
             }
             finally

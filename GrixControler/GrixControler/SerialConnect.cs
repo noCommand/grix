@@ -158,7 +158,6 @@ namespace GrixControler
 
             serialRead[1] = id_H;
             serialRead[2] = id_L;
-
             serialRead[16] = FindCheckSum(serialRead);
 
             
@@ -203,14 +202,16 @@ namespace GrixControler
                     }
                     else roominfo.StepOn = false;
 
-
+                    
                     originTemp = sp.ReadByte();
                     compareTemp = sp.ReadByte();
 
                     roominfo.NowTemp = originTemp.ToString();
                     roominfo.SetTemp = compareTemp.ToString();
 
-                    for (int i = 0; i < 4; i++)
+                    sp.ReadByte();
+                    roominfo.UH = sp.ReadByte();
+                    for (int i = 0; i < 2; i++)
                     {
                         sp.ReadByte();
                     }
@@ -379,7 +380,9 @@ namespace GrixControler
                     roominfo.NowTemp = originTemp.ToString();
                     roominfo.SetTemp = compareTemp.ToString();
 
-                    for (int i = 0; i < 4; i++)
+                    sp.ReadByte();
+                    roominfo.UH = sp.ReadByte();
+                    for (int i = 0; i < 2; i++)
                     {
                         sp.ReadByte();
                     }
@@ -507,7 +510,9 @@ namespace GrixControler
                     roominfo.NowTemp = originTemp.ToString();
                     roominfo.SetTemp = compareTemp.ToString();
 
-                    for (int i = 0; i < 4; i++)
+                    sp.ReadByte();
+                    roominfo.UH = sp.ReadByte();
+                    for (int i = 0; i < 2; i++)
                     {
                         sp.ReadByte();
                     }
@@ -567,7 +572,7 @@ namespace GrixControler
             serialCommand[2] = id_L;
             serialCommand[3] = cmd;
             serialCommand[6] = setTemp;
-
+            //serialCommand[8] = (byte)80;
             serialCommand[16] = FindCheckSum(serialCommand);
             
             try
@@ -614,7 +619,9 @@ namespace GrixControler
                     roominfo.NowTemp = originTemp.ToString();
                     roominfo.SetTemp = compareTemp.ToString();
 
-                    for (int i = 0; i < 4; i++)
+                    sp.ReadByte();
+                    roominfo.UH = sp.ReadByte();
+                    for (int i = 0; i < 2; i++)
                     {
                         sp.ReadByte();
                     }
@@ -725,7 +732,9 @@ namespace GrixControler
                     roominfo.NowTemp = originTemp.ToString();
                     roominfo.SetTemp = compareTemp.ToString();
 
-                    for (int i = 0; i < 4; i++)
+                    sp.ReadByte();
+                    roominfo.UH = sp.ReadByte();
+                    for (int i = 0; i < 2; i++)
                     {
                         sp.ReadByte();
                     }
