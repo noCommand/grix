@@ -21,3 +21,4 @@ C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\x86\Release\
 C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\x86\Release\GrixControler.csproj.CoreCompileInputs.cache
 C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\x86\Release\GrixControler.exe
 C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\x86\Release\GrixControler.pdb
+C:\Users\Administrator\Desktop\grix\GrixControler\GrixControler\obj\x86\Release\GrixControler.csprojResolveAssemblyReference.cache
