@@ -86,84 +86,7 @@ namespace GrixControler
         private void apply_Btn_Click(object sender, EventArgs e)
         {
             StringBuilder checkRoomNum = new StringBuilder("");
-
-            if (RoomList.Items.Count > 0)
-
-            {
-
-                for (int i = 0; i <= RoomList.Items.Count - 1; i++)
-
-                {
-                    ListViewItem item = RoomList.Items[i];
-
-                    if (RoomList.Items[i].Checked == true)
-
-                    {
-                        checkRoomNum.Append(RoomList.Items[i].Text + "호 ");
-                        try
-                        {
-                            sql = "update idTable set MondayStartTime = \'"
-                                + MondayStartTimePicker.Value.ToString("tthhmm") + "\', " +
-                           "MondayEndTime = \'" + MondayEndTimePicker.Value.ToString("tthhmm") + "\', " +
-                           "MondayTemp = \'" + MondayTempUpDown.Value.ToString() + "\', " +
-
-                           "TuesdayStartTime = \'" + TuesdayStartTimePicker.Value.ToString("tthhmm") + "\', " +
-                           "TuesdayEndTime = \'" + TuesdayEndTimePicker.Value.ToString("tthhmm") + "\', " +
-                           "TuesdayTemp = \'" + TuesdayTempUpDown.Value.ToString() + "\', " +
-
-                           "WednesdayStartTime = \'" + WednesdayStartTimePicker.Value.ToString("tthhmm") + "\', " +
-                           "WednesdayEndTime = \'" + WednesdayEndTimePicker.Value.ToString("tthhmm") + "\', " +
-                           "WednesdayTemp = \'" + WednesdayTempUpDown.Value.ToString() + "\', " +
-
-                           "ThursdayStartTime = \'" + ThursdayStartTimePicker.Value.ToString("tthhmm") + "\', " +
-                           "ThursdayEndTime = \'" + ThursdayEndTimePicker.Value.ToString("tthhmm") + "\', " +
-                           "ThursdayTemp = \'" + ThursdayTempUpDown.Value.ToString() + "\', " +
-
-                           "FridayStartTime = \'" + FridayStartTimePicker.Value.ToString("tthhmm") + "\', " +
-                           "FridayEndTime = \'" + FridayEndTimePicker.Value.ToString("tthhmm") + "\', " +
-                           "FridayTemp = \'" + FridayTempUpDown.Value.ToString() + "\', " +
-
-                           "SaturdayStartTime = \'" + SaturdayStartTimePicker.Value.ToString("tthhmm") + "\', " +
-                           "SaturdayEndTime = \'" + SaturdayEndTimePicker.Value.ToString("tthhmm") + "\', " +
-                           "SaturdayTemp = \'" + SaturdayTempUpDown.Value.ToString() + "\', " +
-
-                           "SundayStartTime = \'" + SundayStartTimePicker.Value.ToString("tthhmm") + "\', " +
-                           "SundayEndTime = \'" + SundayEndTimePicker.Value.ToString("tthhmm") + "\', " +
-                           "SundayTemp = \'" + SundayTempUpDown.Value.ToString() + "\', " +
-
-                           "ReservationStartDay = \'" + FindReservationStartDayFromForm() + "\', " +
-                           "ReservationEndDay = \'" + FindReservationEndDayFromForm() + "\' " +
-
-                           "where roomID = \'" + RoomList.Items[i].SubItems[0].Text + "\'";
-
-                            command = new SQLiteCommand(sql, dbConn);
-                            command.ExecuteNonQuery();
-
-                        }
-                        catch (Exception easda)
-                        {
-                            MessageBox.Show(easda.ToString());
-                        }
-
-
-                    }
-
-                }
-
-            }
-
-            show_RoomList();
-
-            MessageBox.Show(checkRoomNum + "\n예약적용 완료");
-        }
-
-
-        private void reset_Btn_Click(object sender, EventArgs e)
-        {
-
-            DialogResult dr = MessageBox.Show("초기화하시겠습니까?", "알림", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
-
-            if (dr == DialogResult.OK)
+            using (SQLiteTransaction tr = dbConn.BeginTransaction())
             {
                 if (RoomList.Items.Count > 0)
 
@@ -174,58 +97,148 @@ namespace GrixControler
                     {
                         ListViewItem item = RoomList.Items[i];
 
-                        try
-                        {
-                            sql = "update idTable set MondayStartTime = \'오전0800\', " +
-                              "MondayEndTime = \'오후0800\', " +
-                              "MondayTemp = \'25\', " +
+                        if (RoomList.Items[i].Checked == true)
 
-                              "TuesdayStartTime = \'오전0800\', " +
-                              "TuesdayEndTime = \'오후0800\', " +
-                              "TuesdayTemp = \'25\', " +
-
-                              "WednesdayStartTime = \'오전0800\', " +
-                              "WednesdayEndTime = \'오후0800\', " +
-                              "WednesdayTemp = \'25\', " +
-
-                              "ThursdayStartTime = \'오전0800\', " +
-                              "ThursdayEndTime = \'오후0800\', " +
-                              "ThursdayTemp = \'25\', " +
-
-                              "FridayStartTime = \'오전0800\', " +
-                              "FridayEndTime = \'오후0800\', " +
-                              "FridayTemp = \'25\', " +
-
-                              "SaturdayStartTime = \'오전0800\', " +
-                              "SaturdayEndTime = \'오후0800\', " +
-                              "SaturdayTemp = \'25\', " +
-
-                              "SundayStartTime = \'오전0800\', " +
-                              "SundayEndTime = \'오후0800\', " +
-                              "SundayTemp = \'25\', " +
-
-                              "ReservationStartDay = \"\", " +
-                              "ReservationEndDay = \"\" " +
-
-                              "where roomID = \'" + RoomList.Items[i].SubItems[0].Text + "\'";
-                            command = new SQLiteCommand(sql, dbConn);
-                            command.ExecuteNonQuery();
-
-                        }
-
-                        // 결국 sql문 빼고 아래 두줄은 무조건 들어가는데
-
-                        catch (Exception er)
                         {
 
-                            MessageBox.Show("catch");
-                            MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+
+                            try
+                            {
+                                sql = "update idTable set MondayStartTime = \'"
+                                    + MondayStartTimePicker.Value.ToString("tthhmm") + "\', " +
+                               "MondayEndTime = \'" + MondayEndTimePicker.Value.ToString("tthhmm") + "\', " +
+                               "MondayTemp = \'" + MondayTempUpDown.Value.ToString() + "\', " +
+
+                               "TuesdayStartTime = \'" + TuesdayStartTimePicker.Value.ToString("tthhmm") + "\', " +
+                               "TuesdayEndTime = \'" + TuesdayEndTimePicker.Value.ToString("tthhmm") + "\', " +
+                               "TuesdayTemp = \'" + TuesdayTempUpDown.Value.ToString() + "\', " +
+
+                               "WednesdayStartTime = \'" + WednesdayStartTimePicker.Value.ToString("tthhmm") + "\', " +
+                               "WednesdayEndTime = \'" + WednesdayEndTimePicker.Value.ToString("tthhmm") + "\', " +
+                               "WednesdayTemp = \'" + WednesdayTempUpDown.Value.ToString() + "\', " +
+
+                               "ThursdayStartTime = \'" + ThursdayStartTimePicker.Value.ToString("tthhmm") + "\', " +
+                               "ThursdayEndTime = \'" + ThursdayEndTimePicker.Value.ToString("tthhmm") + "\', " +
+                               "ThursdayTemp = \'" + ThursdayTempUpDown.Value.ToString() + "\', " +
+
+                               "FridayStartTime = \'" + FridayStartTimePicker.Value.ToString("tthhmm") + "\', " +
+                               "FridayEndTime = \'" + FridayEndTimePicker.Value.ToString("tthhmm") + "\', " +
+                               "FridayTemp = \'" + FridayTempUpDown.Value.ToString() + "\', " +
+
+                               "SaturdayStartTime = \'" + SaturdayStartTimePicker.Value.ToString("tthhmm") + "\', " +
+                               "SaturdayEndTime = \'" + SaturdayEndTimePicker.Value.ToString("tthhmm") + "\', " +
+                               "SaturdayTemp = \'" + SaturdayTempUpDown.Value.ToString() + "\', " +
+
+                               "SundayStartTime = \'" + SundayStartTimePicker.Value.ToString("tthhmm") + "\', " +
+                               "SundayEndTime = \'" + SundayEndTimePicker.Value.ToString("tthhmm") + "\', " +
+                               "SundayTemp = \'" + SundayTempUpDown.Value.ToString() + "\', " +
+
+                               "ReservationStartDay = \'" + FindReservationStartDayFromForm() + "\', " +
+                               "ReservationEndDay = \'" + FindReservationEndDayFromForm() + "\' " +
+
+                               "where roomID = \'" + RoomList.Items[i].SubItems[0].Text + "\'";
+
+                                command.Transaction = tr;
+                                command = new SQLiteCommand(sql, dbConn);
+                                command.ExecuteNonQuery();
+
+                            }
+                            catch (Exception easda)
+                            {
+                                MessageBox.Show(easda.ToString());
+                            }
+
+
+
+
+
+
                         }
 
                     }
 
                 }
-                MessageBox.Show("초기화 완료");
+                tr.Commit();
+            }
+
+            show_RoomList();
+
+        }
+
+
+        private void reset_Btn_Click(object sender, EventArgs e)
+        {
+
+            DialogResult dr = MessageBox.Show("초기화하시겠습니까?", "알림", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+            using (SQLiteTransaction tr = dbConn.BeginTransaction())
+            {
+                if (dr == DialogResult.OK)
+                {
+                    if (RoomList.Items.Count > 0)
+
+                    {
+
+                        for (int i = 0; i <= RoomList.Items.Count - 1; i++)
+
+                        {
+                            ListViewItem item = RoomList.Items[i];
+
+
+                            try
+                            {
+                                sql = "update idTable set MondayStartTime = \'오전0800\', " +
+                                  "MondayEndTime = \'오후0800\', " +
+                                  "MondayTemp = \'25\', " +
+
+                                  "TuesdayStartTime = \'오전0800\', " +
+                                  "TuesdayEndTime = \'오후0800\', " +
+                                  "TuesdayTemp = \'25\', " +
+
+                                  "WednesdayStartTime = \'오전0800\', " +
+                                  "WednesdayEndTime = \'오후0800\', " +
+                                  "WednesdayTemp = \'25\', " +
+
+                                  "ThursdayStartTime = \'오전0800\', " +
+                                  "ThursdayEndTime = \'오후0800\', " +
+                                  "ThursdayTemp = \'25\', " +
+
+                                  "FridayStartTime = \'오전0800\', " +
+                                  "FridayEndTime = \'오후0800\', " +
+                                  "FridayTemp = \'25\', " +
+
+                                  "SaturdayStartTime = \'오전0800\', " +
+                                  "SaturdayEndTime = \'오후0800\', " +
+                                  "SaturdayTemp = \'25\', " +
+
+                                  "SundayStartTime = \'오전0800\', " +
+                                  "SundayEndTime = \'오후0800\', " +
+                                  "SundayTemp = \'25\', " +
+
+                                  "ReservationStartDay = \"\", " +
+                                  "ReservationEndDay = \"\" " +
+
+                                  "where roomID = \'" + RoomList.Items[i].SubItems[0].Text + "\'";
+                                command.Transaction = tr;
+                                command = new SQLiteCommand(sql, dbConn);
+                                command.ExecuteNonQuery();
+
+                            }
+
+                            // 결국 sql문 빼고 아래 두줄은 무조건 들어가는데
+
+                            catch (Exception er)
+                            {
+
+                                MessageBox.Show("catch");
+                                MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+                            }
+
+
+                        }
+
+                    }
+                    tr.Commit();
+                }
             }
             Show_RoomReservationInfo();
             show_RoomList();
@@ -306,72 +319,77 @@ namespace GrixControler
         private void delete_btn_Click(object sender, EventArgs e)
         {
 
-
-            if (RoomList.Items.Count > 0)
-
+            using (SQLiteTransaction tr = dbConn.BeginTransaction())
             {
-
-                for (int i = 0; i <= RoomList.Items.Count - 1; i++)
+                if (RoomList.Items.Count > 0)
 
                 {
-                    if (RoomList.Items[i].Checked == true)
+
+                    for (int i = 0; i <= RoomList.Items.Count - 1; i++)
 
                     {
-                        ListViewItem item = RoomList.Items[i];
+                        if (RoomList.Items[i].Checked == true)
 
-                        try
                         {
-                            sql = "update idTable set MondayStartTime = \'오전0800\', " +
-                              "MondayEndTime = \'오전0800\', " +
-                              "MondayTemp = \'25\', " +
+                            ListViewItem item = RoomList.Items[i];
 
-                              "TuesdayStartTime = \'오전0800\', " +
-                              "TuesdayEndTime = \'오후0800\', " +
-                              "TuesdayTemp = \'25\', " +
+                            try
+                            {
+                                sql = "update idTable set MondayStartTime = \'오전0800\', " +
+                                  "MondayEndTime = \'오전0800\', " +
+                                  "MondayTemp = \'25\', " +
 
-                              "WednesdayStartTime = \'오전0800\', " +
-                              "WednesdayEndTime = \'오후0800\', " +
-                              "WednesdayTemp = \'25\', " +
+                                  "TuesdayStartTime = \'오전0800\', " +
+                                  "TuesdayEndTime = \'오후0800\', " +
+                                  "TuesdayTemp = \'25\', " +
 
-                              "ThursdayStartTime = \'오전0800\', " +
-                              "ThursdayEndTime = \'오후0800\', " +
-                              "ThursdayTemp = \'25\', " +
+                                  "WednesdayStartTime = \'오전0800\', " +
+                                  "WednesdayEndTime = \'오후0800\', " +
+                                  "WednesdayTemp = \'25\', " +
 
-                              "FridayStartTime = \'오전0800\', " +
-                              "FridayEndTime = \'오후0800\', " +
-                              "FridayTemp = \'25\', " +
+                                  "ThursdayStartTime = \'오전0800\', " +
+                                  "ThursdayEndTime = \'오후0800\', " +
+                                  "ThursdayTemp = \'25\', " +
 
-                              "SaturdayStartTime = \'오전0800\', " +
-                              "SaturdayEndTime = \'오후0800\', " +
-                              "SaturdayTemp = \'25\', " +
+                                  "FridayStartTime = \'오전0800\', " +
+                                  "FridayEndTime = \'오후0800\', " +
+                                  "FridayTemp = \'25\', " +
 
-                              "SundayStartTime = \'오전0800\', " +
-                              "SundayEndTime = \'오후0800\', " +
-                              "SundayTemp = \'25\', " +
+                                  "SaturdayStartTime = \'오전0800\', " +
+                                  "SaturdayEndTime = \'오후0800\', " +
+                                  "SaturdayTemp = \'25\', " +
 
-                              "ReservationStartDay = \"\", " +
-                              "ReservationEndDay = \"\" " +
+                                  "SundayStartTime = \'오전0800\', " +
+                                  "SundayEndTime = \'오후0800\', " +
+                                  "SundayTemp = \'25\', " +
+
+                                  "ReservationStartDay = \"\", " +
+                                  "ReservationEndDay = \"\" " +
 
 
-                              "where roomID = \'" + RoomList.Items[i].SubItems[0].Text + "\'";
+                                  "where roomID = \'" + RoomList.Items[i].SubItems[0].Text + "\'";
 
-                            command = new SQLiteCommand(sql, dbConn);
-                            command.ExecuteNonQuery();
+                                command.Transaction = tr;
+                                command = new SQLiteCommand(sql, dbConn);
+                                command.ExecuteNonQuery();
+
+                            }
+
+                            // 결국 sql문 빼고 아래 두줄은 무조건 들어가는데
+
+                            catch (Exception er)
+                            {
+
+                                MessageBox.Show("catch");
+                                MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
+                            }
 
                         }
 
-                        // 결국 sql문 빼고 아래 두줄은 무조건 들어가는데
-
-                        catch (Exception er)
-                        {
-
-                            MessageBox.Show("catch");
-                            MessageBox.Show("SQLite3 Database Connection Error -> " + er.Message);
-                        }
                     }
 
                 }
-
+                tr.Commit();
             }
             Show_RoomReservationInfo();
             show_RoomList();
@@ -846,5 +864,6 @@ namespace GrixControler
         {
             this.Close();
         }
+        
     }
 }

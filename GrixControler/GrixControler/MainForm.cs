@@ -107,6 +107,10 @@ namespace GrixControler
 
         int excelIndex;
 
+        String saveDay = "";
+        int saveHour = 0;
+        int saveMin = 0;
+
         private ScrollPanelMessageFilter filter;
 
         public List<String> groupID = new List<String>();
@@ -118,13 +122,20 @@ namespace GrixControler
         public RoomInfo roomInfoSet;
 
         public bool isGroup = false;
+        public bool isAll = false;
         public bool isAdmin = false;
 
         public bool specificFunctionExist = false;
         public bool SFExist;
 
         private bool isInit = false;
-        
+
+        int reservationOffCount = 0;
+        int reservationOnCount = 0;
+
+        private bool resetViewHandle = true;
+        private bool DBViewHandle = true;
+
 
         public MainForm()
         {
@@ -380,7 +391,6 @@ namespace GrixControler
                     }
                     else
                     {
-
                         for (int nowCount = viewStartCount ; nowCount < currentCount; nowCount++)
                         {
 
@@ -427,6 +437,8 @@ namespace GrixControler
 
                                     GroupSetting groupForCalculate = new GroupSetting(this, 0);
 
+                                    AllRoomSetting allForCalculate = new AllRoomSetting(this, 0);
+
                                     AdminSetting adminForCalculate = new AdminSetting(this, 0);
 
                                     for (int i = 0; i < groupID.Count; i++)
@@ -443,8 +455,12 @@ namespace GrixControler
                                     {
                                         if (isGroup == true)
                                         {
-                                            hi = groupForCalculate.GroupingRoomSettinComfirm(seperateID, groupGetInfo.PowerOn, groupGetInfo.LockOn, groupGetInfo.SetTemp);
+                                            hi = groupForCalculate.GroupingRoomSettinComfirm(seperateID, groupGetInfo.PowerOn, groupGetInfo.LockOn, groupGetInfo.SetTemp, groupGetInfo.TempStep);
                                             
+                                        }
+                                        else if (isAll == true)
+                                        {
+                                            hi = allForCalculate.GroupingRoomSettinComfirm(seperateID, groupGetInfo.PowerOn, groupGetInfo.LockOn, groupGetInfo.SetTemp,groupGetInfo.TempStep);
                                         }
                                         else 
                                             hi = adminForCalculate.AdminRoomSettinComfirm(seperateID, adminInfo.DF, adminInfo.UH, adminInfo.UL
@@ -484,6 +500,8 @@ namespace GrixControler
                                  *  messagebox는  뜨지도않고 중단점설정도 안되고 
                                  *  아래 eventlistview 아이템 add하는 코드를 지워도
                                  *  디버깅시 add됨
+                                 *  
+                                 *  솔루션 정리, 다시빌드하면 해결
                                  * */
 
                                 if (roomInfoList[nowCount].LockOn == false && roomInfoList[nowCount].LockOn != hi.LockOn && checkFirstThread == 1)
@@ -588,6 +606,7 @@ namespace GrixControler
                     }
                     defaultCount = currentCount;
                     isGroup = false;
+                    isAll = false;
                     isAdmin = false;
                     CheckReservation_OFF(CheckReservationTuple_OFF());
                     CheckReservation_ON(CheckReservationTuple_ON());
@@ -631,6 +650,7 @@ namespace GrixControler
                 
                 viewStartCount = 0;
                 groupID = null;
+                resetViewHandle = true;
             }
         }
         
@@ -643,14 +663,23 @@ namespace GrixControler
                     for (int j = 0; j < roomInfoList.Count; j++)
                     {
                         //MessageBox.Show("viewhandle " + view_Handle.ToString());
-                        if (view_Handle)
+                        if (view_Handle && resetViewHandle && DBViewHandle)
                         {
                             /*
                             MessageBox.Show("if문 " + (roomView[i].roomName.Text == roomInfoList[j].ID.ToString()).ToString() + " " 
                             + roomView[i].roomName.Text + " " + roomInfoList[j].ID.ToString());
                             */
-                            if (roomView[i].roomName.Text == roomInfoList[j].ID.ToString())
+                            if (roomView!=null && roomName.Length!=0 && roomInfoList[j]!=null && roomView[i].roomName.Text == roomInfoList[j].ID.ToString())
                             {
+                                /* 18.6.4 Error
+                                 *  디버그 돌렸더니
+                                 *  roomName.Length!=0이 false여도 if문 안으로 들어옴
+                                 *  ....?
+                                 *  
+                                 *  roomName[i] 가 인덱스 범위 초과 에러 나옴
+                                 *  try catch로 문제 발생하지않고 넘어가긴하는데....
+                                 *  
+                                 * */
                                 try
                                 {
                                     roomView[i].realRoomName.Invoke((MethodInvoker)delegate ()
@@ -1001,6 +1030,7 @@ namespace GrixControler
 
         public void SetRoomIDString(int count)
         {
+            DBViewHandle = false;
             roomID = new string[count];
             roomName = new string[count];
 
@@ -1021,6 +1051,7 @@ namespace GrixControler
                 i++;
             }
             rdr.Close();
+            DBViewHandle = true;
         }
 
         private int CheckReservationTuple_ON()
@@ -1281,7 +1312,7 @@ namespace GrixControler
             }
             else if (day == "금")
             {
-                return "Firday";
+                return "Friday";
             }
             else if (day == "토")
             {
@@ -1293,13 +1324,15 @@ namespace GrixControler
             }
         }
 
-        private void ExecuteEachDay_ON(String day, String time, int temp, int roomIDIndex)
+        private void ExecuteEachDay_ON(String day, String time, int temp, int roomIDIndex, int onCount)
         {
             int hour = 0;
             int min = 0;
             String tt;
             int ttToInt = 0;
             String engDay;
+            int roomInfoListIndex;
+            RoomInfo roomInfo = new RoomInfo();
 
             engDay = KorDayToEng(day);
             tt = time.Substring(0, 2);
@@ -1308,40 +1341,74 @@ namespace GrixControler
             hour = Convert.ToInt32(time.Substring(2, 2));
             min = Convert.ToInt32(time.Substring(4, 2));
 
-            if (CheckDayOfWeek == engDay && CheckHour == hour + ttToInt * 12 && CheckMin == min)
+
+            if(reservationOnCount < onCount)
             {
-                if (reservationTime_ON_ID[roomIDIndex].Length == 4)
+                if (min == CheckMin)
                 {
-                    id_H = reservationTime_ON_ID[roomIDIndex].Substring(0, 2);
-                    id_L = reservationTime_ON_ID[roomIDIndex].Substring(2, 2);
+                    saveMin = min;
                 }
-                else if (reservationTime_ON_ID[roomIDIndex].Length == 3)
+                if (CheckHour == hour + ttToInt * 12)
                 {
-                    id_H = reservationTime_ON_ID[roomIDIndex].Substring(0, 1);
-                    id_L = reservationTime_ON_ID[roomIDIndex].Substring(1, 2);
-                }
-                else
-                {
-                    id_H = "0";
-                    id_L = reservationTime_ON_ID[roomIDIndex];
+                    saveHour = hour + ttToInt * 12;
                 }
 
-                serialConnect.GetSerialPacket(serialConnect.powerOnCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
-                Thread.Sleep(50);
-                serialConnect.GetSerialPacket(serialConnect.setTempCmd((Byte)temp), (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
-                reserveCheck_A = 1;
+                if (CheckDayOfWeek == engDay)
+                {
+                    saveDay = engDay;
+                }
+
+
+                if (engDay == saveDay && hour + ttToInt * 12 == saveHour && min == saveMin)
+                {
+                    
+                    if (reservationTime_ON_ID[roomIDIndex].Length == 4)
+                    {
+                        id_H = reservationTime_ON_ID[roomIDIndex].Substring(0, 2);
+                        id_L = reservationTime_ON_ID[roomIDIndex].Substring(2, 2);
+                    }
+                    else if (reservationTime_ON_ID[roomIDIndex].Length == 3)
+                    {
+                        id_H = reservationTime_ON_ID[roomIDIndex].Substring(0, 1);
+                        id_L = reservationTime_ON_ID[roomIDIndex].Substring(1, 2);
+                    }
+                    else
+                    {
+                        id_H = "0";
+                        id_L = reservationTime_ON_ID[roomIDIndex];
+                    }
+
+                    roomInfoListIndex = FindRoomInfoIndexInRoomList(reservationTime_ON_ID[roomIDIndex]);
+
+                    roomInfo = serialConnect.GetSerialPacket(serialConnect.setPowerONTempCmd((Byte)temp), (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+
+                    roomInfoList[roomInfoListIndex].PowerOn = roomInfo.PowerOn;
+
+                    reserveCheck_A = 1; Thread.Sleep(50);
+                    reservationOnCount++;
+                }
             }
+            else
+            {
+                reservationOnCount = 0;
+                saveMin = 0;
+                saveHour = 0;
+                saveDay = "";
+            }
+
 
         }
 
 
-        private void ExecuteEachDay_OFF(String day, String time, int roomIDIndex)
+        private void ExecuteEachDay_OFF(String day, String time, int roomIDIndex, int offCount)
         {
             int hour = 0;
             int min = 0;
             String tt;
             int ttToInt = 0;
             String engDay;
+            int roomInfoListIndex;
+            RoomInfo roomInfo = new RoomInfo();
 
             engDay = KorDayToEng(day);
 
@@ -1352,29 +1419,72 @@ namespace GrixControler
             hour = Convert.ToInt32(time.Substring(2, 2));
             min = Convert.ToInt32(time.Substring(4, 2));
 
-            if (CheckDayOfWeek == engDay && CheckHour == hour + ttToInt * 12 && CheckMin == min)
+            
+
+            if(reservationOffCount < offCount)
             {
-                if (reservationTime_OFF_ID[roomIDIndex].Length == 4)
+                if (min == CheckMin)
                 {
-                    id_H = reservationTime_OFF_ID[roomIDIndex].Substring(0, 2);
-                    id_L = reservationTime_OFF_ID[roomIDIndex].Substring(2, 2);
+                    saveMin = min;
                 }
-                else if (reservationTime_OFF_ID[roomIDIndex].Length == 3)
+                if (CheckHour == hour + ttToInt * 12)
                 {
-                    id_H = reservationTime_OFF_ID[roomIDIndex].Substring(0, 1);
-                    id_L = reservationTime_OFF_ID[roomIDIndex].Substring(1, 2);
-                }
-                else
-                {
-                    id_H = "0";
-                    id_L = reservationTime_OFF_ID[roomIDIndex];
+                    saveHour = hour + ttToInt * 12;
                 }
 
-                serialConnect.GetSerialPacket(serialConnect.powerOffCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
-                reserveCheck_B = 1;
-                Thread.Sleep(50);
+                if (CheckDayOfWeek == engDay)
+                {
+                    saveDay = engDay;
+                }
+
+                if (engDay == saveDay && hour + ttToInt * 12 == saveHour && min == saveMin)
+                {
+                    if (reservationTime_OFF_ID[roomIDIndex].Length == 4)
+                    {
+                        id_H = reservationTime_OFF_ID[roomIDIndex].Substring(0, 2);
+                        id_L = reservationTime_OFF_ID[roomIDIndex].Substring(2, 2);
+                    }
+                    else if (reservationTime_OFF_ID[roomIDIndex].Length == 3)
+                    {
+                        id_H = reservationTime_OFF_ID[roomIDIndex].Substring(0, 1);
+                        id_L = reservationTime_OFF_ID[roomIDIndex].Substring(1, 2);
+                    }
+                    else
+                    {
+                        id_H = "0";
+                        id_L = reservationTime_OFF_ID[roomIDIndex];
+                    }
+                    roomInfoListIndex = FindRoomInfoIndexInRoomList(reservationTime_OFF_ID[roomIDIndex]);
+
+                    roomInfo = serialConnect.GetSerialPacket(serialConnect.powerOffCmd, (byte)Convert.ToInt32(id_H), (byte)Convert.ToInt32(id_L));
+                    roomInfoList[roomInfoListIndex].PowerOn = roomInfo.PowerOn;
+
+                    reserveCheck_B = 1;
+                    Thread.Sleep(50);
+                    reservationOffCount++;
+                }
             }
+            else
+            {
+                reservationOffCount = 0;
+                saveMin = 0;
+                saveHour = 0;
+                saveDay = "";
+            }
+            
+        }
 
+        private int FindRoomInfoIndexInRoomList(String roomID)
+        {
+            int index = 0;
+            for(int i = 0; i <roomInfoList.Count; i++)
+            {
+                if (roomInfoList[i].ID == Convert.ToInt32(roomID))
+                {
+                    index = i;
+                }
+            }
+            return index;
         }
 
         private void eventListView_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
@@ -1385,16 +1495,17 @@ namespace GrixControler
 
         private void ExecuteReservation(int onCount, int OffCount)
         {
-
-
+            
             String id_H;
             String id_L;
 
             String[] eachDay;
 
+            
             for (int i = 0; i < onCount; i++)
             {
                 eachDay = SeperateDay(reservationTime_ON_DAY[i]);
+
                 /**
                  * 해당 방의, 시작 요일들을 나눠서 eachday에 넣어놓고,
                  * 아래에서 월요일이면, 월요일의 전체 time을 가져오고
@@ -1405,7 +1516,7 @@ namespace GrixControler
                 {
                     string[] onTimeEachDay = ReservationEachDay_ON_Time(eachDay[k]);
                     int[] tempEachDay = ReservationEachDay_ON_Temp(eachDay[k]);
-                    ExecuteEachDay_ON(eachDay[k], onTimeEachDay[i], tempEachDay[i], i); //여기는 오전0800이 들어감
+                    ExecuteEachDay_ON(eachDay[k], onTimeEachDay[i], tempEachDay[i], i, onCount); //여기는 오전0800이 들어감
                 }
             }
 
@@ -1423,7 +1534,7 @@ namespace GrixControler
                 {
                     //여기서 문제 생김
                     string[] onTimeEachDay = ReservationEachDay_OFF_Time(eachDay[k]);
-                    ExecuteEachDay_OFF(eachDay[k], onTimeEachDay[i], i); //여기는 오전0800이 들어감
+                    ExecuteEachDay_OFF(eachDay[k], onTimeEachDay[i], i, OffCount); //여기는 오전0800이 들어감
                 }
             }
 
@@ -1447,7 +1558,6 @@ namespace GrixControler
         {
             filter = new ScrollPanelMessageFilter(ViewPanel);
             Application.AddMessageFilter(filter);
-
         }
 
         private void MainForm_Deactivate(object sender, EventArgs e)
@@ -1457,6 +1567,8 @@ namespace GrixControler
 
         public void ResetAllVariable()
         {
+            resetViewHandle = false;
+
             check_UI = 1;
             roominfoControl = 1;
             check = 0;
@@ -1516,6 +1628,11 @@ namespace GrixControler
             adset.ShowDialog();
         }
 
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
         private void UpdateEventLog(string time, string id, string content)
         {
             try
@@ -1561,6 +1678,8 @@ namespace GrixControler
                 return com;
             return "COM";
         }
+        
+       
 
     }
 

@@ -30,6 +30,10 @@ namespace GrixControler
 
         string sql;
 
+        public AllRoomSetting(MainForm main, int i)
+        {
+            this.main = main;
+        }
 
         public AllRoomSetting(MainForm main)
         {
@@ -37,7 +41,6 @@ namespace GrixControler
             main.ThreadPause();
 
             this.main = main;
-
         }
 
         public byte[] IDStringToByte(String roomID)
@@ -125,12 +128,13 @@ namespace GrixControler
                 gr.LockOn = false;
             }
             gr.SetTemp = (int)setTempControl.Value;
+            gr.TempStep = (int)setStepControl.Value;
 
             return gr;
         }
 
 
-        public RoomInfo GroupingRoomSettinComfirm(Byte[] id, bool powerOn, bool lockOn, int setTemp)
+        public RoomInfo GroupingRoomSettinComfirm(Byte[] id, bool powerOn, bool lockOn, int setTemp,int setStep)
         {
             RoomInfo ri;
 
@@ -156,7 +160,7 @@ namespace GrixControler
             //MessageBox.Show(setTempControl.Value.ToString() +  idValue[0] + idValue[1]);
             cmdResult += FindIntFromByteIndex(5);
 
-            ri = main.serialConnect.GetGroupSerialPacket(main.serialConnect.Cmd, (Byte)cmdResult, (Byte)setTemp, id[0], id[1]);
+            ri = main.serialConnect.GetSerialPacketForResult(main.serialConnect.Cmd, (Byte)cmdResult, (Byte)setTemp, (Byte)setStep, id[0], id[1]);
 
             return ri;
         }
@@ -278,7 +282,7 @@ namespace GrixControler
 
         private void ConfirmBtn_Click_1(object sender, EventArgs e)
         {
-            main.isGroup = true;
+            main.isAll = true;
             main.groupGetInfo = GetGroupRoomInfo();
             main.groupID = GetGroupID();
             main.viewStartCount = FindIndexFromID();
